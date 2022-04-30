@@ -21,7 +21,7 @@ abstract class Entity {
     }
   }
   draw(): void {
-    context.fillRect(this.x + 12, this.y + 15, 24, 50);
+    context.fillRect(this.x + 12, this.y + 12, 24, 50);
   }
 }
 export class MeleeWarrior extends Entity {
@@ -39,10 +39,14 @@ export class MeleeWarrior extends Entity {
   ) {
     super(x, y, team, health, speed, armor, strength, range, name, type);
     this.range = 50;
-    this.speed = 1;
+    this.speed = 3;
+    this.health = 100;
     this.type = "Melee";
   }
-  attack() {}
+  attack(otherUnit) {
+    otherUnit.health -= 15; //replace with this.attack
+    this.team == "left" ? (otherUnit.x += 7) : (otherUnit.x -= 7);
+  }
 }
 export class RangedWarrior extends Entity {
   constructor(

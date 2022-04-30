@@ -13,24 +13,39 @@ window.addEventListener("keydown", KeyInput, false);
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
 let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let entities: Array<any> = [
-  new MeleeWarrior(0, 100, "left"),
-  new MeleeWarrior(800, 100, "right"),
+  new MeleeWarrior(canvas.width + 45, 203, "right"),
+  new MeleeWarrior(canvas.width + 45, 283, "right"),
+  new MeleeWarrior(canvas.width + 45, 363, "right"),
+  new MeleeWarrior(canvas.width + 45, 443, "right"),
+  new MeleeWarrior(canvas.width + 45, 523, "right"),
+  new MeleeWarrior(canvas.width + 45, 603, "right"),
+  new MeleeWarrior(canvas.width + 45, 683, "right"),
+  new MeleeWarrior(canvas.width + 45, 763, "right"),
 ];
+let selected = MeleeWarrior;
+let debounce: number = 0;
 function tick() {
   lane.draw();
+  debounce <= 0 ? (debounce = 0) : (debounce -= 0.01);
   for (let units in entities) {
     let currentUnit = entities[units];
+    currentUnit.move();
+    currentUnit.draw();
+    if (currentUnit.health <= 0) {
+      entities.splice(entities.indexOf(currentUnit), 1);
+    }
     for (let j: number = 0; j < entities.length; j++) {
-      entities[j].draw();
-      entities[j].move();
       if (
         Math.abs(currentUnit.x - entities[j].x) <= currentUnit.range &&
-        entities[j] !== currentUnit
+        entities[j] !== currentUnit &&
+        entities[j].team !== currentUnit.team &&
+        entities[j].y == currentUnit.y
       ) {
-        //handle class type- aka Melee type or Ranged type
-        //console.log("attackable", currentUnit); //debug
+        console.log("attackable", currentUnit); //debug
+        currentUnit.attack(entities[j]);
+        break;
       }
-      if (entities[j].x < -25 || entities[j].x > canvas.width + 25) {
+      if (entities[j].x < -50 || entities[j].x > canvas.width + 50) {
         entities.splice(entities.indexOf(entities[j]), 1);
         console.log("deleted");
       }
@@ -55,6 +70,20 @@ function KeyInput(event: KeyboardEvent) {
     case "ArrowDown":
       console.log("down");
       lane.move("down");
+      break;
+    case " ":
+      if (debounce == 0) {
+        entities.push(new selected(-45, lane.y - 27, "left"));
+        debounce = 1.5;
+      }
+      break;
+    case "Left":
+    case "ArrowLeft":
+      console.log("left");
+      break;
+    case "Right":
+    case "ArrowRight":
+      console.log("right");
       break;
     default:
   }
