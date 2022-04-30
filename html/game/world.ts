@@ -41,7 +41,7 @@ function tick() {
         entities[j].team !== currentUnit.team &&
         entities[j].y == currentUnit.y
       ) {
-        console.log("attackable", currentUnit); //debug
+        //console.log("attackable", currentUnit); //debug
         currentUnit.attack(entities[j]);
         break;
       }

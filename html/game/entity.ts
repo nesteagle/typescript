@@ -11,13 +11,17 @@ abstract class Entity {
     public strength?: number,
     public range?: number,
     public name?: string,
-    public type?: string
+    public type?: string,
+    public state?: string
   ) {}
   move(): void {
-    if (this.team == "left") {
-      this.x += this.speed;
-    } else if (this.team == "right") {
-      this.x -= this.speed;
+    if (this.state !== "attack") {
+      if (this.team == "left") {
+        this.x += this.speed;
+      } else if (this.team == "right") {
+        this.x -= this.speed;
+      }
+      this.state = "move";
     }
   }
   draw(): void {
@@ -35,18 +39,32 @@ export class MeleeWarrior extends Entity {
     public strength?: number,
     public range?: number,
     public name?: string,
-    public type?: string
+    public type?: string,
+    public state?: string
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type);
+    super(x, y, team, health, speed, armor, strength, range, name, type, state);
     this.range = 50;
     this.speed = 3;
     this.health = 100;
+    this.strength = 20;
     this.type = "Melee";
   }
   attack(otherUnit) {
-    otherUnit.health -= 15; //replace with this.attack
-    this.team == "left" ? (otherUnit.x += 7) : (otherUnit.x -= 7);
+    if (this.state == "move") {
+      this.state = "attack";
+      this.team == "left"
+        ? (otherUnit.x += this.strength / 2)
+        : (otherUnit.x -= this.strength / 2);
+      this.wait(60).then(() => {
+        otherUnit.health -= this.strength; //replace with this.attack
+      });
+      this.wait(1000).then(() => {
+        this.state = "move";
+      });
+    }
   }
+  private wait = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 }
 export class RangedWarrior extends Entity {
   constructor(
@@ -59,7 +77,8 @@ export class RangedWarrior extends Entity {
     public strength?: number,
     public range?: number,
     public name?: string,
-    public type?: string
+    public type?: string,
+    public state?: string
   ) {
     super(x, y, team, health, speed, armor, strength, range, name, type);
     this.type = "Ranged";
