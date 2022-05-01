@@ -28,57 +28,17 @@ let selectable: Array<any> = [Swordsman, Spearman, Archer];
 let selected: number = 0;
 let debounce: number = 0;
 let bar = new ScoreBar();
-function tick() {
+
+function update(): void {
+  window.requestAnimationFrame(update);
   context.save();
   context.fillStyle = "black";
   lane.draw();
   bar.draw(score);
+  updateProjectiles();
+  updateEntities();
   debounce <= 0 ? (debounce = 0) : (debounce -= 0.01);
-  for (let i in projectiles) {
-    projectiles[i].velocity *= 0.95;
-    projectiles[i].x += projectiles[i].velocity;
-    projectiles[i].draw();
-  }
-  for (let units in entities) {
-    let currentUnit = entities[units];
-    currentUnit.move();
-    currentUnit.draw();
-    if (currentUnit.health <= 0) {
-      entities.splice(entities.indexOf(currentUnit), 1);
-    }
-    for (let j: number = 0; j < entities.length; j++) {
-      if (
-        Math.abs(currentUnit.x - entities[j].x) <= currentUnit.range &&
-        entities[j] !== currentUnit &&
-        entities[j].team !== currentUnit.team &&
-        entities[j].y == currentUnit.y
-      ) {
-        //console.log("attackable", currentUnit); //debug
-        if ((currentUnit.type = "Ranged" && currentUnit.state == "move")) {
-          projectiles.push(
-            new Projectile(
-              currentUnit.x,
-              currentUnit.y + 20,
-              currentUnit.range * 1.5,
-              currentUnit
-            )
-          );
-        }
-        currentUnit.attack(entities[j]);
-        break;
-      }
-      if (entities[j].x < -50 || entities[j].x > canvas.width + 50) {
-        entities.splice(entities.indexOf(entities[j]), 1);
-        console.log("deleted");
-        break;
-      }
-    }
-  }
   context.restore();
-}
-function update(): void {
-  window.requestAnimationFrame(update);
-  tick();
 }
 update();
 
@@ -86,12 +46,10 @@ function KeyInput(event: KeyboardEvent) {
   switch (event.key) {
     case "Up":
     case "ArrowUp":
-      console.log("up");
       lane.move("up");
       break;
     case "Down":
     case "ArrowDown":
-      console.log("down");
       lane.move("down");
       break;
     case " ":
@@ -111,5 +69,62 @@ function KeyInput(event: KeyboardEvent) {
       console.log(selectable, selected);
       break;
     default:
+  }
+}
+function updateProjectiles(): void {
+  for (let i in projectiles) {
+    let angle: number = projectiles[i].triangulate(
+      projectiles[i].xv,
+      projectiles[i].yv
+    );
+    projectiles[i].angle = angle;
+    projectiles[i].xv *= 0.97;
+    projectiles[i].x += projectiles[i].xv;
+    projectiles[i].y += projectiles[i].yv;
+    projectiles[i].yv += 0.1;
+    projectiles[i].lifetime -= 1;
+    projectiles[i].draw();
+    if (projectiles[i].lifetime <= 0) {
+      projectiles.splice(projectiles[i], 1);
+      console.log("deleted");
+    }
+  }
+}
+function updateEntities() {
+  for (let units in entities) {
+    let currentUnit = entities[units];
+    currentUnit.move();
+    currentUnit.draw();
+    if (currentUnit.health <= 0) {
+      entities.splice(entities.indexOf(currentUnit), 1);
+    }
+    for (let j: number = 0; j < entities.length; j++) {
+      if (
+        Math.abs(currentUnit.x - entities[j].x) <= currentUnit.range &&
+        entities[j] !== currentUnit &&
+        entities[j].team !== currentUnit.team &&
+        entities[j].y == currentUnit.y
+      ) {
+        //console.log("attackable", currentUnit); //debug
+        if (currentUnit.name == "Archer" && currentUnit.state == "move") {
+          projectiles.push(
+            new Projectile(
+              currentUnit.x + 12,
+              currentUnit.y + 20,
+              currentUnit.range * 1.5,
+              currentUnit,
+              Math.random() * -5 + 1.5
+            )
+          );
+        }
+        currentUnit.attack(entities[j]);
+        break;
+      }
+      if (entities[j].x < -50 || entities[j].x > canvas.width + 50) {
+        entities.splice(entities.indexOf(entities[j]), 1);
+        console.log("deleted");
+        break;
+      }
+    }
   }
 }

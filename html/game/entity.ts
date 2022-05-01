@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
-let image = document.getElementById("source2") as CanvasImageSource;
+let arrow = document.getElementById("source2") as CanvasImageSource;
 
 abstract class Entity {
   constructor(
@@ -40,33 +40,28 @@ export class Projectile {
     public y: number,
     public range: number,
     public parent: object,
-    public velocity?: number
+    public yv?: number,
+    public xv?: number,
+    public angle?: number,
+    public lifetime?: number
   ) {
     this.x = x;
-    this.y = y - 15;
+    this.y = y;
     this.range = range;
     this.parent = parent;
-    this.velocity = range / 15;
+    this.xv = range / 15;
+    this.angle = angle;
+    this.lifetime = 60;
   }
-  draw(): void {
-    context.drawImage(image, this.x, this.y);
-    // context.fillStyle = "rgb(60,45,30)";
-    // context.fillRect(this.x, this.y + 2, 40, 6);
-    // context.beginPath();
-    // context.fillStyle = "rgb(80,80,80)";
-    // context.moveTo(this.x + 40, this.y - 2);
-    // context.lineTo(this.x + 60, this.y + 5);
-    // context.lineTo(this.x + 40, this.y + 12);
-    // context.lineTo(this.x + 40, this.y - 2);
-    // context.moveTo(this.x, this.y + 2);
-    // context.lineTo(this.x, this.y + 8);
-    // context.lineTo(this.x - 4, this.y + 13);
-    // context.lineTo(this.x - 12, this.y + 13);
-    // context.lineTo(this.x - 9, this.y + 5);
-    // context.lineTo(this.x - 12, this.y - 3);
-    // context.lineTo(this.x - 4, this.y - 3);
-    // context.lineTo(this.x, this.y + 2);
-    // context.fill(); //replace this with image asset later
+  draw() {
+    context.save();
+    context.translate(this.x, this.y);
+    context.rotate((this.angle * Math.PI) / 180);
+    context.drawImage(arrow, -64, -64);
+    context.restore();
+  }
+  triangulate(xv: number, yv: number): number {
+    return (Math.atan2(2 * xv, 2 * -yv) * 180) / Math.PI;
   }
 }
 
@@ -162,7 +157,7 @@ export class Archer extends Entity {
   ) {
     super(x, y, team, health, speed, armor, strength, range, name, type, state);
     this.range = 450;
-    this.speed = 0.4;
+    this.speed = 4;
     this.health = 100;
     this.strength = 25;
     this.type = "Ranged";
@@ -173,7 +168,7 @@ export class Archer extends Entity {
       this.state = "attack";
       this.wait(500).then(() => {
         otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
-        //REWORK THIS SO RNG IS INCLUDED
+        //REWORK THIS SO RNG IS INCLUDED- in progress
         this.hasHit = true;
         this.team == "left"
           ? (otherUnit.x += this.strength / 3)
