@@ -1,5 +1,8 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+// let image = new Image() as HTMLImageElement; // Create new img element
+// image.src = "./assets/background.png"; // Set source path
+let image = document.getElementById("source") as CanvasImageSource;
 export class LaneArrow {
   public x: number;
   public y: number;
@@ -7,15 +10,16 @@ export class LaneArrow {
   constructor(lane, x?, y?) {
     this.lane = lane;
     this.x = 25;
-    this.y = this.lane * 80 + 150;
+    this.y = this.lane * 80 + 200;
   }
   move(direction): void {
     if (direction == "up" && this.lane !== 1) this.lane -= 1;
     if (direction == "down" && this.lane !== 8) this.lane += 1;
-    this.y = this.lane * 80 + 150;
+    this.y = this.lane * 80 + 200;
     console.log(this.lane, direction, this.y);
   }
   draw(): void {
+    context.drawImage(image, 0, 0);
     context.fillStyle = "rgb(169,0,0)";
     context.fillRect(this.x, this.y, 30, 20);
     context.beginPath();

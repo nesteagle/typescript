@@ -6,23 +6,24 @@
 //     console.log(e.detail.name,e.detail.attack);
 
 // }) as EventListener);   event framework
-import { MeleeWarrior } from "./entity";
+import { Swordsman, Spearman, Archer } from "./entity";
 import { LaneArrow } from "./lane";
 let lane = new LaneArrow(1);
 window.addEventListener("keydown", KeyInput, false);
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
 let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let entities: Array<any> = [
-  new MeleeWarrior(canvas.width + 45, 203, "right"),
-  new MeleeWarrior(canvas.width + 45, 283, "right"),
-  new MeleeWarrior(canvas.width + 45, 363, "right"),
-  new MeleeWarrior(canvas.width + 45, 443, "right"),
-  new MeleeWarrior(canvas.width + 45, 523, "right"),
-  new MeleeWarrior(canvas.width + 45, 603, "right"),
-  new MeleeWarrior(canvas.width + 45, 683, "right"),
-  new MeleeWarrior(canvas.width + 45, 763, "right"),
+  new Swordsman(canvas.width + 45, 253, "right"),
+  new Swordsman(canvas.width + 45, 333, "right"),
+  new Swordsman(canvas.width + 45, 413, "right"),
+  new Swordsman(canvas.width + 45, 493, "right"),
+  new Swordsman(canvas.width + 45, 573, "right"),
+  new Swordsman(canvas.width + 45, 653, "right"),
+  new Swordsman(canvas.width + 45, 733, "right"),
+  new Swordsman(canvas.width + 45, 813, "right"),
 ];
-let selected = MeleeWarrior;
+let selectable: Array<any> = [Swordsman, Spearman, Archer];
+let selected: number = 0;
 let debounce: number = 0;
 function tick() {
   lane.draw();
@@ -48,6 +49,7 @@ function tick() {
       if (entities[j].x < -50 || entities[j].x > canvas.width + 50) {
         entities.splice(entities.indexOf(entities[j]), 1);
         console.log("deleted");
+        break;
       }
     }
   }
@@ -73,17 +75,19 @@ function KeyInput(event: KeyboardEvent) {
       break;
     case " ":
       if (debounce == 0) {
-        entities.push(new selected(-45, lane.y - 27, "left"));
+        entities.push(new selectable[selected](-25, lane.y - 27, "left"));
         debounce = 1.5;
       }
       break;
     case "Left":
     case "ArrowLeft":
-      console.log("left");
+      selected == 0 ? (selected = selectable.length - 1) : (selected -= 1);
+      console.log(selectable, selected);
       break;
     case "Right":
     case "ArrowRight":
-      console.log("right");
+      selected == selectable.length - 1 ? (selected = 0) : (selected += 1);
+      console.log(selectable, selected);
       break;
     default:
   }
