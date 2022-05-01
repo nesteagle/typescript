@@ -6,9 +6,10 @@
 //     console.log(e.detail.name,e.detail.attack);
 
 // }) as EventListener);   event framework
-import { Swordsman, Spearman, Archer } from "./entity";
-import { LaneArrow } from "./lane";
+import { Swordsman, Spearman, Archer, Projectile } from "./entity";
+import { LaneArrow, ScoreBar } from "./gameobjects";
 let lane = new LaneArrow(1);
+let score: number = 50;
 window.addEventListener("keydown", KeyInput, false);
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
 let context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -22,12 +23,22 @@ let entities: Array<any> = [
   new Swordsman(canvas.width + 45, 733, "right"),
   new Swordsman(canvas.width + 45, 813, "right"),
 ];
+let projectiles: Array<any> = [];
 let selectable: Array<any> = [Swordsman, Spearman, Archer];
 let selected: number = 0;
 let debounce: number = 0;
+let bar = new ScoreBar();
 function tick() {
+  context.save();
+  context.fillStyle = "black";
   lane.draw();
+  bar.draw(score);
   debounce <= 0 ? (debounce = 0) : (debounce -= 0.01);
+  for (let i in projectiles) {
+    projectiles[i].velocity *= 0.95;
+    projectiles[i].x += projectiles[i].velocity;
+    projectiles[i].draw();
+  }
   for (let units in entities) {
     let currentUnit = entities[units];
     currentUnit.move();
@@ -43,6 +54,16 @@ function tick() {
         entities[j].y == currentUnit.y
       ) {
         //console.log("attackable", currentUnit); //debug
+        if ((currentUnit.type = "Ranged" && currentUnit.state == "move")) {
+          projectiles.push(
+            new Projectile(
+              currentUnit.x,
+              currentUnit.y + 20,
+              currentUnit.range * 1.5,
+              currentUnit
+            )
+          );
+        }
         currentUnit.attack(entities[j]);
         break;
       }
@@ -53,10 +74,10 @@ function tick() {
       }
     }
   }
+  context.restore();
 }
 function update(): void {
   window.requestAnimationFrame(update);
-  context.clearRect(0, 0, canvas.width, canvas.height);
   tick();
 }
 update();

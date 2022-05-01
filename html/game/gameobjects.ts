@@ -1,8 +1,7 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
-// let image = new Image() as HTMLImageElement; // Create new img element
-// image.src = "./assets/background.png"; // Set source path
 let image = document.getElementById("source") as CanvasImageSource;
+
 export class LaneArrow {
   public x: number;
   public y: number;
@@ -28,6 +27,13 @@ export class LaneArrow {
     context.lineTo(this.x + 30, this.y + 30);
     context.lineTo(this.x + 30, this.y - 10);
     context.fill();
-    context.fillStyle = "black";
+  }
+}
+export class ScoreBar {
+  draw(score: number): void {
+    context.fillStyle = "rgb(32,32,128)";
+    context.fillRect(0, 0, score * 12, 15);
+    context.fillStyle = "rgb(128,32,32)";
+    context.fillRect(score * 12, 0, canvas.width - score * 12, 15);
   }
 }
