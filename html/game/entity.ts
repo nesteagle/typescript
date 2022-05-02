@@ -204,7 +204,7 @@ export class Archer extends Entity {
       lane
     );
     this.range = 450;
-    this.speed = 4;
+    this.speed = 0.4;
     this.health = 100;
     this.strength = 25;
     this.type = "Ranged";

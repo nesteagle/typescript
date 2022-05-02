@@ -3,8 +3,7 @@
 // attackEvent.detail.attack=15
 // div.dispatchEvent(attackEvent)
 // div.addEventListener('attack', ((e:CustomEvent) => {
-//     console.log(e.detail.name,e.detail.attack);
-
+// console.log(e.detail.name,e.detail.attack);
 // }) as EventListener);   event framework
 import { Swordsman, Spearman, Archer, Projectile } from "./entity";
 import { LaneArrow, ScoreBar } from "./gameobjects";
@@ -27,9 +26,10 @@ let projectiles: Array<any> = [];
 let selectable: Array<any> = [Swordsman, Spearman, Archer];
 let selected: number = 0;
 let debounce: number = 0;
+let windowID: number;
 let bar = new ScoreBar();
 function update(): void {
-  window.requestAnimationFrame(update);
+  windowID = window.requestAnimationFrame(update);
   context.save();
   context.fillStyle = "black";
   lane.draw();
@@ -38,6 +38,7 @@ function update(): void {
   updateEntities();
   debounce <= 0 ? (debounce = 0) : (debounce -= 0.01);
   context.restore();
+  checkScore();
 }
 update();
 
@@ -131,11 +132,28 @@ function updateEntities() {
         currentUnit.attack(entities[j]);
         break;
       }
-      if (entities[j].x < -50 || entities[j].x > canvas.width + 50) {
+      if (entities[j].x < -50) {
         entities.splice(entities.indexOf(entities[j]), 1);
-        console.log("deleted");
+        score -= 1;
+        //replace with score weight
+        break;
+      }
+      if (entities[j].x > canvas.width + 50) {
+        entities.splice(entities.indexOf(entities[j]), 1);
+        score += 1;
+        //replace with score weight
         break;
       }
     }
+  }
+}
+function checkScore(): void {
+  if (score > 100) {
+    console.log("LEFT SIDE VICTORY!");
+    window.cancelAnimationFrame(windowID);
+  }
+  if (score < 0) {
+    console.log("RIGHT SIDE VICTORY!");
+    window.cancelAnimationFrame(windowID);
   }
 }
