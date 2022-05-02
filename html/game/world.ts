@@ -3,10 +3,9 @@
 // attackEvent.detail.attack=15
 // div.dispatchEvent(attackEvent)
 // div.addEventListener('attack', ((e:CustomEvent) => {
-// console.log(e.detail.name,e.detail.attack);
 // }) as EventListener);   event framework
 import { Swordsman, Spearman, Archer, Projectile } from "./entity";
-import { LaneArrow, ScoreBar } from "./gameobjects";
+import { LaneArrow, ScoreBar, CooldownBar } from "./gameobjects";
 let lane = new LaneArrow(1);
 let score: number = 50;
 window.addEventListener("keydown", KeyInput, false);
@@ -22,10 +21,15 @@ let entities: Array<any> = [
   new Swordsman(canvas.width + 45, 735, "right"),
   new Swordsman(canvas.width + 45, 815, "right"),
 ];
+let cooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
 let selectable: Array<any> = [Swordsman, Spearman, Archer];
+let cooldownTable: Array<number> = [1.5, 2, 1.5]; //save stats elsewhere later
+for (let i = 0; i < selectable.length; i++) {
+  cooldownbars.push([new CooldownBar(), -90]);
+}
 let selected: number = 0;
-let debounce: number = 0;
+let canSpawn: boolean = false;
 let windowID: number;
 let bar = new ScoreBar();
 function update(): void {
@@ -36,9 +40,28 @@ function update(): void {
   bar.draw(score);
   updateProjectiles();
   updateEntities();
-  debounce <= 0 ? (debounce = 0) : (debounce -= 0.01);
+  for (let i = 0; i < cooldownbars.length; i++) {
+    if (i == selected) {
+      cooldownbars[selected][0].draw(
+        i * 80 + 48,
+        64,
+        40,
+        cooldownbars[i][1],
+        true
+      );
+      cooldownbars[i][1] += cooldownTable[i];
+      continue;
+    }
+    cooldownbars[i][0].draw(i * 80 + 48, 64, 32, cooldownbars[i][1]);
+    cooldownbars[i][1] += cooldownTable[i];
+    if (cooldownbars[selected][1] == 270) {
+      canSpawn = true;
+    }
+  }
   context.restore();
   checkScore();
+
+  //percent >= 270 ? (canSpawn = true) : percent++;
 }
 update();
 
@@ -53,20 +76,20 @@ function KeyInput(event: KeyboardEvent) {
       lane.move("down");
       break;
     case " ":
-      if (debounce == 0) {
+      if (canSpawn == true) {
         entities.push(new selectable[selected](-25, lane.y - 25, "left"));
-        debounce = 0.2;
+        for (let i = 0; i < cooldownbars.length; i++) {
+          cooldownbars[i][1] = -90;
+        }
       }
       break;
     case "Left":
     case "ArrowLeft":
       selected == 0 ? (selected = selectable.length - 1) : (selected -= 1);
-      console.log(selectable, selected);
       break;
     case "Right":
     case "ArrowRight":
       selected == selectable.length - 1 ? (selected = 0) : (selected += 1);
-      console.log(selectable, selected);
       break;
     default:
   }
@@ -86,19 +109,18 @@ function updateProjectiles(): void {
     projectiles[i].draw();
     for (let j in entities) {
       if (
-        Math.abs(projectiles[i].x - entities[j].x) < 35 &&
+        Math.abs(projectiles[i].x - entities[j].x) < 20 &&
         Math.abs(projectiles[i].y - entities[j].y - 25) < 23 &&
         projectiles[i].lane == entities[j].lane &&
-        projectiles[i].parent !== entities[j]
+        projectiles[i].parent.team !== entities[j].team
       ) {
-        console.log(projectiles[i] + "is close to " + entities[j]);
         projectiles[i].parent.hasHit = true;
+        projectiles.splice(projectiles[i], 1);
         break;
       }
     }
-    if (projectiles[i].lifetime <= 0) {
+    if (projectiles[i] && projectiles[i].lifetime <= 0) {
       projectiles.splice(projectiles[i], 1);
-      console.log("deleted");
     }
   }
 }

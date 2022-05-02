@@ -15,7 +15,6 @@ export class LaneArrow {
     if (direction == "up" && this.lane !== 1) this.lane -= 1;
     if (direction == "down" && this.lane !== 8) this.lane += 1;
     this.y = this.lane * 80 + 200;
-    console.log(this.lane, direction, this.y);
   }
   draw(): void {
     context.drawImage(image, 0, 0);
@@ -35,5 +34,27 @@ export class ScoreBar {
     context.fillRect(0, 0, score * 12, 15);
     context.fillStyle = "rgb(128,32,32)";
     context.fillRect(score * 12, 0, canvas.width - score * 12, 15);
+  }
+}
+export class CooldownBar {
+  draw(
+    x: number,
+    y: number,
+    radius: number,
+    percentage: number,
+    selected?: boolean
+  ) {
+    context.beginPath();
+    context.moveTo(x, y);
+    selected == true
+      ? (context.fillStyle = "rgba(100,25,10,0.7)")
+      : (context.fillStyle = "rgba(40,40,40,0.7)");
+    context.arc(x, y, radius, -Math.PI / 2, (percentage / 180) * Math.PI);
+    context.fill();
+    context.beginPath();
+    context.fillStyle = "black";
+    context.lineWidth = 2;
+    context.arc(x, y, radius, 0, (360 / 180) * Math.PI);
+    context.stroke();
   }
 }
