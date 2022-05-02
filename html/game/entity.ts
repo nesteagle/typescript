@@ -14,7 +14,8 @@ abstract class Entity {
     public range?: number,
     public name?: string,
     public type?: string,
-    public state?: string
+    public state?: string,
+    public lane?: number
   ) {}
   move(): void {
     if (this.state !== "attack") {
@@ -30,7 +31,7 @@ abstract class Entity {
     if (this.name == "Swordsman") context.fillStyle = "rgb(0,0,0)";
     if (this.name == "Spearman") context.fillStyle = "rgb(64,64,64)";
     if (this.name == "Archer") context.fillStyle = "rgb(0,0,128)";
-    context.fillRect(this.x + 12, this.y + 12, 24, 50);
+    context.fillRect(this.x + 25, this.y + 12, 24, 50);
   }
   wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -40,6 +41,7 @@ export class Projectile {
     public y: number,
     public range: number,
     public parent: object,
+    public lane?: number,
     public yv?: number,
     public xv?: number,
     public angle?: number,
@@ -49,8 +51,9 @@ export class Projectile {
     this.y = y;
     this.range = range;
     this.parent = parent;
-    this.xv = range / 15;
+    this.xv = range / 12;
     this.angle = angle;
+    this.lane = lane;
     this.lifetime = 60;
   }
   draw() {
@@ -77,15 +80,30 @@ export class Swordsman extends Entity {
     public range?: number,
     public name?: string,
     public type?: string,
-    public state?: string
+    public state?: string,
+    public lane?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state);
+    super(
+      x,
+      y,
+      team,
+      health,
+      speed,
+      armor,
+      strength,
+      range,
+      name,
+      type,
+      state,
+      lane
+    );
     this.range = 50;
     this.speed = 0.6;
     this.health = 150;
     this.strength = 20;
     this.type = "Melee";
     this.name = "Swordsman";
+    this.lane = (this.y - 175) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -115,15 +133,30 @@ export class Spearman extends Entity {
     public range?: number,
     public name?: string,
     public type?: string,
-    public state?: string
+    public state?: string,
+    public lane?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state);
+    super(
+      x,
+      y,
+      team,
+      health,
+      speed,
+      armor,
+      strength,
+      range,
+      name,
+      type,
+      state,
+      lane
+    );
     this.range = 80;
     this.speed = 1;
     this.health = 100;
     this.strength = 15;
     this.type = "Melee";
     this.name = "Spearman";
+    this.lane = (this.y - 175) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -153,26 +186,42 @@ export class Archer extends Entity {
     public name?: string,
     public type?: string,
     public state?: string,
+    public lane?: number,
     public hasHit?: boolean
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state);
+    super(
+      x,
+      y,
+      team,
+      health,
+      speed,
+      armor,
+      strength,
+      range,
+      name,
+      type,
+      state,
+      lane
+    );
     this.range = 450;
     this.speed = 4;
     this.health = 100;
     this.strength = 25;
     this.type = "Ranged";
     this.name = "Archer";
+    this.lane = (this.y - 175) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
       this.state = "attack";
-      this.wait(500).then(() => {
-        otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
-        //REWORK THIS SO RNG IS INCLUDED- in progress
-        this.hasHit = true;
-        this.team == "left"
-          ? (otherUnit.x += this.strength / 3)
-          : (otherUnit.x -= this.strength / 3);
+      this.wait(600).then(() => {
+        if (this.hasHit == true) {
+          otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
+          this.hasHit = true;
+          this.team == "left"
+            ? (otherUnit.x += this.strength / 3)
+            : (otherUnit.x -= this.strength / 3);
+        }
       });
       this.wait(3000).then(() => {
         this.state = "move";

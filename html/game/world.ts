@@ -14,21 +14,20 @@ window.addEventListener("keydown", KeyInput, false);
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
 let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let entities: Array<any> = [
-  new Swordsman(canvas.width + 45, 253, "right"),
-  new Swordsman(canvas.width + 45, 333, "right"),
-  new Swordsman(canvas.width + 45, 413, "right"),
-  new Swordsman(canvas.width + 45, 493, "right"),
-  new Swordsman(canvas.width + 45, 573, "right"),
-  new Swordsman(canvas.width + 45, 653, "right"),
-  new Swordsman(canvas.width + 45, 733, "right"),
-  new Swordsman(canvas.width + 45, 813, "right"),
+  new Swordsman(canvas.width + 45, 255, "right"),
+  new Swordsman(canvas.width + 45, 335, "right"),
+  new Swordsman(canvas.width + 45, 415, "right"),
+  new Swordsman(canvas.width + 45, 495, "right"),
+  new Swordsman(canvas.width + 45, 575, "right"),
+  new Swordsman(canvas.width + 45, 655, "right"),
+  new Swordsman(canvas.width + 45, 735, "right"),
+  new Swordsman(canvas.width + 45, 815, "right"),
 ];
 let projectiles: Array<any> = [];
 let selectable: Array<any> = [Swordsman, Spearman, Archer];
 let selected: number = 0;
 let debounce: number = 0;
 let bar = new ScoreBar();
-
 function update(): void {
   window.requestAnimationFrame(update);
   context.save();
@@ -54,8 +53,8 @@ function KeyInput(event: KeyboardEvent) {
       break;
     case " ":
       if (debounce == 0) {
-        entities.push(new selectable[selected](-25, lane.y - 27, "left"));
-        debounce = 1.5;
+        entities.push(new selectable[selected](-25, lane.y - 25, "left"));
+        debounce = 0.2;
       }
       break;
     case "Left":
@@ -73,6 +72,7 @@ function KeyInput(event: KeyboardEvent) {
 }
 function updateProjectiles(): void {
   for (let i in projectiles) {
+    projectiles[i].lifetime -= 1;
     let angle: number = projectiles[i].triangulate(
       projectiles[i].xv,
       projectiles[i].yv
@@ -81,9 +81,20 @@ function updateProjectiles(): void {
     projectiles[i].xv *= 0.97;
     projectiles[i].x += projectiles[i].xv;
     projectiles[i].y += projectiles[i].yv;
-    projectiles[i].yv += 0.1;
-    projectiles[i].lifetime -= 1;
+    projectiles[i].yv += 0.09;
     projectiles[i].draw();
+    for (let j in entities) {
+      if (
+        Math.abs(projectiles[i].x - entities[j].x) < 35 &&
+        Math.abs(projectiles[i].y - entities[j].y - 25) < 23 &&
+        projectiles[i].lane == entities[j].lane &&
+        projectiles[i].parent !== entities[j]
+      ) {
+        console.log(projectiles[i] + "is close to " + entities[j]);
+        projectiles[i].parent.hasHit = true;
+        break;
+      }
+    }
     if (projectiles[i].lifetime <= 0) {
       projectiles.splice(projectiles[i], 1);
       console.log("deleted");
@@ -103,16 +114,16 @@ function updateEntities() {
         Math.abs(currentUnit.x - entities[j].x) <= currentUnit.range &&
         entities[j] !== currentUnit &&
         entities[j].team !== currentUnit.team &&
-        entities[j].y == currentUnit.y
+        entities[j].lane == currentUnit.lane
       ) {
-        //console.log("attackable", currentUnit); //debug
         if (currentUnit.name == "Archer" && currentUnit.state == "move") {
           projectiles.push(
             new Projectile(
               currentUnit.x + 12,
               currentUnit.y + 20,
-              currentUnit.range * 1.5,
+              currentUnit.range,
               currentUnit,
+              currentUnit.lane,
               Math.random() * -5 + 1.5
             )
           );
