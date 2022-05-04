@@ -15,9 +15,9 @@ let entities: Array<any> = [];
 let cooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
 let selectable: Array<any> = [Swordsman, Spearman, Archer];
-let cooldownTable: Array<number> = [1.5, 2, 1.5]; //save stats elsewhere later
+let cooldownTable: Array<number> = [1.7, 2, 1.5]; //save stats elsewhere later 1.7, 2, 1.5
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
-let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0]; //only because swordsmen spawn in entities- line 15
+let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyCooldown: number = 150;
 for (let i = 0; i < selectable.length; i++) {
   cooldownbars.push([new CooldownBar(), -90]);
@@ -70,8 +70,8 @@ function KeyInput(event: KeyboardEvent) {
       break;
     case " ":
       if (canSpawn == true) {
-        entities.push(new selectable[selected](-25, lane.y - 25, "left"));
-        laneWeight[lane.lane]++;
+        entities.push(new selectable[selected](-25, lane.y - 16, "left"));
+        laneWeight[lane.lane - 1]++;
         canSpawn = false;
         for (let i = 0; i < cooldownbars.length; i++) {
           cooldownbars[i][1] = -90;
@@ -105,7 +105,7 @@ function updateProjectiles(): void {
     for (let j in entities) {
       if (
         Math.abs(projectiles[i].x - entities[j].x) < 20 &&
-        Math.abs(projectiles[i].y - entities[j].y - 25) < 23 &&
+        Math.abs(projectiles[i].y - entities[j].y - 16) < 18 &&
         projectiles[i].lane == entities[j].lane &&
         projectiles[i].parent.team !== entities[j].team
       ) {
@@ -122,11 +122,17 @@ function updateProjectiles(): void {
 function updateEntities() {
   for (let units in entities) {
     let currentUnit = entities[units];
-    currentUnit.move();
-    currentUnit.draw();
     if (currentUnit.health <= 0) {
-      if (currentUnit.team == "left") laneWeight[currentUnit.lane]--;
-      entities.splice(entities.indexOf(currentUnit), 1);
+      if (currentUnit.team == "left") {
+        entities.splice(entities.indexOf(currentUnit), 1);
+        laneWeight[currentUnit.lane]--;
+        break;
+      }
+      if (currentUnit.team == "right") {
+        entities.splice(entities.indexOf(currentUnit), 1);
+        enemyWeight[currentUnit.lane]--;
+        break;
+      }
     }
     for (let j: number = 0; j < entities.length; j++) {
       if (
@@ -165,40 +171,61 @@ function updateEntities() {
         break;
       }
     }
+    if (currentUnit) {
+      currentUnit.move();
+      currentUnit.draw();
+    }
   }
 }
 function checkScore(): void {
   if (score > 100) {
-    console.log("LEFT SIDE VICTORY!");
+    alert("LEFT SIDE VICTORY!");
     window.cancelAnimationFrame(windowID);
   }
   if (score < 0) {
-    console.log("RIGHT SIDE VICTORY!");
+    alert("RIGHT SIDE VICTORY!");
     window.cancelAnimationFrame(windowID);
   }
 }
 function checkEnemy(): void {
   enemyCooldown--;
-  let temp = [...laneWeight];
-  const heaviest = temp.sort((a, b) => b - a);
+  let clone = [...laneWeight];
+  const heaviest = clone.sort((a, b) => b - a);
   for (let i = 0; i < laneWeight.length; i++) {
-    if (heaviest[0] == 0) {
-      //process
-    } else if (laneWeight[i] == heaviest[0]) {
-      for (let j = 0; j < laneWeight.length - i; ) {
-        if (laneWeight[i + j] > enemyWeight[i + j]) {
+    for (let j = 0; j < laneWeight.length; j++) {
+      if (heaviest[i] == 0) {
+      } else if (laneWeight[j] == heaviest[i]) {
+        if (laneWeight[j] > enemyWeight[j + 1]) {
           if (enemyCooldown <= 0) {
-            console.log(i + j, i, j);
-            entities.push(new selectable[0](1225, (i + j) * 80 + 175, "right"));
+            entities.push(new selectable[0](1225, (j + 1) * 80 + 184, "right"));
             enemyCooldown = 150;
-            enemyWeight[i + j]++;
-            console.log(laneWeight, enemyWeight);
-          }
-        } else if (enemyWeight[i + j] > laneWeight[i + j]) {
-          j++;
+            enemyWeight[j + 1]++;
+            break;
+          } else j++;
         }
-        break;
       }
     }
+    // if (heaviest[0] == 0) {
+    //   //process
+    // } else if (laneWeight[i] == heaviest[0]) {
+    //   for (let j = 0; j < laneWeight.length - i; ) {
+    //     console.log(laneWeight, enemyWeight, i, j, i + j);
+    //     if (laneWeight[i + j] > enemyWeight[i + j]) {
+    //       if (enemyCooldown <= 0) {
+    //         entities.push(
+    //           new selectable[0](1225, (i + j + 1) * 80 + 184, "right")
+    //         );
+    //         enemyCooldown = 150;
+    //         enemyWeight[i + j]++;
+    //         //console.log(laneWeight, enemyWeight, i, j);
+    //         break;
+    //       }
+    //     } else if (enemyWeight[i + j] >= laneWeight[i + j]) {
+    //       j++;
+    //       //console.log(laneWeight, enemyWeight, i, j + "enemy bigger");
+    //     }
+    //     break;
+    //   }
+    // }
   }
 }

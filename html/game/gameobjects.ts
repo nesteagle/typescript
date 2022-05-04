@@ -19,12 +19,12 @@ export class LaneArrow {
   draw(): void {
     context.drawImage(image, 0, 0);
     context.fillStyle = "rgb(169,0,0)";
-    context.fillRect(this.x, this.y, 30, 20);
+    context.fillRect(this.x, this.y, 40, 30);
     context.beginPath();
-    context.moveTo(this.x + 30, this.y - 10);
-    context.lineTo(this.x + 50, this.y + 10);
-    context.lineTo(this.x + 30, this.y + 30);
-    context.lineTo(this.x + 30, this.y - 10);
+    context.moveTo(this.x + 40, this.y - 10);
+    context.lineTo(this.x + 62, this.y + 15);
+    context.lineTo(this.x + 40, this.y + 40);
+    context.lineTo(this.x + 40, this.y - 10);
     context.fill();
   }
 }

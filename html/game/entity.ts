@@ -31,7 +31,7 @@ abstract class Entity {
     if (this.name == "Swordsman") context.fillStyle = "rgb(0,0,0)";
     if (this.name == "Spearman") context.fillStyle = "rgb(64,64,64)";
     if (this.name == "Archer") context.fillStyle = "rgb(0,0,128)";
-    context.fillRect(this.x + 25, this.y + 12, 24, 50);
+    context.fillRect(this.x + 25, this.y + 12, 20, 40);
   }
   wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -58,9 +58,9 @@ export class Projectile {
   }
   draw() {
     context.save();
-    context.translate(this.x, this.y);
+    context.translate(this.x - 16, this.y + 40);
     context.rotate((this.angle * Math.PI) / 180);
-    context.drawImage(arrow, -64, -64);
+    context.drawImage(arrow, -64, -64, 64, 64);
     context.restore();
   }
   triangulate(xv: number, yv: number): number {
@@ -98,12 +98,12 @@ export class Swordsman extends Entity {
       lane
     );
     this.range = 50;
-    this.speed = 0.6;
+    this.speed = 0.4;
     this.health = 150;
     this.strength = 20;
     this.type = "Melee";
     this.name = "Swordsman";
-    this.lane = (this.y - 175) / 80;
+    this.lane = (this.y - 184) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -151,12 +151,12 @@ export class Spearman extends Entity {
       lane
     );
     this.range = 80;
-    this.speed = 1;
+    this.speed = 0.7;
     this.health = 100;
     this.strength = 15;
     this.type = "Melee";
     this.name = "Spearman";
-    this.lane = (this.y - 175) / 80;
+    this.lane = (this.y - 184) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -204,12 +204,12 @@ export class Archer extends Entity {
       lane
     );
     this.range = 450;
-    this.speed = 0.4;
+    this.speed = 0.3;
     this.health = 100;
     this.strength = 25;
     this.type = "Ranged";
     this.name = "Archer";
-    this.lane = (this.y - 175) / 80;
+    this.lane = (this.y - 184) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
