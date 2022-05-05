@@ -1,9 +1,3 @@
-// import {div} from "./entity"
-// attackEvent.detail.name="Swordsman"
-// attackEvent.detail.attack=15
-// div.dispatchEvent(attackEvent)
-// div.addEventListener('attack', ((e:CustomEvent) => {
-// }) as EventListener);   event framework
 import {
   Swordsman,
   Spearman,
@@ -17,6 +11,7 @@ import { LaneArrow, ScoreBar, CooldownBar } from "./gameobjects";
 let lane = new LaneArrow(1);
 let score: number = 50;
 window.addEventListener("keydown", KeyInput, false);
+let listener = document.getElementById("listener");
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
 let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let entities: Array<any> = [];
@@ -71,8 +66,10 @@ function update(): void {
   context.restore();
   checkScore();
 }
-update();
 
+listener.addEventListener("event", ((e: CustomEvent) => {
+  update();
+}) as EventListener);
 function KeyInput(event: KeyboardEvent) {
   switch (event.key) {
     case "Up":
