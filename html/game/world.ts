@@ -4,7 +4,15 @@
 // div.dispatchEvent(attackEvent)
 // div.addEventListener('attack', ((e:CustomEvent) => {
 // }) as EventListener);   event framework
-import { Swordsman, Spearman, Archer, Projectile } from "./entity";
+import {
+  Swordsman,
+  Spearman,
+  Archer,
+  Axeman,
+  Halberdier,
+  MountedSpearman,
+  Projectile,
+} from "./entity";
 import { LaneArrow, ScoreBar, CooldownBar } from "./gameobjects";
 let lane = new LaneArrow(1);
 let score: number = 50;
@@ -14,42 +22,49 @@ let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let entities: Array<any> = [];
 let cooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
-let selectable: Array<any> = [Swordsman, Spearman, Archer];
-let cooldownTable: Array<number> = [1.7, 2, 1.5]; //save stats elsewhere later 1.7, 2, 1.5
+let scoreBar = new ScoreBar();
+let selectable: Array<any> = [
+  Spearman,
+  Swordsman,
+  Archer,
+  Axeman,
+  Halberdier,
+  MountedSpearman,
+];
+let cooldownTable: Array<number> = [2, 1.7, 1.5, 1.6, 1.5, 1];
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
-let enemyCooldown: number = 150;
+let enemyCooldown: number = 200;
 for (let i = 0; i < selectable.length; i++) {
   cooldownbars.push([new CooldownBar(), -90]);
 }
 let selected: number = 0;
 let canSpawn: boolean = false;
 let windowID: number;
-let bar = new ScoreBar();
 function update(): void {
   windowID = window.requestAnimationFrame(update);
   context.save();
   context.fillStyle = "black";
   lane.draw();
-  bar.draw(score);
+  scoreBar.draw(score);
   checkEnemy();
   updateProjectiles();
   updateEntities();
   for (let i = 0; i < cooldownbars.length; i++) {
     if (i == selected) {
       cooldownbars[selected][0].draw(
-        i * 80 + 48,
-        64,
-        40,
+        i * 65 + 42,
+        58,
+        32,
         cooldownbars[i][1],
         true
       );
       cooldownbars[i][1] += cooldownTable[i];
       continue;
     }
-    cooldownbars[i][0].draw(i * 80 + 48, 64, 32, cooldownbars[i][1]);
+    cooldownbars[i][0].draw(i * 65 + 42, 56, 26, cooldownbars[i][1]);
     cooldownbars[i][1] += cooldownTable[i];
-    if (cooldownbars[selected][1] == 270) {
+    if (cooldownbars[selected][1] >= 270) {
       canSpawn = true;
     }
   }
@@ -191,6 +206,15 @@ function checkEnemy(): void {
   enemyCooldown--;
   let clone = [...laneWeight];
   const heaviest = clone.sort((a, b) => b - a);
+  if (heaviest[0] == 0) {
+    if (enemyCooldown <= 0) {
+      let random = Math.round(Math.random() * 7 + 1);
+      entities.push(new selectable[0](1225, random * 80 + 184, "right"));
+      enemyCooldown = 150;
+      enemyWeight[random]++;
+      return;
+    }
+  }
   for (let i = 0; i < laneWeight.length; i++) {
     for (let j = 0; j < laneWeight.length; j++) {
       if (heaviest[i] == 0) {
@@ -201,31 +225,19 @@ function checkEnemy(): void {
             enemyCooldown = 150;
             enemyWeight[j + 1]++;
             break;
-          } else j++;
+          }
+        } else if (laneWeight[j] !== enemyWeight[j + 1]) j++;
+        else {
+          if (enemyCooldown <= 0) {
+            let random = Math.round(Math.random() * 7 + 1);
+            entities.push(new selectable[0](1225, random * 80 + 184, "right"));
+            enemyCooldown = 150;
+            enemyWeight[random]++;
+            console.log(random);
+            break;
+          }
         }
       }
     }
-    // if (heaviest[0] == 0) {
-    //   //process
-    // } else if (laneWeight[i] == heaviest[0]) {
-    //   for (let j = 0; j < laneWeight.length - i; ) {
-    //     console.log(laneWeight, enemyWeight, i, j, i + j);
-    //     if (laneWeight[i + j] > enemyWeight[i + j]) {
-    //       if (enemyCooldown <= 0) {
-    //         entities.push(
-    //           new selectable[0](1225, (i + j + 1) * 80 + 184, "right")
-    //         );
-    //         enemyCooldown = 150;
-    //         enemyWeight[i + j]++;
-    //         //console.log(laneWeight, enemyWeight, i, j);
-    //         break;
-    //       }
-    //     } else if (enemyWeight[i + j] >= laneWeight[i + j]) {
-    //       j++;
-    //       //console.log(laneWeight, enemyWeight, i, j + "enemy bigger");
-    //     }
-    //     break;
-    //   }
-    // }
   }
 }
