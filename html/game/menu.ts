@@ -27,7 +27,7 @@ class TextBox {
 }
 let text = new TextBox(100, 100, "GameTitle", "600 90px Georgia");
 text.draw();
-let text2 = new TextBox(400, 400, "button", "30px Georgia");
+let text2 = new TextBox(400, 400, "click detection", "30px Georgia");
 text2.draw();
 function getMousePos(canvas, event) {
   let bounds = canvas.getBoundingClientRect();
