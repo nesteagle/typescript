@@ -67,9 +67,7 @@ function update(): void {
   checkScore();
 }
 
-listener.addEventListener("event", ((e: CustomEvent) => {
-  update();
-}) as EventListener);
+update();
 function KeyInput(event: KeyboardEvent) {
   switch (event.key) {
     case "Up":
