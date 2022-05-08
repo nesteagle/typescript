@@ -10,6 +10,19 @@ import {
 import { LaneArrow, ScoreBar, CooldownBar } from "./gameobjects";
 let lane = new LaneArrow(1);
 let score: number = 50;
+let eventListener: any = document.getElementById("listener");
+
+export let customEvent = new CustomEvent("event");
+
+eventListener.addEventListener(
+  "event",
+  function () {
+    // change here Event to CustomEvent
+    update();
+    console.log("updated");
+  }.bind(this)
+);
+
 window.addEventListener("keydown", KeyInput, false);
 let listener = document.getElementById("listener");
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -67,7 +80,6 @@ function update(): void {
   checkScore();
 }
 
-update();
 function KeyInput(event: KeyboardEvent) {
   switch (event.key) {
     case "Up":
