@@ -34,7 +34,7 @@ class TextBox {
       measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent;
     if (this.box == true) {
       this.boxColor == undefined
-        ? (context.fillStyle = "rgb(100,100,144)")
+        ? (context.fillStyle = "rgb(100,110,144)")
         : (context.fillStyle = this.boxColor);
       context.fillRect(
         this.x - measurements.width / 30,
@@ -91,38 +91,59 @@ class TextButton extends TextBox {
     }
   }
 }
-
-// class BackButton {
-//   constructor(
-//     public font,
-//     public clickable,
-//     public event,
-//     public path,
-//     public x?,
-//     public y?,
-//     public text?,
-//     public rendering?
-//   ) {
-//     this.x = 50;
-//     this.y = 850;
-//     this.text = "Back";
-//   }
-//   draw(): void {
-//     context.font = this.font;
-//     context.fillText(this.text, this.x, this.y);
-//   }
-//   detectClick(mousePos): boolean {
-//     let measurements = context.measureText(this.text);
-//     if (
-//       mousePos.x > this.x &&
-//       mousePos.x < this.x + measurements.width &&
-//       mousePos.y < this.y + measurements.fontBoundingBoxDescent &&
-//       mousePos.y > this.y - measurements.fontBoundingBoxAscent
-//     ) {
-//       return true;
-//     }
-//   }
-// }
+class UpgradeBox {
+  constructor(
+    public x,
+    public y,
+    public upgrade,
+    public font?,
+    public type?,
+    private text?
+  ) {
+    this.x = x;
+    this.y = y;
+    this.upgrade = upgrade;
+    this.font = font;
+    this.type = "Upgrade";
+  }
+  draw(): void {
+    context.font = this.font;
+    context.fillStyle = "rgb(100,70,40)";
+    context.fillStyle = "black";
+    context.fillText(
+      `Upgrade ${this.upgrade}:put cost here`,
+      this.x + 55,
+      this.y
+    );
+    context.fillText("Buy", this.x, this.y);
+    let measurements = context.measureText("Buy");
+    let height =
+      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent;
+    context.fillStyle = "rgb(100,100,100)";
+    context.fillRect(
+      this.x - measurements.width / 30,
+      this.y - height / 2,
+      measurements.width + measurements.width / 15,
+      height * 2
+    );
+    context.fillStyle = "black";
+    context.fillText("Buy", this.x, this.y);
+  }
+  detectClick(mousePos): boolean {
+    let measurements = context.measureText(this.text);
+    let height =
+      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent;
+    if (
+      mousePos.x > this.x - measurements.width / 30 &&
+      mousePos.x < this.x + measurements.width + measurements.width / 15 &&
+      mousePos.y < this.y - height / 2 &&
+      mousePos.y > this.y + height * 2
+    ) {
+      return true;
+    } else {
+    }
+  }
+}
 
 class Background {
   constructor(public x, public y, public rendering?) {
@@ -141,8 +162,25 @@ class Background {
 
 let background = new Background(0, 0, false);
 let elements: Array<any> = [
-  new TextBox(100, 300, "Game Title", "600 90px Georgia", true),
-  new TextButton(100, 500, "Long Ubiquitous text", "200 45px Georgia", true),
+  new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
+  new TextButton(
+    100,
+    500,
+    "Play Campaign",
+    "200 45px Georgia",
+    true,
+    "menu",
+    "campaign1"
+  ),
+  new TextButton(
+    100,
+    600,
+    "Upgrades",
+    "200 45px Georgia",
+    true,
+    "menu",
+    "upgrade1"
+  ),
 ];
 function getMousePos(canvas, event) {
   let bounds = canvas.getBoundingClientRect();
@@ -160,8 +198,6 @@ function update() {
   }
 }
 update();
-elements[1].draw();
-function drawAll(): void {}
 
 menu.addEventListener(
   "click",
@@ -170,123 +206,90 @@ menu.addEventListener(
     let mousePos = getMousePos(menu, event);
     console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
-      if (elements[i].type == "Button") {
-        console.log(elements[i].detectClick(mousePos));
+      if (elements[i].type == "Upgrade") {
         if (elements[i].detectClick(mousePos) == true) {
           console.log("true");
+        }
+      }
+      if (elements[i].type == "Button") {
+        if (elements[i].detectClick(mousePos) == true) {
+          switch (elements[i].path) {
+            case "menu":
+              background.rendering = false;
+              elements = [
+                new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
+                new TextButton(
+                  100,
+                  500,
+                  "Play Campaign",
+                  "200 45px Georgia",
+                  true,
+                  "menu",
+                  "campaign1"
+                ),
+              ];
+              break;
+            case "campaign1":
+              background.rendering = true;
+              elements = [
+                new TextButton(
+                  100,
+                  500,
+                  "Start Campaign",
+                  "200 45px Georgia",
+                  true,
+                  "play"
+                ),
+                new TextButton(
+                  50,
+                  850,
+                  "Back",
+                  "200 25px Georgia",
+                  true,
+                  "menu",
+                  "menu"
+                ),
+              ];
+              break;
+            case "upgrade1":
+              background.rendering = true;
+              elements = [
+                new UpgradeBox(
+                  150,
+                  300,
+                  "Swords",
+                  "200 25px Georgia",
+                  "Upgrade"
+                ),
+                new UpgradeBox(
+                  150,
+                  350,
+                  "Spears",
+                  "200 25px Georgia",
+                  "Upgrade"
+                ),
+                new UpgradeBox(
+                  150,
+                  400,
+                  "Archery",
+                  "200 25px Georgia",
+                  "Upgrade"
+                ),
+
+                new TextButton(
+                  50,
+                  850,
+                  "Back",
+                  "200 25px Georgia",
+                  true,
+                  "menu",
+                  "menu"
+                ),
+              ];
+          }
         }
       }
     }
   },
   false
 );
-// menu.addEventListener(
-//   "click",
-//   function (event) {
-//     let mousePos = getMousePos(menu, event);
-//     console.log(elements);
-//     for (let i = 0; i < elements.length; i++) {
-//       if (
-//         elements[i].clickable == true &&
-//         elements[i].detectClick(mousePos) == true
-//       ) {
-//         if (elements[i] == UpgradeBox) {
-//           console.log("upgrade box clicked");
-//         }
-//         if (elements[i].path !== "none") {
-//           switch (elements[i].path) {
-//             case "menu":
-//               background.rendering = false;
-//               elements = [
-//                 new TextBox(100, 100, "GameTitle", "600 90px Georgia", false),
-//                 new TextBox(
-//                   250,
-//                   400,
-//                   "Campaign",
-//                   "30px Georgia",
-//                   true,
-//                   "menu",
-//                   "campaign1"
-//                 ),
-//                 new TextBox(
-//                   250,
-//                   500,
-//                   "Upgrades",
-//                   "30px Georgia",
-//                   true,
-//                   "menu",
-//                   "upgrades1"
-//                 ),
-//               ];
-//               break;
-//             case "campaign1":
-//               background.rendering = true;
-//               elements = [
-//                 new TextBox(
-//                   500,
-//                   400,
-//                   "Play Campaign",
-//                   "30px Georgia",
-//                   true,
-//                   "play"
-//                 ),
-//                 new BackButton("45px Georgia", true, "menu", "menu"),
-//               ];
-//               break;
-//             case "upgrades1":
-//               background.rendering = true;
-//               elements = [
-//                 new TextBox(50, 80, "Upgrade Menu", "45px Georgia", false),
-//                 new BackButton("45px Georgia", true, "menu", "menu"),
-//                 new UpgradeBox(400, 400, "Swords", "20px Georgia"),
-//                 new UpgradeBox(400, 450, "Spears", "20px Georgia"),
-//                 new UpgradeBox(400, 500, "Bows", "20px Georgia"),
-//                 new UpgradeBox(400, 550, "Armor", "20px Georgia"),
-//               ];
-//               break;
-//             default:
-//           }
-//         }
-//       }
-//     }
-//   },
-//   false
-// );
-
-// class UpgradeBox {
-//   constructor(
-//     public x,
-//     public y,
-//     public upgrade,
-//     public font?,
-//     public clickable?
-//   ) {
-//     this.x = x;
-//     this.y = y;
-//     this.upgrade = upgrade;
-//     this.font = font;
-//     this.clickable = true;
-//   }
-//   draw(): void {
-//     context.font = this.font;
-//     context.fillStyle = "rgb(100,70,40)";
-//     context.strokeRect(this.x, this.y, 48, 32);
-//     context.fillStyle = "black";
-//     context.fillText(
-//       `Upgrade ${this.upgrade}:put cost here`,
-//       this.x + 60,
-//       this.y + 22
-//     );
-//     context.fillText("Buy", this.x + 6, this.y + 22);
-//   }
-//   detectClick(mousePos): boolean {
-//     if (
-//       mousePos.x > this.x &&
-//       mousePos.x < this.x + 48 &&
-//       mousePos.y < this.y + 32 &&
-//       mousePos.y > this.y
-//     ) {
-//       return true;
-//     }
-//   }
-// }
