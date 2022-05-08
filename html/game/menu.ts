@@ -52,9 +52,10 @@ menu.addEventListener(
     let mousePos = getMousePos(menu, event);
     console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
+      console.log(elements[i].type, i);
       if (elements[i].type == "Upgrade") {
         if (elements[i].detectClick(mousePos) == true) {
-          console.log("true");
+          console.log("true", i);
         }
       }
       if (elements[i].type == "Button") {
@@ -110,27 +111,9 @@ menu.addEventListener(
             case "upgrade1":
               background.rendering = true;
               elements = [
-                new UpgradeBox(
-                  150,
-                  300,
-                  "Swords",
-                  "200 25px Georgia",
-                  "Upgrade"
-                ),
-                new UpgradeBox(
-                  150,
-                  350,
-                  "Spears",
-                  "200 25px Georgia",
-                  "Upgrade"
-                ),
-                new UpgradeBox(
-                  150,
-                  400,
-                  "Archery",
-                  "200 25px Georgia",
-                  "Upgrade"
-                ),
+                new UpgradeBox(150, 300, "Swords", "200 25px Georgia"),
+                new UpgradeBox(150, 350, "Spears", "200 25px Georgia"),
+                new UpgradeBox(150, 400, "Archery", "200 25px Georgia"),
 
                 new TextButton(
                   50,

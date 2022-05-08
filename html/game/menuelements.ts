@@ -74,12 +74,11 @@ export class TextButton extends TextBox {
     let height = Math.abs(
       measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent
     );
-
     if (
-      mousePos.x > this.x &&
-      mousePos.y > this.y &&
-      mousePos.x < this.x + measurements.width &&
-      mousePos.y < this.y + height
+      mousePos.x > this.x - 5 &&
+      mousePos.y > this.y - 5 &&
+      mousePos.x < this.x + measurements.width + 10 &&
+      mousePos.y < this.y + height + 10
     ) {
       if (this.event == "menu") {
         console.log(this.path);
@@ -122,27 +121,30 @@ export class UpgradeBox {
     );
     context.fillText("Buy", this.x, this.y);
     let measurements = context.measureText("Buy");
-    let height =
-      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent;
+    let height = Math.abs(
+      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent
+    );
     context.fillStyle = "rgb(100,100,100)";
     context.fillRect(
-      this.x - measurements.width / 30,
-      this.y - height / 2,
-      measurements.width + measurements.width / 15,
-      height * 2
+      this.x - 5,
+      this.y - 5,
+      measurements.width + 10,
+      height + 10
     );
     context.fillStyle = "black";
     context.fillText("Buy", this.x, this.y);
   }
   detectClick(mousePos): boolean {
+    context.font = this.font;
     let measurements = context.measureText(this.text);
-    let height =
-      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent;
+    let height = Math.abs(
+      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent
+    );
     if (
-      mousePos.x > this.x - measurements.width / 30 &&
-      mousePos.x < this.x + measurements.width + measurements.width / 15 &&
-      mousePos.y < this.y - height / 2 &&
-      mousePos.y > this.y + height * 2
+      mousePos.x > this.x - 5 &&
+      mousePos.y > this.y - 5 &&
+      mousePos.x < this.x + measurements.width + 10 &&
+      mousePos.y < this.y + height + 10
     ) {
       return true;
     } else {
