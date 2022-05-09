@@ -37,18 +37,10 @@ export class ScoreBar {
   }
 }
 export class CooldownBar {
-  draw(
-    x: number,
-    y: number,
-    radius: number,
-    percentage: number,
-    selected?: boolean
-  ) {
+  draw(x: number, y: number, radius: number, percentage: number, selected?: boolean) {
     context.beginPath();
     context.moveTo(x, y);
-    selected == true
-      ? (context.fillStyle = "rgba(100,25,10,0.7)")
-      : (context.fillStyle = "rgba(40,40,40,0.7)");
+    selected == true ? (context.fillStyle = "rgba(100,25,10,0.7)") : (context.fillStyle = "rgba(40,40,40,0.7)");
     context.arc(x, y, radius, -Math.PI / 2, (percentage / 180) * Math.PI);
     context.fill();
     context.beginPath();

@@ -4,6 +4,7 @@ let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
 import { customEvent } from "./world";
+import { upgrades } from "./menu";
 let eventListener: any = document.getElementById("listener");
 export class TextBox {
   constructor(
@@ -30,19 +31,10 @@ export class TextBox {
     context.textBaseline = "hanging";
     context.fillText(this.text, this.x, this.y);
     let measurements = context.measureText(this.text);
-    let height = Math.abs(
-      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent
-    );
+    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
     if (this.box == true) {
-      this.boxColor == undefined
-        ? (context.fillStyle = "rgb(100,110,144)")
-        : (context.fillStyle = this.boxColor);
-      context.fillRect(
-        this.x - 5,
-        this.y - 5,
-        measurements.width + 10,
-        height + 10
-      );
+      this.boxColor == undefined ? (context.fillStyle = "rgb(100,110,144)") : (context.fillStyle = this.boxColor);
+      context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
     }
 
     context.fillStyle = "black";
@@ -71,9 +63,7 @@ export class TextButton extends TextBox {
   detectClick(mousePos): boolean {
     context.font = this.font;
     let measurements = context.measureText(this.text);
-    let height = Math.abs(
-      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent
-    );
+    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
     if (
       mousePos.x > this.x - 5 &&
       mousePos.y > this.y - 5 &&
@@ -96,14 +86,7 @@ export class TextButton extends TextBox {
   }
 }
 export class UpgradeBox {
-  constructor(
-    public x,
-    public y,
-    public upgrade,
-    public font?,
-    public type?,
-    private text?
-  ) {
+  constructor(public x, public y, public upgrade, public font?, public type?, public text?) {
     this.x = x;
     this.y = y;
     this.upgrade = upgrade;
@@ -112,34 +95,26 @@ export class UpgradeBox {
   }
   draw(): void {
     context.font = this.font;
-    context.fillStyle = "rgb(100,70,40)";
+    // context.fillStyle = "rgb(100,70,40)";
     context.fillStyle = "black";
-    context.fillText(
-      `Upgrade ${this.upgrade}:put cost here`,
-      this.x + 55,
-      this.y
-    );
+    for (let i = 0; i < upgrades.length; i++) {
+      if (upgrades[i][0] == this.upgrade) {
+        context.fillText(`Upgrade ${this.upgrade}:${(upgrades[i][1] + 1) * 400}, ${upgrades[i][1]} upgrades`, this.x + 55, this.y);
+      }
+    }
+
     context.fillText("Buy", this.x, this.y);
     let measurements = context.measureText("Buy");
-    let height = Math.abs(
-      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent
-    );
+    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
     context.fillStyle = "rgb(100,100,100)";
-    context.fillRect(
-      this.x - 5,
-      this.y - 5,
-      measurements.width + 10,
-      height + 10
-    );
+    context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
     context.fillStyle = "black";
     context.fillText("Buy", this.x, this.y);
   }
   detectClick(mousePos): boolean {
     context.font = this.font;
     let measurements = context.measureText(this.text);
-    let height = Math.abs(
-      measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent
-    );
+    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
     if (
       mousePos.x > this.x - 5 &&
       mousePos.y > this.y - 5 &&
@@ -151,7 +126,28 @@ export class UpgradeBox {
     }
   }
 }
-
+export class TreeBox extends UpgradeBox {
+  constructor(public x, public y, public upgrade, public font?, public path?, public type?, public text?) {
+    super(x, y, upgrade, font, type);
+    this.path = path;
+    this.type = "UpgradeTree";
+  }
+  draw(): void {
+    context.font = this.font;
+    context.textBaseline = "middle";
+    context.fillStyle = "rgb(100,70,40)";
+    context.fillRect(this.x - 5, this.y - 5, 140, 140);
+    context.fillStyle = "black";
+    context.fillText(this.upgrade, this.x, this.y + 70);
+  }
+  detectClick(mousePos: any): boolean {
+    context.font = this.font;
+    if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + 140 && mousePos.y < this.y + 140) {
+      return true;
+    } else {
+    }
+  }
+}
 export class Background {
   constructor(public x, public y, public rendering?) {
     this.x = x;

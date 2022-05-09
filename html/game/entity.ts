@@ -86,20 +86,7 @@ export class Swordsman extends Entity {
     public state?: string,
     public lane?: number
   ) {
-    super(
-      x,
-      y,
-      team,
-      health,
-      speed,
-      armor,
-      strength,
-      range,
-      name,
-      type,
-      state,
-      lane
-    );
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
     this.range = 50;
     this.speed = 0.4;
     this.health = 150;
@@ -114,9 +101,7 @@ export class Swordsman extends Entity {
 
       this.wait(400).then(() => {
         otherUnit.health -= this.strength;
-        this.team == "left"
-          ? (otherUnit.x += this.strength / 4)
-          : (otherUnit.x -= this.strength / 4);
+        this.team == "left" ? (otherUnit.x += this.strength / 4) : (otherUnit.x -= this.strength / 4);
       });
       this.wait(1000).then(() => {
         this.state = "move";
@@ -139,20 +124,7 @@ export class Spearman extends Entity {
     public state?: string,
     public lane?: number
   ) {
-    super(
-      x,
-      y,
-      team,
-      health,
-      speed,
-      armor,
-      strength,
-      range,
-      name,
-      type,
-      state,
-      lane
-    );
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
     this.range = 80;
     this.speed = 0.7;
     this.health = 100;
@@ -166,9 +138,7 @@ export class Spearman extends Entity {
       this.state = "attack";
       this.wait(200).then(() => {
         otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
-        this.team == "left"
-          ? (otherUnit.x += this.strength / 4)
-          : (otherUnit.x -= this.strength / 4);
+        this.team == "left" ? (otherUnit.x += this.strength / 4) : (otherUnit.x -= this.strength / 4);
       });
       this.wait(1500).then(() => {
         this.state = "move";
@@ -191,20 +161,7 @@ export class Axeman extends Entity {
     public state?: string,
     public lane?: number
   ) {
-    super(
-      x,
-      y,
-      team,
-      health,
-      speed,
-      armor,
-      strength,
-      range,
-      name,
-      type,
-      state,
-      lane
-    );
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
     this.range = 45;
     this.speed = 0.64;
     this.health = 120;
@@ -218,9 +175,7 @@ export class Axeman extends Entity {
       this.state = "attack";
       this.wait(400).then(() => {
         otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
-        this.team == "left"
-          ? (otherUnit.x += this.strength / 3)
-          : (otherUnit.x -= this.strength / 3);
+        this.team == "left" ? (otherUnit.x += this.strength / 3) : (otherUnit.x -= this.strength / 3);
       });
       this.wait(1000).then(() => {
         this.state = "move";
@@ -243,20 +198,7 @@ export class Halberdier extends Entity {
     public state?: string,
     public lane?: number
   ) {
-    super(
-      x,
-      y,
-      team,
-      health,
-      speed,
-      armor,
-      strength,
-      range,
-      name,
-      type,
-      state,
-      lane
-    );
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
     this.range = 75;
     this.speed = 0.5;
     this.health = 130;
@@ -270,9 +212,7 @@ export class Halberdier extends Entity {
       this.state = "attack";
       this.wait(400).then(() => {
         otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
-        this.team == "left"
-          ? (otherUnit.x += this.strength / 2)
-          : (otherUnit.x -= this.strength / 2);
+        this.team == "left" ? (otherUnit.x += this.strength / 2) : (otherUnit.x -= this.strength / 2);
       });
       this.wait(2000).then(() => {
         this.state = "move";
@@ -295,20 +235,7 @@ export class MountedSpearman extends Entity {
     public state?: string,
     public lane?: number
   ) {
-    super(
-      x,
-      y,
-      team,
-      health,
-      speed,
-      armor,
-      strength,
-      range,
-      name,
-      type,
-      state,
-      lane
-    );
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
     this.range = 75;
     this.speed = 1.2;
     this.health = 130;
@@ -322,9 +249,7 @@ export class MountedSpearman extends Entity {
       this.state = "attack";
       this.wait(400).then(() => {
         otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
-        this.team == "left"
-          ? (otherUnit.x += this.strength / 2)
-          : (otherUnit.x -= this.strength / 2);
+        this.team == "left" ? (otherUnit.x += this.strength / 2) : (otherUnit.x -= this.strength / 2);
       });
       this.wait(900).then(() => {
         this.state = "move";
@@ -348,20 +273,7 @@ export class Archer extends Entity {
     public lane?: number,
     public hasHit?: boolean
   ) {
-    super(
-      x,
-      y,
-      team,
-      health,
-      speed,
-      armor,
-      strength,
-      range,
-      name,
-      type,
-      state,
-      lane
-    );
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
     this.range = 450;
     this.speed = 0.3;
     this.health = 100;
@@ -377,9 +289,7 @@ export class Archer extends Entity {
         if (this.hasHit == true) {
           otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
           this.hasHit = true;
-          this.team == "left"
-            ? (otherUnit.x += this.strength / 3)
-            : (otherUnit.x -= this.strength / 3);
+          this.team == "left" ? (otherUnit.x += this.strength / 3) : (otherUnit.x -= this.strength / 3);
         }
       });
       this.wait(3000).then(() => {
