@@ -9,3 +9,9 @@
 ### Campaign mode with real conquests
 
 ### GUI Tweens and improvements
+
+### Design more assets
+
+#### Improve campaign gameplay
+
+#### refactor code
