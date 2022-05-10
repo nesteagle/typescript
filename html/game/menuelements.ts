@@ -95,7 +95,6 @@ export class UpgradeBox {
   }
   draw(): void {
     context.font = this.font;
-    // context.fillStyle = "rgb(100,70,40)";
     context.fillStyle = "black";
     for (let i = 0; i < upgrades.length; i++) {
       if (upgrades[i][0] == this.upgrade) {

@@ -137,7 +137,7 @@ export class Spearman extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(200).then(() => {
-        otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
+        otherUnit.health -= this.strength;
         this.team == "left" ? (otherUnit.x += this.strength / 4) : (otherUnit.x -= this.strength / 4);
       });
       this.wait(1500).then(() => {
@@ -174,7 +174,7 @@ export class Axeman extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(400).then(() => {
-        otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
+        otherUnit.health -= this.strength;
         this.team == "left" ? (otherUnit.x += this.strength / 3) : (otherUnit.x -= this.strength / 3);
       });
       this.wait(1000).then(() => {
@@ -211,7 +211,7 @@ export class Halberdier extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(400).then(() => {
-        otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
+        otherUnit.health -= this.strength;
         this.team == "left" ? (otherUnit.x += this.strength / 2) : (otherUnit.x -= this.strength / 2);
       });
       this.wait(2000).then(() => {
@@ -248,7 +248,7 @@ export class MountedSpearman extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(400).then(() => {
-        otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
+        otherUnit.health -= this.strength;
         this.team == "left" ? (otherUnit.x += this.strength / 2) : (otherUnit.x -= this.strength / 2);
       });
       this.wait(900).then(() => {
@@ -287,7 +287,7 @@ export class Archer extends Entity {
       this.state = "attack";
       this.wait(600).then(() => {
         if (this.hasHit == true) {
-          otherUnit.health -= this.strength; //delayed 0.4 seconds as there will be animations, this can be a hidden stat
+          otherUnit.health -= this.strength;
           this.hasHit = true;
           this.team == "left" ? (otherUnit.x += this.strength / 3) : (otherUnit.x -= this.strength / 3);
         }

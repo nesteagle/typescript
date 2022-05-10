@@ -1,12 +1,4 @@
-import {
-  Swordsman,
-  Spearman,
-  Archer,
-  Axeman,
-  Halberdier,
-  MountedSpearman,
-  Projectile,
-} from "./entity";
+import { Swordsman, Spearman, Archer, Axeman, Halberdier, MountedSpearman, Projectile } from "./entity";
 import { LaneArrow, ScoreBar, CooldownBar } from "./gameobjects";
 let lane = new LaneArrow(1);
 let score: number = 50;
@@ -17,7 +9,6 @@ export let customEvent = new CustomEvent("event");
 eventListener.addEventListener(
   "event",
   function () {
-    // change here Event to CustomEvent
     update();
     console.log("updated");
   }.bind(this)
@@ -31,14 +22,7 @@ let entities: Array<any> = [];
 let cooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
-let selectable: Array<any> = [
-  Spearman,
-  Swordsman,
-  Archer,
-  Axeman,
-  Halberdier,
-  MountedSpearman,
-];
+let selectable: Array<any> = [Spearman, Swordsman, Archer, Axeman, Halberdier, MountedSpearman];
 let cooldownTable: Array<number> = [2, 1.7, 1.5, 1.6, 1.5, 1];
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -60,13 +44,7 @@ function update(): void {
   updateEntities();
   for (let i = 0; i < cooldownbars.length; i++) {
     if (i == selected) {
-      cooldownbars[selected][0].draw(
-        i * 65 + 42,
-        58,
-        32,
-        cooldownbars[i][1],
-        true
-      );
+      cooldownbars[selected][0].draw(i * 65 + 42, 58, 32, cooldownbars[i][1], true);
       cooldownbars[i][1] += cooldownTable[i];
       continue;
     }
@@ -114,10 +92,7 @@ function KeyInput(event: KeyboardEvent) {
 function updateProjectiles(): void {
   for (let i in projectiles) {
     projectiles[i].lifetime -= 1;
-    let angle: number = projectiles[i].triangulate(
-      projectiles[i].xv,
-      projectiles[i].yv
-    );
+    let angle: number = projectiles[i].triangulate(projectiles[i].xv, projectiles[i].yv);
     projectiles[i].angle = angle;
     projectiles[i].xv *= 0.97;
     projectiles[i].x += projectiles[i].xv;
@@ -165,14 +140,7 @@ function updateEntities() {
       ) {
         if (currentUnit.name == "Archer" && currentUnit.state == "move") {
           projectiles.push(
-            new Projectile(
-              currentUnit.x + 12,
-              currentUnit.y + 20,
-              currentUnit.range,
-              currentUnit,
-              currentUnit.lane,
-              Math.random() * -5 + 1.5
-            )
+            new Projectile(currentUnit.x + 12, currentUnit.y + 20, currentUnit.range, currentUnit, currentUnit.lane, Math.random() * -5 + 1.5)
           );
         }
         currentUnit.attack(entities[j]);

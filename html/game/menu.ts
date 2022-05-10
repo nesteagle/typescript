@@ -47,7 +47,6 @@ menu.addEventListener(
     let mousePos = getMousePos(menu, event);
     console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
-      //console.log(elements[i].type, i);
       if (elements[i].type == "Upgrade") {
         if (elements[i].detectClick(mousePos) == true) {
           if (upgrades[i][1] == 0) {
