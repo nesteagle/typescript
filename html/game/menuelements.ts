@@ -36,7 +36,6 @@ export class TextBox {
       this.boxColor == undefined ? (context.fillStyle = "rgb(100,110,144)") : (context.fillStyle = this.boxColor);
       context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
     }
-
     context.fillStyle = "black";
     context.fillText(this.text, this.x, this.y);
   }
