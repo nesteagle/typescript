@@ -1,5 +1,6 @@
 import { Swordsman, Spearman, Archer, Axeman, Halberdier, MountedSpearman, Projectile } from "./entity";
 import { LaneArrow, ScoreBar, CooldownBar } from "./gameobjects";
+import { upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
 let lane = new LaneArrow(1);
 let score: number = 50;
 let eventListener: any = document.getElementById("listener");
@@ -9,6 +10,23 @@ export let customEvent = new CustomEvent("event");
 eventListener.addEventListener(
   "event",
   function () {
+    for (let i = 4; i < upgrades.length; i++) {
+      console.log(selectable.indexOf(Archer));
+      switch (upgrades[i][0]) {
+        case "Archery":
+          if (selectable.indexOf(Archer) == -1) {
+            selectable.push(Archer);
+          }
+        case "Polearms":
+          if (selectable.indexOf(Halberdier) == -1) {
+            selectable.push(Halberdier);
+          }
+      }
+    }
+    console.log(selectable);
+    for (let i = 0; i < selectable.length; i++) {
+      cooldownbars.push([new CooldownBar(), -90]);
+    }
     update();
     console.log("updated");
   }.bind(this)
@@ -22,14 +40,11 @@ let entities: Array<any> = [];
 let cooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
-let selectable: Array<any> = [Spearman, Swordsman, Archer, Axeman, Halberdier, MountedSpearman];
+let selectable: Array<any> = [Spearman, Swordsman];
 let cooldownTable: Array<number> = [2, 1.7, 1.5, 1.6, 1.5, 1];
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyCooldown: number = 200;
-for (let i = 0; i < selectable.length; i++) {
-  cooldownbars.push([new CooldownBar(), -90]);
-}
 let selected: number = 0;
 let canSpawn: boolean = false;
 let windowID: number;
