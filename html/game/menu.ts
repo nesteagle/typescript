@@ -14,7 +14,6 @@ export let upgrades: Array<any> = [
   ["Speed", 0],
   ["Armor", 0],
 ];
-
 let background = new Background(0, 0, false);
 let elements: Array<any> = [
   new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
@@ -66,7 +65,6 @@ menu.addEventListener(
             upgrades[i][1]++;
             currency -= (upgrades[i][1] + 1) * 400;
           }
-          //console.log("true", i);
           textbox.text = `currency:${currency}`;
           textbox.draw();
           break;
@@ -99,8 +97,6 @@ menu.addEventListener(
                 break;
             }
           }
-
-          console.log(upgrades);
         }
       }
       if (elements[i].type == "Button") {
@@ -158,18 +154,9 @@ menu.addEventListener(
                 console.log(elements);
               }
               textbox = elements[elements.length - 1];
-
               break;
-
             case "upgrade3":
               elements = [
-                // new UpgradeBox(150, 300, "Swords", "200 25px Georgia"),
-                // new UpgradeBox(150, 350, "Spears", "200 25px Georgia"),
-                // new UpgradeBox(150, 400, "Archery", "200 25px Georgia"),
-                // new UpgradeBox(150, 450, "Halberds", "200 25px Georgia"),
-                // new UpgradeBox(150, 500, "Axes", "200 25px Georgia"),
-                // new UpgradeBox(150, 550, "Armor", "200 25px Georgia"),
-                // new UpgradeBox(150, 600, "Speed", "200 25px Georgia"),
                 new TextBox(150, 250, `currency:${currency}`, "200 35px Georgia", false),
                 new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "upgrade1"),
               ];

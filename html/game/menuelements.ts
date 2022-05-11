@@ -100,7 +100,6 @@ export class UpgradeBox {
         context.fillText(`Upgrade ${this.upgrade}:${(upgrades[i][1] + 1) * 400}, ${upgrades[i][1]} upgrades`, this.x + 55, this.y);
       }
     }
-
     context.fillText("Buy", this.x, this.y);
     let measurements = context.measureText("Buy");
     let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
@@ -131,9 +130,14 @@ export class TreeBox extends UpgradeBox {
     this.type = "UpgradeTree";
   }
   draw(): void {
+    context.fillStyle = "rgb(100,70,40)";
+    for (let i = 4; i < upgrades.length; i++) {
+      if (upgrades[i][0] == this.upgrade) {
+        context.fillStyle = "rgb(140,110,80)";
+      }
+    }
     context.font = this.font;
     context.textBaseline = "middle";
-    context.fillStyle = "rgb(100,70,40)";
     context.fillRect(this.x - 5, this.y - 5, 140, 140);
     context.fillStyle = "black";
     context.fillText(this.upgrade, this.x, this.y + 70);
