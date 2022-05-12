@@ -4,9 +4,7 @@ import { upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
 let lane = new LaneArrow(1);
 let score: number = 50;
 let eventListener: any = document.getElementById("listener");
-
 export let customEvent = new CustomEvent("event");
-
 eventListener.addEventListener(
   "event",
   function () {
@@ -31,7 +29,6 @@ eventListener.addEventListener(
     console.log("updated");
   }.bind(this)
 );
-
 window.addEventListener("keydown", KeyInput, false);
 let listener = document.getElementById("listener");
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -72,7 +69,6 @@ function update(): void {
   context.restore();
   checkScore();
 }
-
 function KeyInput(event: KeyboardEvent) {
   switch (event.key) {
     case "Up":
