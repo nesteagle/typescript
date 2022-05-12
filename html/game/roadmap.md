@@ -1,12 +1,12 @@
 # Roadmap
 
-# UPGRADE IMPLEMENTATION FINISH
+# UPGRADE IMPLEMENTATION FINISH - to do
 
 ## Add animations
 
-## Upgrade Tree controls upgrades
+## Upgrade Tree controls upgrades - mainly done
 
-## Smarter AI and laneweight implementation
+## Smarter AI and laneweight implementation - almost finished
 
 ### Campaign mode with real conquests
 
