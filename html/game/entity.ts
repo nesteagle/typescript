@@ -1,7 +1,6 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let arrow = document.getElementById("source2") as CanvasImageSource;
-
 abstract class Entity {
   constructor(
     public x: number,
@@ -15,7 +14,8 @@ abstract class Entity {
     public name?: string,
     public type?: string,
     public state?: string,
-    public lane?: number
+    public lane?: number,
+    public weight?: number
   ) {}
   move(): void {
     if (this.state !== "attack") {
@@ -84,13 +84,15 @@ export class Swordsman extends Entity {
     public name?: string,
     public type?: string,
     public state?: string,
-    public lane?: number
+    public lane?: number,
+    public weight?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 50;
     this.speed = 0.4;
     this.health = 150;
     this.strength = 20;
+    this.weight = 1;
     this.type = "Melee";
     this.name = "Swordsman";
     this.lane = (this.y - 184) / 80;
@@ -122,13 +124,15 @@ export class Spearman extends Entity {
     public name?: string,
     public type?: string,
     public state?: string,
-    public lane?: number
+    public lane?: number,
+    public weight?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 80;
     this.speed = 0.7;
     this.health = 100;
     this.strength = 15;
+    this.weight = 1;
     this.type = "Melee";
     this.name = "Spearman";
     this.lane = (this.y - 184) / 80;
@@ -159,13 +163,15 @@ export class Axeman extends Entity {
     public name?: string,
     public type?: string,
     public state?: string,
-    public lane?: number
+    public lane?: number,
+    public weight?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 45;
     this.speed = 0.64;
     this.health = 120;
     this.strength = 25;
+    this.weight = 2;
     this.type = "Melee";
     this.name = "Axeman";
     this.lane = (this.y - 184) / 80;
@@ -196,13 +202,15 @@ export class Halberdier extends Entity {
     public name?: string,
     public type?: string,
     public state?: string,
-    public lane?: number
+    public lane?: number,
+    public weight?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 75;
     this.speed = 0.5;
     this.health = 130;
     this.strength = 25;
+    this.weight = 2;
     this.type = "Melee";
     this.name = "Halberdier";
     this.lane = (this.y - 184) / 80;
@@ -233,13 +241,15 @@ export class MountedSpearman extends Entity {
     public name?: string,
     public type?: string,
     public state?: string,
-    public lane?: number
+    public lane?: number,
+    public weight?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 75;
     this.speed = 1.2;
     this.health = 130;
     this.strength = 20;
+    this.weight = 4;
     this.type = "Melee";
     this.name = "MountedSpearman";
     this.lane = (this.y - 184) / 80;
@@ -271,15 +281,17 @@ export class Archer extends Entity {
     public type?: string,
     public state?: string,
     public lane?: number,
-    public hasHit?: boolean
+    public hasHit?: boolean,
+    public weight?: number
   ) {
-    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane);
+    super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 450;
     this.speed = 0.3;
     this.health = 100;
     this.strength = 25;
     this.type = "Ranged";
     this.name = "Archer";
+    this.weight = 3;
     this.lane = (this.y - 184) / 80;
   }
   attack(otherUnit) {

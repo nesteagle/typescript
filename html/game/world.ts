@@ -14,10 +14,20 @@ eventListener.addEventListener(
         case "Archery":
           if (selectable.indexOf(Archer) == -1) {
             selectable.push(Archer);
+            cooldownTable.push(1.5);
+            break;
           }
         case "Polearms":
           if (selectable.indexOf(Halberdier) == -1) {
             selectable.push(Halberdier);
+            cooldownTable.push(1.6);
+            break;
+          }
+        case "Horsemanship":
+          if (selectable.indexOf(MountedSpearman) == -1) {
+            selectable.push(MountedSpearman);
+            cooldownTable.push(1);
+            break;
           }
       }
     }
@@ -38,7 +48,7 @@ let cooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
 let selectable: Array<any> = [Spearman, Swordsman];
-let cooldownTable: Array<number> = [2, 1.7, 1.5, 1.6, 1.5, 1];
+let cooldownTable: Array<number> = [2, 1.7];
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyCooldown: number = 200;
@@ -82,11 +92,12 @@ function KeyInput(event: KeyboardEvent) {
     case " ":
       if (canSpawn == true) {
         entities.push(new selectable[selected](-25, lane.y - 16, "left"));
-        laneWeight[lane.lane - 1]++;
+        laneWeight[lane.lane - 1] += entities[entities.length - 1].weight;
         canSpawn = false;
         for (let i = 0; i < cooldownbars.length; i++) {
           cooldownbars[i][1] = -90;
         }
+        console.log(laneWeight);
       }
       break;
     case "Left":
@@ -133,12 +144,12 @@ function updateEntities() {
     if (currentUnit.health <= 0) {
       if (currentUnit.team == "left") {
         entities.splice(entities.indexOf(currentUnit), 1);
-        laneWeight[currentUnit.lane]--;
+        laneWeight[currentUnit.lane] -= entities[units].weight;
         break;
       }
       if (currentUnit.team == "right") {
         entities.splice(entities.indexOf(currentUnit), 1);
-        enemyWeight[currentUnit.lane]--;
+        enemyWeight[currentUnit.lane] -= entities[units].weight;
         break;
       }
     }
@@ -160,15 +171,13 @@ function updateEntities() {
       if (entities[j].x < -50) {
         if (entities[j].team == "left") laneWeight[entities[j].lane]--;
         entities.splice(entities.indexOf(entities[j]), 1);
-        score -= 1;
-        //replace with score weight
+        score -= entities[j].weight;
         break;
       }
       if (entities[j].x > canvas.width + 50) {
         if (entities[j].team == "left") laneWeight[entities[j].lane]--;
         entities.splice(entities.indexOf(entities[j]), 1);
-        score += 1;
-        //replace with score weight
+        score += entities[j].weight;
         break;
       }
     }
@@ -197,7 +206,7 @@ function checkEnemy(): void {
       let random = Math.round(Math.random() * 7 + 1);
       entities.push(new selectable[0](1225, random * 80 + 184, "right"));
       enemyCooldown = 150;
-      enemyWeight[random]++;
+      enemyWeight[random] += entities[entities.length - 1].weight;
       return;
     }
   }
@@ -209,7 +218,7 @@ function checkEnemy(): void {
           if (enemyCooldown <= 0) {
             entities.push(new selectable[0](1225, (j + 1) * 80 + 184, "right"));
             enemyCooldown = 150;
-            enemyWeight[j + 1]++;
+            enemyWeight[j + 1] += entities[entities.length - 1].weight;
             break;
           }
         } else if (laneWeight[j] !== enemyWeight[j + 1]) j++;
@@ -218,12 +227,12 @@ function checkEnemy(): void {
             let random = Math.round(Math.random() * 7 + 1);
             entities.push(new selectable[0](1225, random * 80 + 184, "right"));
             enemyCooldown = 150;
-            enemyWeight[random]++;
-            console.log(random);
+            enemyWeight[random] += entities[entities.length - 1].weight;
             break;
           }
         }
       }
     }
   }
+  console.log(enemyWeight);
 }
