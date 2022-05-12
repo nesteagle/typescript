@@ -54,7 +54,6 @@ export class Projectile {
     this.y = y;
     this.range = range;
     this.parent = parent;
-    this.xv = range / 12;
     this.angle = angle;
     this.lane = lane;
     this.lifetime = 60;

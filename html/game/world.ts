@@ -35,6 +35,9 @@ eventListener.addEventListener(
     for (let i = 0; i < selectable.length; i++) {
       cooldownbars.push([new CooldownBar(), -90]);
     }
+    for (let j = 0; j < enemyselectable.length; j++) {
+      enemycooldownbars.push([new CooldownBar(), -90]);
+    }
     update();
     console.log("updated");
   }.bind(this)
@@ -45,15 +48,18 @@ let canvas = document.getElementById("canvas") as HTMLCanvasElement;
 let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let entities: Array<any> = [];
 let cooldownbars: Array<any> = [];
+let enemycooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
 let selectable: Array<any> = [Spearman, Swordsman];
-let cooldownTable: Array<number> = [2, 1.7];
+let enemyselectable: Array<any> = [Spearman, Swordsman, Archer];
+let cooldownTable: Array<number> = [2, 1.7, 1.5]; //FIND SOLUTION TO ENEMY COOLDOWN
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
-let enemyCooldown: number = 200;
 let selected: number = 0;
+let enemySelected: number = 0;
 let canSpawn: boolean = false;
+let enemyCanSpawn: boolean = false;
 let windowID: number;
 function update(): void {
   windowID = window.requestAnimationFrame(update);
@@ -74,6 +80,18 @@ function update(): void {
     cooldownbars[i][1] += cooldownTable[i];
     if (cooldownbars[selected][1] >= 270) {
       canSpawn = true;
+    }
+  }
+  for (let j = 0; j < enemycooldownbars.length; j++) {
+    if (j == enemySelected) {
+      enemycooldownbars[selected][0].draw(canvas.width - j * 65 - 42, 58, 32, enemycooldownbars[j][1], true);
+      enemycooldownbars[j][1] += cooldownTable[j];
+      continue;
+    }
+    enemycooldownbars[j][0].draw(canvas.width - j * 65 - 42, 56, 26, enemycooldownbars[j][1]);
+    enemycooldownbars[j][1] += cooldownTable[j];
+    if (enemycooldownbars[enemySelected][1] >= 270) {
+      enemyCanSpawn = true;
     }
   }
   context.restore();
@@ -161,9 +179,31 @@ function updateEntities() {
         entities[j].lane == currentUnit.lane
       ) {
         if (currentUnit.name == "Archer" && currentUnit.state == "move") {
-          projectiles.push(
-            new Projectile(currentUnit.x + 12, currentUnit.y + 20, currentUnit.range, currentUnit, currentUnit.lane, Math.random() * -5 + 1.5)
-          );
+          if (currentUnit.team == "left") {
+            projectiles.push(
+              new Projectile(
+                currentUnit.x + 12,
+                currentUnit.y + 20,
+                currentUnit.range,
+                currentUnit,
+                currentUnit.lane,
+                Math.random() * -5 + 1.5,
+                currentUnit.range / 12
+              )
+            );
+          } else if (currentUnit.team == "right") {
+            projectiles.push(
+              new Projectile(
+                currentUnit.x + 12,
+                currentUnit.y + 20,
+                currentUnit.range,
+                currentUnit,
+                currentUnit.lane,
+                Math.random() * -5 + 1.5,
+                -currentUnit.range / 12
+              )
+            );
+          }
         }
         currentUnit.attack(entities[j]);
         break;
@@ -198,15 +238,19 @@ function checkScore(): void {
   }
 }
 function checkEnemy(): void {
-  enemyCooldown--;
   let clone = [...laneWeight];
   const heaviest = clone.sort((a, b) => b - a);
   if (heaviest[0] == 0) {
-    if (enemyCooldown <= 0) {
+    //MAYBE Math.random to select a random opening..?
+    if (enemyCanSpawn == true) {
+      enemySelected = Math.round(Math.random());
       let random = Math.round(Math.random() * 7 + 1);
-      entities.push(new selectable[0](1225, random * 80 + 184, "right"));
-      enemyCooldown = 150;
+      entities.push(new enemyselectable[enemySelected](1225, random * 80 + 184, "right"));
       enemyWeight[random] += entities[entities.length - 1].weight;
+      enemyCanSpawn = false;
+      for (let k = 0; k < enemycooldownbars.length; k++) {
+        enemycooldownbars[k][1] = -90;
+      }
       return;
     }
   }
@@ -215,24 +259,39 @@ function checkEnemy(): void {
       if (heaviest[i] == 0) {
       } else if (laneWeight[j] == heaviest[i]) {
         if (laneWeight[j] > enemyWeight[j + 1]) {
-          if (enemyCooldown <= 0) {
-            entities.push(new selectable[0](1225, (j + 1) * 80 + 184, "right"));
-            enemyCooldown = 150;
+          enemySelected = calculatePriorities(laneWeight, j);
+          if (enemyCanSpawn == true) {
+            entities.push(new enemyselectable[enemySelected](1225, (j + 1) * 80 + 184, "right"));
             enemyWeight[j + 1] += entities[entities.length - 1].weight;
+            enemyCanSpawn = false;
+            for (let k = 0; k < enemycooldownbars.length; k++) {
+              enemycooldownbars[k][1] = -90;
+            }
             break;
           }
-        } else if (laneWeight[j] !== enemyWeight[j + 1]) j++;
-        else {
-          if (enemyCooldown <= 0) {
+        } else {
+          if (enemyCanSpawn == true) {
+            enemySelected = Math.round(Math.random());
             let random = Math.round(Math.random() * 7 + 1);
-            entities.push(new selectable[0](1225, random * 80 + 184, "right"));
-            enemyCooldown = 150;
+            entities.push(new enemyselectable[enemySelected](1225, random * 80 + 184, "right"));
             enemyWeight[random] += entities[entities.length - 1].weight;
+            enemyCanSpawn = false;
+            for (let k = 0; k < enemycooldownbars.length; k++) {
+              enemycooldownbars[k][1] = -90;
+            }
             break;
           }
         }
       }
     }
   }
-  console.log(enemyWeight);
+}
+function calculatePriorities(heaviest: Array<number>, index: number): number {
+  if (heaviest[index] <= 1) {
+    return 0;
+  } else if (heaviest[index] > 1 && heaviest[index] < 3) {
+    return 1;
+  } else if (heaviest[index] >= 3) {
+    return 2; //more if more units added later
+  }
 }
