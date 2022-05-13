@@ -8,6 +8,8 @@ export let customEvent = new CustomEvent("event");
 eventListener.addEventListener(
   "event",
   function () {
+    selectable = [Spearman, Swordsman];
+    enemyselectable = [Spearman, Swordsman, Archer];
     for (let i = 4; i < upgrades.length; i++) {
       console.log(selectable.indexOf(Archer));
       switch (upgrades[i][0]) {
@@ -51,8 +53,8 @@ let cooldownbars: Array<any> = [];
 let enemycooldownbars: Array<any> = [];
 let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
-let selectable: Array<any> = [Spearman, Swordsman];
-let enemyselectable: Array<any> = [Spearman, Swordsman, Archer];
+let selectable: Array<any> = [];
+let enemyselectable: Array<any> = [];
 let cooldownTable: Array<number> = [2, 1.7, 1.5]; //FIND SOLUTION TO ENEMY COOLDOWN
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];

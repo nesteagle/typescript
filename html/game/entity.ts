@@ -1,3 +1,5 @@
+import { upgrades } from "./menu";
+
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let arrow = document.getElementById("source2") as CanvasImageSource;
@@ -36,6 +38,7 @@ abstract class Entity {
     if (this.name == "MountedSpearman") context.fillStyle = "rgb(64,0,64)";
     context.fillRect(this.x + 25, this.y + 12, 20, 40);
   }
+
   wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 }
 export class Projectile {
@@ -91,6 +94,9 @@ export class Swordsman extends Entity {
     this.speed = 0.4;
     this.health = 150;
     this.strength = 20;
+    if (isUpgraded("Swords") !== 0) {
+      this.strength += isUpgraded("Swords");
+    }
     this.weight = 1;
     this.type = "Melee";
     this.name = "Swordsman";
@@ -131,6 +137,9 @@ export class Spearman extends Entity {
     this.speed = 0.7;
     this.health = 100;
     this.strength = 15;
+    if (isUpgraded("Spears") !== 0) {
+      this.strength += isUpgraded("Spears");
+    }
     this.weight = 1;
     this.type = "Melee";
     this.name = "Spearman";
@@ -170,6 +179,9 @@ export class Axeman extends Entity {
     this.speed = 0.64;
     this.health = 120;
     this.strength = 25;
+    if (isUpgraded("Axes") !== 0) {
+      this.strength += isUpgraded("Axes");
+    }
     this.weight = 2;
     this.type = "Melee";
     this.name = "Axeman";
@@ -209,6 +221,9 @@ export class Halberdier extends Entity {
     this.speed = 0.5;
     this.health = 130;
     this.strength = 25;
+    if (isUpgraded("Polearms") !== 0) {
+      this.strength += isUpgraded("Polearms");
+    }
     this.weight = 2;
     this.type = "Melee";
     this.name = "Halberdier";
@@ -248,6 +263,9 @@ export class MountedSpearman extends Entity {
     this.speed = 1.2;
     this.health = 130;
     this.strength = 20;
+    if (isUpgraded("Horsemanship") !== 0) {
+      this.strength += isUpgraded("Horsemanship");
+    }
     this.weight = 4;
     this.type = "Melee";
     this.name = "MountedSpearman";
@@ -288,6 +306,9 @@ export class Archer extends Entity {
     this.speed = 0.3;
     this.health = 100;
     this.strength = 25;
+    if (isUpgraded("Archery") !== 0) {
+      this.strength += isUpgraded("Archery");
+    }
     this.type = "Ranged";
     this.name = "Archer";
     this.weight = 3;
@@ -309,4 +330,13 @@ export class Archer extends Entity {
       });
     }
   }
+}
+function isUpgraded(upgrade) {
+  for (let i = 0; i < upgrades.length; i++) {
+    if (upgrades[i][0] == upgrade) {
+      console.log(upgrade);
+      return i * 5;
+    }
+  }
+  return 0;
 }
