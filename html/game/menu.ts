@@ -54,6 +54,7 @@ menu.addEventListener(
     console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].type == "Upgrade") {
+        //Yes, I know that it counts when you click upgrade tree, I might implement it as a feature!
         if (elements[i].detectClick(mousePos) == true) {
           console.log(elements[i], upgrades[i - 2]);
           if (upgrades[i - 2] === undefined) break;

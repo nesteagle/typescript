@@ -92,10 +92,19 @@ export class Swordsman extends Entity {
     super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 50;
     this.speed = 0.4;
-    this.health = 150;
+    this.health = 140;
     this.strength = 20;
-    if (isUpgraded("Swords") !== 0) {
-      this.strength += isUpgraded("Swords");
+    this.armor = 5;
+    if (this.team == "left") {
+      if (isUpgraded("Swords") !== 0) {
+        this.strength += isUpgraded("Swords") * 5;
+      }
+      if (isUpgraded("Speed") !== 0) {
+        this.speed += isUpgraded("Speed") / 4;
+      }
+      if (isUpgraded("Armor") !== 0) {
+        this.armor += isUpgraded("Armor") * 2.5;
+      }
     }
     this.weight = 1;
     this.type = "Melee";
@@ -107,7 +116,9 @@ export class Swordsman extends Entity {
       this.state = "attack";
 
       this.wait(400).then(() => {
-        otherUnit.health -= this.strength;
+        this.strength <= otherUnit.armor
+          ? console.log((otherUnit.health -= 1))
+          : console.log((otherUnit.health -= this.strength - otherUnit.armor));
         this.team == "left" ? (otherUnit.x += this.strength / 4) : (otherUnit.x -= this.strength / 4);
       });
       this.wait(1000).then(() => {
@@ -137,8 +148,17 @@ export class Spearman extends Entity {
     this.speed = 0.7;
     this.health = 100;
     this.strength = 15;
-    if (isUpgraded("Spears") !== 0) {
-      this.strength += isUpgraded("Spears");
+    this.armor = 0;
+    if (this.team == "left") {
+      if (isUpgraded("Spears") !== 0) {
+        this.strength += isUpgraded("Spears") * 5;
+      }
+      if (isUpgraded("Speed") !== 0) {
+        this.speed += isUpgraded("Speed") / 4;
+      }
+      if (isUpgraded("Armor") !== 0) {
+        this.armor += isUpgraded("Armor") * 2.5;
+      }
     }
     this.weight = 1;
     this.type = "Melee";
@@ -149,7 +169,7 @@ export class Spearman extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(200).then(() => {
-        otherUnit.health -= this.strength;
+        this.strength <= otherUnit.armor ? (otherUnit.health -= 1) : (otherUnit.health -= this.strength - otherUnit.armor);
         this.team == "left" ? (otherUnit.x += this.strength / 4) : (otherUnit.x -= this.strength / 4);
       });
       this.wait(1500).then(() => {
@@ -179,8 +199,17 @@ export class Axeman extends Entity {
     this.speed = 0.64;
     this.health = 120;
     this.strength = 25;
-    if (isUpgraded("Axes") !== 0) {
-      this.strength += isUpgraded("Axes");
+    this.armor = 5;
+    if (this.team == "left") {
+      if (isUpgraded("Axes") !== 0) {
+        this.strength += isUpgraded("Axes") * 5;
+      }
+      if (isUpgraded("Speed") !== 0) {
+        this.speed += isUpgraded("Speed") / 4;
+      }
+      if (isUpgraded("Armor") !== 0) {
+        this.armor += isUpgraded("Armor") * 2.5;
+      }
     }
     this.weight = 2;
     this.type = "Melee";
@@ -191,7 +220,7 @@ export class Axeman extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(400).then(() => {
-        otherUnit.health -= this.strength;
+        this.strength <= otherUnit.armor ? (otherUnit.health -= 1) : (otherUnit.health -= this.strength - otherUnit.armor);
         this.team == "left" ? (otherUnit.x += this.strength / 3) : (otherUnit.x -= this.strength / 3);
       });
       this.wait(1000).then(() => {
@@ -221,8 +250,17 @@ export class Halberdier extends Entity {
     this.speed = 0.5;
     this.health = 130;
     this.strength = 25;
-    if (isUpgraded("Polearms") !== 0) {
-      this.strength += isUpgraded("Polearms");
+    this.armor = 5;
+    if (this.team == "left") {
+      if (isUpgraded("Polearms") !== 0) {
+        this.strength += isUpgraded("Polearms") * 5;
+      }
+      if (isUpgraded("Speed") !== 0) {
+        this.speed += isUpgraded("Speed") / 4;
+      }
+      if (isUpgraded("Armor") !== 0) {
+        this.armor += isUpgraded("Armor") * 2.5;
+      }
     }
     this.weight = 2;
     this.type = "Melee";
@@ -233,7 +271,7 @@ export class Halberdier extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(400).then(() => {
-        otherUnit.health -= this.strength;
+        this.strength <= otherUnit.armor ? (otherUnit.health -= 1) : (otherUnit.health -= this.strength - otherUnit.armor);
         this.team == "left" ? (otherUnit.x += this.strength / 2) : (otherUnit.x -= this.strength / 2);
       });
       this.wait(2000).then(() => {
@@ -263,8 +301,17 @@ export class MountedSpearman extends Entity {
     this.speed = 1.2;
     this.health = 130;
     this.strength = 20;
-    if (isUpgraded("Horsemanship") !== 0) {
-      this.strength += isUpgraded("Horsemanship");
+    this.armor = 5;
+    if (this.team == "left") {
+      if (isUpgraded("Horsemanship") !== 0) {
+        this.strength += isUpgraded("Horsemanship") * 5;
+      }
+      if (isUpgraded("Speed") !== 0) {
+        this.speed += isUpgraded("Speed") / 5;
+      }
+      if (isUpgraded("Armor") !== 0) {
+        this.armor += isUpgraded("Armor") * 2.5;
+      }
     }
     this.weight = 4;
     this.type = "Melee";
@@ -275,7 +322,7 @@ export class MountedSpearman extends Entity {
     if (this.state == "move") {
       this.state = "attack";
       this.wait(400).then(() => {
-        otherUnit.health -= this.strength;
+        this.strength <= otherUnit.armor ? (otherUnit.health -= 1) : (otherUnit.health -= this.strength - otherUnit.armor);
         this.team == "left" ? (otherUnit.x += this.strength / 2) : (otherUnit.x -= this.strength / 2);
       });
       this.wait(900).then(() => {
@@ -306,8 +353,17 @@ export class Archer extends Entity {
     this.speed = 0.3;
     this.health = 100;
     this.strength = 25;
-    if (isUpgraded("Archery") !== 0) {
-      this.strength += isUpgraded("Archery");
+    this.armor = 0;
+    if (this.team == "left") {
+      if (isUpgraded("Archery") !== 0) {
+        this.strength += isUpgraded("Archery") * 5;
+      }
+      if (isUpgraded("Speed") !== 0) {
+        this.speed += isUpgraded("Speed") / 4;
+      }
+      if (isUpgraded("Armor") !== 0) {
+        this.armor += isUpgraded("Armor") * 2.5;
+      }
     }
     this.type = "Ranged";
     this.name = "Archer";
@@ -319,8 +375,7 @@ export class Archer extends Entity {
       this.state = "attack";
       this.wait(600).then(() => {
         if (this.hasHit == true) {
-          otherUnit.health -= this.strength;
-          this.hasHit = true;
+          this.strength <= otherUnit.armor ? (otherUnit.health -= 1) : (otherUnit.health -= this.strength - otherUnit.armor);
           this.team == "left" ? (otherUnit.x += this.strength / 3) : (otherUnit.x -= this.strength / 3);
         }
       });
@@ -334,8 +389,8 @@ export class Archer extends Entity {
 function isUpgraded(upgrade) {
   for (let i = 0; i < upgrades.length; i++) {
     if (upgrades[i][0] == upgrade) {
-      console.log(upgrade);
-      return i * 5;
+      console.log(upgrade, upgrades[i][1]);
+      return upgrades[i][1];
     }
   }
   return 0;
