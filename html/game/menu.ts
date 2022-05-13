@@ -55,15 +55,16 @@ menu.addEventListener(
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].type == "Upgrade") {
         if (elements[i].detectClick(mousePos) == true) {
-          if (upgrades[i] === undefined) break;
-          if (upgrades[i][1] == 0) {
+          console.log(elements[i], upgrades[i - 2]);
+          if (upgrades[i - 2] === undefined) break;
+          if (upgrades[i - 2][1] == 0) {
             if (currency > 400) {
               currency -= 400;
-              upgrades[i][1]++;
+              upgrades[i - 2][1]++;
             }
-          } else if (currency > (upgrades[i][1] + 1) * 400) {
-            upgrades[i][1]++;
-            currency -= (upgrades[i][1] + 1) * 400;
+          } else if (currency > (upgrades[i - 2][1] + 1) * 400) {
+            upgrades[i - 2][1]++;
+            currency -= (upgrades[i - 2][1] + 1) * 400;
           }
           textbox.text = `currency:${currency}`;
           textbox.draw();
