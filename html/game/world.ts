@@ -1,7 +1,8 @@
 import { Swordsman, Spearman, Archer, Axeman, Halberdier, MountedSpearman, Projectile } from "./entity";
-import { LaneArrow, ScoreBar, CooldownBar } from "./gameobjects";
+import { LaneArrow, ScoreBar, CooldownBar, Text } from "./gameobjects";
 import { upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
 let lane = new LaneArrow(1);
+let box, enemybox;
 let score: number = 50;
 let eventListener: any = document.getElementById("listener");
 export let customEvent = new CustomEvent("event");
@@ -33,16 +34,16 @@ eventListener.addEventListener(
           }
       }
     }
-    console.log(selectable);
+    box = new Text(10, 100, "", "25px Georgia", false, "start");
+    enemybox = new Text(canvas.width - 10, 100, "", "25px Georgia", false, "end");
+
     for (let i = 0; i < selectable.length; i++) {
-      cooldownbars.push([new CooldownBar(selectable[i].name), -90]);
-      // console.log((cooldownbars[cooldownbars.length - 1].name = selectable[i].name));
+      cooldownbars.push([new CooldownBar(), -90]);
     }
     for (let j = 0; j < enemyselectable.length; j++) {
-      enemycooldownbars.push([new CooldownBar(enemyselectable[j].name), -90]);
+      enemycooldownbars.push([new CooldownBar(), -90]);
     }
     update();
-    console.log("updated");
   }.bind(this)
 );
 window.addEventListener("keydown", KeyInput, false);
@@ -73,30 +74,7 @@ function update(): void {
   checkEnemy();
   updateProjectiles();
   updateEntities();
-  for (let i = 0; i < cooldownbars.length; i++) {
-    if (i == selected) {
-      cooldownbars[selected][0].draw(i * 65 + 42, 58, 32, cooldownbars[i][1], true);
-      cooldownbars[i][1] += cooldownTable[i];
-      continue;
-    }
-    cooldownbars[i][0].draw(i * 65 + 42, 56, 26, cooldownbars[i][1]);
-    cooldownbars[i][1] += cooldownTable[i];
-    if (cooldownbars[selected][1] >= 270) {
-      canSpawn = true;
-    }
-  }
-  for (let j = 0; j < enemycooldownbars.length; j++) {
-    if (j == enemySelected) {
-      enemycooldownbars[selected][0].draw(canvas.width - j * 65 - 42, 58, 32, enemycooldownbars[j][1], true);
-      enemycooldownbars[j][1] += cooldownTable[j];
-      continue;
-    }
-    enemycooldownbars[j][0].draw(canvas.width - j * 65 - 42, 56, 26, enemycooldownbars[j][1]);
-    enemycooldownbars[j][1] += cooldownTable[j];
-    if (enemycooldownbars[enemySelected][1] >= 270) {
-      enemyCanSpawn = true;
-    }
-  }
+  updateCooldown();
   context.restore();
   checkScore();
 }
@@ -296,5 +274,35 @@ function calculatePriorities(heaviest: Array<number>, index: number): number {
     return 1;
   } else if (heaviest[index] >= 3) {
     return 2; //more if more units added later
+  }
+}
+function updateCooldown() {
+  box.text = selectable[selected].name;
+  box.draw();
+  enemybox.text = enemyselectable[enemySelected].name;
+  enemybox.draw();
+  for (let i = 0; i < cooldownbars.length; i++) {
+    if (i == selected) {
+      cooldownbars[selected][0].draw(i * 60 + 40, 58, 30, cooldownbars[i][1], true);
+      cooldownbars[i][1] += cooldownTable[i];
+      continue;
+    }
+    cooldownbars[i][0].draw(i * 60 + 40, 56, 24, cooldownbars[i][1]);
+    cooldownbars[i][1] += cooldownTable[i];
+    if (cooldownbars[selected][1] >= 270) {
+      canSpawn = true;
+    }
+  }
+  for (let j = 0; j < enemycooldownbars.length; j++) {
+    if (j == enemySelected) {
+      enemycooldownbars[selected][0].draw(canvas.width - j * 60 - 40, 58, 30, enemycooldownbars[j][1], true);
+      enemycooldownbars[j][1] += cooldownTable[j];
+      continue;
+    }
+    enemycooldownbars[j][0].draw(canvas.width - j * 60 - 40, 56, 24, enemycooldownbars[j][1]);
+    enemycooldownbars[j][1] += cooldownTable[j];
+    if (enemycooldownbars[enemySelected][1] >= 270) {
+      enemyCanSpawn = true;
+    }
   }
 }

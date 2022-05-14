@@ -14,7 +14,6 @@ export class TextBox {
     public font: string,
     public box: boolean,
     public boxColor?: string,
-    public rendering?: boolean,
     public type?: string
   ) {
     this.x = x;
@@ -50,11 +49,10 @@ export class TextButton extends TextBox {
     public box: boolean,
     public event?: string,
     public path?: string,
-    public rendering?: boolean,
     public boxColor?: string,
     public type?: string
   ) {
-    super(x, y, text, font, box, boxColor, rendering, type);
+    super(x, y, text, font, box, boxColor, type);
     this.path = path;
     this.type = "Button";
     path == undefined ? (this.path = "none") : (this.path = path);

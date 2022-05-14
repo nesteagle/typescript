@@ -37,10 +37,6 @@ export class ScoreBar {
   }
 }
 export class CooldownBar {
-  public name: string;
-  constructor(name) {
-    this.name = name;
-  }
   draw(x: number, y: number, radius: number, percentage: number, selected?: boolean) {
     context.beginPath();
     context.moveTo(x, y);
@@ -52,8 +48,38 @@ export class CooldownBar {
     context.lineWidth = 2;
     context.arc(x, y, radius, 0, (360 / 180) * Math.PI);
     context.stroke();
-    context.font = "14px Georgia";
-    context.textAlign = "center";
-    context.fillText(this.name, x, y + 50);
+  }
+}
+export class Text {
+  constructor(
+    public x: number,
+    public y: number,
+    public text: string,
+    public font: string,
+    public box: boolean,
+    public alignment?: any,
+    public boxColor?: string
+  ) {
+    this.x = x;
+    this.y = y;
+    this.text = text;
+    this.font = font;
+    this.box = box;
+    this.boxColor = boxColor;
+    this.alignment = alignment;
+  }
+  draw(): void {
+    context.font = this.font;
+    context.textAlign = this.alignment;
+    context.textBaseline = "hanging";
+    context.fillText(this.text, this.x, this.y);
+    let measurements = context.measureText(this.text);
+    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
+    if (this.box == true) {
+      this.boxColor == undefined ? (context.fillStyle = "rgb(100,110,144)") : (context.fillStyle = this.boxColor);
+      context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
+    }
+    context.fillStyle = "black";
+    context.fillText(this.text, this.x, this.y);
   }
 }
