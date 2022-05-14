@@ -1,19 +1,21 @@
 # Roadmap
 
-# UPGRADE IMPLEMENTATION FINISH - to do
+# UPGRADE IMPLEMENTATION FINISH - finished, if bugs patch them
 
-## Add animations
+#GUI Improvements in-game, menu improvements
 
-## Upgrade Tree controls upgrades - mainly done
+#Tweens for gui and better interface
 
-## Smarter AI and laneweight implementation - almost finished
+## Add animations -- up soon
+
+## Upgrade Tree controls upgrades - finished, if bugs patch them
+
+## Smarter AI and laneweight implementation - laneweight implentation finished
 
 ### Campaign mode with real conquests
 
-### GUI Tweens and improvements
-
 ### Design more assets
 
-#### Improve campaign gameplay
+#### Improve campaign gameplay, add enemy progression system with cumulative player kills
 
 #### refactor code
