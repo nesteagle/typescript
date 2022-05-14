@@ -35,10 +35,11 @@ eventListener.addEventListener(
     }
     console.log(selectable);
     for (let i = 0; i < selectable.length; i++) {
-      cooldownbars.push([new CooldownBar(), -90]);
+      cooldownbars.push([new CooldownBar(selectable[i].name), -90]);
+      // console.log((cooldownbars[cooldownbars.length - 1].name = selectable[i].name));
     }
     for (let j = 0; j < enemyselectable.length; j++) {
-      enemycooldownbars.push([new CooldownBar(), -90]);
+      enemycooldownbars.push([new CooldownBar(enemyselectable[j].name), -90]);
     }
     update();
     console.log("updated");

@@ -37,6 +37,10 @@ export class ScoreBar {
   }
 }
 export class CooldownBar {
+  public name: string;
+  constructor(name) {
+    this.name = name;
+  }
   draw(x: number, y: number, radius: number, percentage: number, selected?: boolean) {
     context.beginPath();
     context.moveTo(x, y);
@@ -48,5 +52,8 @@ export class CooldownBar {
     context.lineWidth = 2;
     context.arc(x, y, radius, 0, (360 / 180) * Math.PI);
     context.stroke();
+    context.font = "14px Georgia";
+    context.textAlign = "center";
+    context.fillText(this.name, x, y + 50);
   }
 }
