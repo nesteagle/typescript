@@ -47,6 +47,14 @@ function hasPurchased(index) {
   }
   return false;
 }
+menu.addEventListener("mousemove", function (event) {
+  let mousePos = getMousePos(menu, event);
+  for (let i = 0; i < elements.length; i++) {
+    if (elements[i].type == "Button") {
+      elements[i].hoveredOver(mousePos);
+    }
+  }
+});
 menu.addEventListener(
   "click",
   function (event) {

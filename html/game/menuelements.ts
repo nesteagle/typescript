@@ -81,6 +81,26 @@ export class TextButton extends TextBox {
     } else {
     }
   }
+  hoveredOver(mousePos) {
+    context.font = this.font;
+    let measurements = context.measureText(this.text);
+    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
+    if (
+      mousePos.x > this.x - 5 &&
+      mousePos.y > this.y - 5 &&
+      mousePos.x < this.x + measurements.width + 10 &&
+      mousePos.y < this.y + height + 10
+    ) {
+      let split = this.font.split(" ")[1].split("px");
+      //console.log(split[1].split("px"), split);
+      if (+split[0] < 60) {
+        console.log(split[0]);
+        split[0] += 1;
+        this.font = "200 " + split[0] + "px Georgia";
+        console.log(this.font);
+      }
+    }
+  }
 }
 export class UpgradeBox {
   constructor(public x, public y, public upgrade, public font?, public type?, public text?) {
