@@ -117,8 +117,8 @@ function updateProjectiles(): void {
     projectiles[i].draw();
     for (let j in entities) {
       if (
-        Math.abs(projectiles[i].x - entities[j].x) < 20 &&
-        Math.abs(projectiles[i].y - entities[j].y) < 20 &&
+        Math.abs(projectiles[i].x - entities[j].x) < 30 &&
+        Math.abs(projectiles[i].y - entities[j].y) < 22 &&
         projectiles[i].lane == entities[j].lane &&
         projectiles[i].parent.team !== entities[j].team
       ) {
@@ -138,17 +138,17 @@ function updateEntities() {
     if (currentUnit) {
       currentUnit.move();
       currentUnit.draw();
-    } else return;
+    } else continue;
     if (currentUnit.health <= 0) {
       if (currentUnit.team == "left") {
         entities.splice(entities.indexOf(currentUnit), 1);
         laneWeight[currentUnit.lane] -= entities[units].weight;
-        break;
+        continue;
       }
       if (currentUnit.team == "right") {
         entities.splice(entities.indexOf(currentUnit), 1);
         enemyWeight[currentUnit.lane] -= entities[units].weight;
-        break;
+        continue;
       }
     }
     for (let j: number = 0; j < entities.length; j++) {
@@ -175,19 +175,19 @@ function updateEntities() {
           );
         }
         currentUnit.attack(entities[j]);
-        break;
+        continue;
       }
       if (entities[j].x < -50) {
         if (entities[j].team == "right") enemyWeight[entities[j].lane]--;
         entities.splice(entities.indexOf(entities[j]), 1);
         score -= entities[j].weight;
-        break;
+        continue;
       }
       if (entities[j].x > canvas.width + 50) {
         if (entities[j].team == "left") laneWeight[entities[j].lane]--;
         entities.splice(entities.indexOf(entities[j]), 1);
         score += entities[j].weight;
-        break;
+        continue;
       }
     }
   }

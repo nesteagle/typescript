@@ -63,7 +63,7 @@ export class Projectile {
   }
   draw() {
     context.save();
-    context.translate(this.x - 16, this.y + 16);
+    context.translate(this.x, this.y);
     context.rotate((this.angle * Math.PI) / 180);
     context.drawImage(arrow, -32, -32, 64, 64);
     context.restore();
