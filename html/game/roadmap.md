@@ -1,12 +1,14 @@
 # Roadmap
 
+# PATCH EXISTING BUGS
+
 # UPGRADE IMPLEMENTATION FINISH - finished, if bugs patch them
 
-#GUI Improvements in-game, menu improvements
+#GUI Improvements in-game, menu improvements - underway
 
-#Tweens for gui and better interface
+#Tweens for gui and better interface - underway
 
-## Add animations -- up soon
+## Add animations - up soon
 
 ## Upgrade Tree controls upgrades - finished, if bugs patch them
 
