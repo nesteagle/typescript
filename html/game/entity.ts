@@ -114,11 +114,8 @@ export class Swordsman extends Entity {
   attack(otherUnit) {
     if (this.state == "move") {
       this.state = "attack";
-
       this.wait(400).then(() => {
-        this.strength <= otherUnit.armor
-          ? console.log((otherUnit.health -= 1))
-          : console.log((otherUnit.health -= this.strength - otherUnit.armor));
+        this.strength <= otherUnit.armor ? (otherUnit.health -= 1) : (otherUnit.health -= this.strength - otherUnit.armor);
         this.team == "left" ? (otherUnit.x += this.strength / 4) : (otherUnit.x -= this.strength / 4);
       });
       this.wait(1000).then(() => {

@@ -2,7 +2,7 @@ import { Swordsman, Spearman, Archer, Axeman, Halberdier, MountedSpearman, Proje
 import { LaneArrow, ScoreBar, CooldownBar, Text } from "./gameobjects";
 import { upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
 let lane = new LaneArrow(1);
-let box, enemybox;
+let box: any, enemybox: any;
 let score: number = 50;
 let eventListener: any = document.getElementById("listener");
 export let customEvent = new CustomEvent("event");
@@ -19,6 +19,10 @@ eventListener.addEventListener(
           break;
         case "Polearms":
           selectable.push(Halberdier);
+          cooldownTable.push(1.6);
+          break;
+        case "Axes":
+          selectable.push(Axeman);
           cooldownTable.push(1.6);
           break;
         case "Horsemanship":
@@ -131,6 +135,10 @@ function updateProjectiles(): void {
 function updateEntities() {
   for (let units in entities) {
     let currentUnit = entities[units];
+    if (currentUnit) {
+      currentUnit.move();
+      currentUnit.draw();
+    } else return;
     if (currentUnit.health <= 0) {
       if (currentUnit.team == "left") {
         entities.splice(entities.indexOf(currentUnit), 1);
@@ -181,10 +189,6 @@ function updateEntities() {
         score += entities[j].weight;
         break;
       }
-    }
-    if (currentUnit) {
-      currentUnit.move();
-      currentUnit.draw();
     }
   }
 }
