@@ -17,12 +17,10 @@ eventListener.addEventListener(
           selectable.push(Archer);
           cooldownTable.push(1.5);
           break;
-
         case "Polearms":
           selectable.push(Halberdier);
           cooldownTable.push(1.6);
           break;
-
         case "Horsemanship":
           selectable.push(MountedSpearman);
           cooldownTable.push(1);
@@ -42,7 +40,6 @@ eventListener.addEventListener(
   }.bind(this)
 );
 window.addEventListener("keydown", KeyInput, false);
-let listener = document.getElementById("listener");
 let canvas = document.getElementById("canvas") as HTMLCanvasElement;
 let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let entities: Array<any> = [];
@@ -86,7 +83,7 @@ function KeyInput(event: KeyboardEvent) {
     case " ":
       if (canSpawn == true) {
         entities.push(new selectable[selected](-25, lane.y - 16, "left"));
-        laneWeight[lane.lane - 1] += entities[entities.length - 1].weight;
+        laneWeight[lane.lane] += entities[entities.length - 1].weight;
         canSpawn = false;
         for (let i = 0; i < cooldownbars.length; i++) {
           cooldownbars[i][1] = -90;
@@ -109,34 +106,21 @@ function updateProjectiles(): void {
     projectiles[i].lifetime -= 1;
     let angle: number = projectiles[i].triangulate(projectiles[i].xv, projectiles[i].yv);
     projectiles[i].angle = angle;
-    projectiles[i].xv *= 0.97;
+    projectiles[i].xv *= 0.98;
+    projectiles[i].yv += 0.09;
     projectiles[i].x += projectiles[i].xv;
     projectiles[i].y += projectiles[i].yv;
-    projectiles[i].yv += 0.09;
     projectiles[i].draw();
     for (let j in entities) {
-      if (projectiles[i].parent.team == "left") {
-        if (
-          Math.abs(projectiles[i].x - entities[j].x) < 20 &&
-          Math.abs(projectiles[i].y - entities[j].y - 16) < 18 &&
-          projectiles[i].lane == entities[j].lane &&
-          projectiles[i].parent.team !== entities[j].team
-        ) {
-          projectiles[i].parent.hasHit = true;
-          projectiles.splice(projectiles[i], 1);
-          break;
-        }
-      } else {
-        if (
-          Math.abs(projectiles[i].x - entities[j].x) < 20 &&
-          Math.abs(projectiles[i].y - entities[j].y + 24) < 18 &&
-          projectiles[i].lane + 1 == entities[j].lane &&
-          projectiles[i].parent.team !== entities[j].team
-        ) {
-          projectiles[i].parent.hasHit = true;
-          projectiles.splice(projectiles[i], 1);
-          break;
-        }
+      if (
+        Math.abs(projectiles[i].x - entities[j].x) < 20 &&
+        Math.abs(projectiles[i].y - entities[j].y) < 20 &&
+        projectiles[i].lane == entities[j].lane &&
+        projectiles[i].parent.team !== entities[j].team
+      ) {
+        projectiles[i].parent.hasHit = true;
+        projectiles.splice(projectiles[i], 1);
+        break;
       }
     }
     if (projectiles[i] && projectiles[i].lifetime <= 0) {
@@ -167,31 +151,20 @@ function updateEntities() {
         entities[j].lane == currentUnit.lane
       ) {
         if (currentUnit.name == "Archer" && currentUnit.state == "move") {
-          if (currentUnit.team == "left") {
-            projectiles.push(
-              new Projectile(
-                currentUnit.x + 12,
-                currentUnit.y + 20,
-                currentUnit.range,
-                currentUnit,
-                currentUnit.lane,
-                Math.random() * -5 + 1.5,
-                currentUnit.range / 12
-              )
-            );
-          } else if (currentUnit.team == "right") {
-            projectiles.push(
-              new Projectile(
-                currentUnit.x + 24,
-                currentUnit.y - 40,
-                currentUnit.range,
-                currentUnit,
-                currentUnit.lane - 1,
-                Math.random() * -5 + 1.5,
-                -currentUnit.range / 12
-              )
-            );
-          }
+          let direction: number;
+          currentUnit.team == "left" ? (direction = currentUnit.range / 15) : (direction = -currentUnit.range / 15);
+          console.log(currentUnit, direction);
+          projectiles.push(
+            new Projectile(
+              currentUnit.x + 12,
+              currentUnit.y + 20,
+              currentUnit.range,
+              currentUnit,
+              currentUnit.lane,
+              Math.random() * -5 + 1.5,
+              direction
+            )
+          );
         }
         currentUnit.attack(entities[j]);
         break;
@@ -231,7 +204,7 @@ function checkEnemy(): void {
   if (heaviest[0] == 0) {
     //MAYBE Math.random to select a random opening..?
     if (enemyCanSpawn == true) {
-      enemySelected = Math.round(Math.random());
+      enemySelected = Math.round(Math.random()); //enemy selects a random unit between 0 and 1
       let random = Math.round(Math.random() * 7 + 1);
       entities.push(new enemyselectable[enemySelected](1225, random * 80 + 184, "right"));
       enemyWeight[random] += entities[entities.length - 1].weight;
@@ -246,11 +219,11 @@ function checkEnemy(): void {
     for (let j = 0; j < laneWeight.length; j++) {
       if (heaviest[i] == 0) {
       } else if (laneWeight[j] == heaviest[i]) {
-        if (laneWeight[j] > enemyWeight[j + 1]) {
+        if (laneWeight[j] > enemyWeight[j]) {
           enemySelected = calculatePriorities(laneWeight, j);
           if (enemyCanSpawn == true) {
-            entities.push(new enemyselectable[enemySelected](1225, (j + 1) * 80 + 184, "right"));
-            enemyWeight[j + 1] += entities[entities.length - 1].weight;
+            entities.push(new enemyselectable[enemySelected](1225, j * 80 + 184, "right"));
+            enemyWeight[j] += entities[entities.length - 1].weight;
             enemyCanSpawn = false;
             for (let k = 0; k < enemycooldownbars.length; k++) {
               enemycooldownbars[k][1] = -90;
