@@ -94,21 +94,21 @@ export class TextButton extends TextBox {
       mousePos.x < this.x + measurements.width + 10 &&
       mousePos.y < this.y + height + 10
     ) {
-      let split = this.font.split(" ")[1].split("px");
-      let value = +split[0];
+      let split = this.font.split(" ");
+      let value = +split[1].split("px")[0];
       if (value < this.originalSize * 1.1) {
         value += 1;
-        this.font = "200 " + value + "px Georgia";
+        this.font = split[0] + " " + value + "px " + split[2];
       }
       return true;
     }
   }
   restoreSize() {
-    let split = this.font.split(" ")[1].split("px");
-    let value = +split[0];
+    let split = this.font.split(" ");
+    let value = +split[1].split("px")[0];
     if (value > this.originalSize) {
       value -= 1;
-      this.font = "200 " + value + "px Georgia";
+      this.font = split[0] + " " + value + "px " + split[2];
     }
   }
 }
