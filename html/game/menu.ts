@@ -51,7 +51,8 @@ menu.addEventListener("mousemove", function (event) {
   let mousePos = getMousePos(menu, event);
   for (let i = 0; i < elements.length; i++) {
     if (elements[i].type == "Button") {
-      elements[i].hoveredOver(mousePos);
+      if (elements[i].hoveredOver(mousePos) == true) {
+      } else elements[i].restoreSize();
     }
   }
 });

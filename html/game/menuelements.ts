@@ -95,14 +95,23 @@ export class TextButton extends TextBox {
       let value = +split[0];
       //console.log(split[1].split("px"), split);
       console.log(value);
-      value += 1;
-      if (value < 60) {
+      if (value < 50) {
+        value += 1;
         this.font = "200 " + value + "px Georgia";
+        console.log(this.font);
       }
+      return true;
+    }
+  }
+  restoreSize() {
+    let split = this.font.split(" ")[1].split("px");
+    let value = +split[0];
+    if (value > 45) {
+      value -= 1;
+      this.font = "200 " + value + "px Georgia";
       console.log(this.font);
     }
   }
-  restoreSize() {}
 }
 
 export class UpgradeBox {
