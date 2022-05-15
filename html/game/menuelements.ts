@@ -50,11 +50,14 @@ export class TextButton extends TextBox {
     public event?: string,
     public path?: string,
     public boxColor?: string,
-    public type?: string
+    public type?: string,
+    public originalSize?: number
   ) {
     super(x, y, text, font, box, boxColor, type);
     this.path = path;
     this.type = "Button";
+    let tempsplit = this.font.split(" ")[1].split("px");
+    this.originalSize = +tempsplit[0];
     path == undefined ? (this.path = "none") : (this.path = path);
   }
   detectClick(mousePos): boolean {
@@ -93,12 +96,9 @@ export class TextButton extends TextBox {
     ) {
       let split = this.font.split(" ")[1].split("px");
       let value = +split[0];
-      //console.log(split[1].split("px"), split);
-      console.log(value);
-      if (value < 50) {
+      if (value < this.originalSize * 1.1) {
         value += 1;
         this.font = "200 " + value + "px Georgia";
-        console.log(this.font);
       }
       return true;
     }
@@ -106,10 +106,9 @@ export class TextButton extends TextBox {
   restoreSize() {
     let split = this.font.split(" ")[1].split("px");
     let value = +split[0];
-    if (value > 45) {
+    if (value > this.originalSize) {
       value -= 1;
       this.font = "200 " + value + "px Georgia";
-      console.log(this.font);
     }
   }
 }
