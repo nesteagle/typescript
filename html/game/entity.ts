@@ -389,7 +389,6 @@ export class Archer extends Entity {
 function isUpgraded(upgrade) {
   for (let i = 0; i < upgrades.length; i++) {
     if (upgrades[i][0] == upgrade) {
-      console.log(upgrade, upgrades[i][1]);
       return upgrades[i][1];
     }
   }

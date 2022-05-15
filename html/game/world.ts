@@ -12,26 +12,21 @@ eventListener.addEventListener(
     selectable = [Spearman, Swordsman];
     enemyselectable = [Spearman, Swordsman, Archer];
     for (let i = 4; i < upgrades.length; i++) {
-      console.log(selectable.indexOf(Archer));
       switch (upgrades[i][0]) {
         case "Archery":
-          if (selectable.indexOf(Archer) == -1) {
-            selectable.push(Archer);
-            cooldownTable.push(1.5);
-            break;
-          }
+          selectable.push(Archer);
+          cooldownTable.push(1.5);
+          break;
+
         case "Polearms":
-          if (selectable.indexOf(Halberdier) == -1) {
-            selectable.push(Halberdier);
-            cooldownTable.push(1.6);
-            break;
-          }
+          selectable.push(Halberdier);
+          cooldownTable.push(1.6);
+          break;
+
         case "Horsemanship":
-          if (selectable.indexOf(MountedSpearman) == -1) {
-            selectable.push(MountedSpearman);
-            cooldownTable.push(1);
-            break;
-          }
+          selectable.push(MountedSpearman);
+          cooldownTable.push(1);
+          break;
       }
     }
     box = new Text(10, 100, "", "25px Georgia", false, "start");
@@ -57,7 +52,7 @@ let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
 let selectable: Array<any> = [];
 let enemyselectable: Array<any> = [];
-let cooldownTable: Array<number> = [2, 1.7, 1.5]; //FIND SOLUTION TO ENEMY COOLDOWN
+let cooldownTable: Array<number> = [2.3, 1.7, 1.5]; //FIND SOLUTION TO ENEMY COOLDOWN
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let selected: number = 0;
@@ -96,7 +91,6 @@ function KeyInput(event: KeyboardEvent) {
         for (let i = 0; i < cooldownbars.length; i++) {
           cooldownbars[i][1] = -90;
         }
-        console.log(laneWeight);
       }
       break;
     case "Left":
@@ -121,15 +115,28 @@ function updateProjectiles(): void {
     projectiles[i].yv += 0.09;
     projectiles[i].draw();
     for (let j in entities) {
-      if (
-        Math.abs(projectiles[i].x - entities[j].x) < 20 &&
-        Math.abs(projectiles[i].y - entities[j].y - 16) < 18 &&
-        projectiles[i].lane == entities[j].lane &&
-        projectiles[i].parent.team !== entities[j].team
-      ) {
-        projectiles[i].parent.hasHit = true;
-        projectiles.splice(projectiles[i], 1);
-        break;
+      if (projectiles[i].parent.team == "left") {
+        if (
+          Math.abs(projectiles[i].x - entities[j].x) < 20 &&
+          Math.abs(projectiles[i].y - entities[j].y - 16) < 18 &&
+          projectiles[i].lane == entities[j].lane &&
+          projectiles[i].parent.team !== entities[j].team
+        ) {
+          projectiles[i].parent.hasHit = true;
+          projectiles.splice(projectiles[i], 1);
+          break;
+        }
+      } else {
+        if (
+          Math.abs(projectiles[i].x - entities[j].x) < 20 &&
+          Math.abs(projectiles[i].y - entities[j].y + 24) < 18 &&
+          projectiles[i].lane + 1 == entities[j].lane &&
+          projectiles[i].parent.team !== entities[j].team
+        ) {
+          projectiles[i].parent.hasHit = true;
+          projectiles.splice(projectiles[i], 1);
+          break;
+        }
       }
     }
     if (projectiles[i] && projectiles[i].lifetime <= 0) {
@@ -175,11 +182,11 @@ function updateEntities() {
           } else if (currentUnit.team == "right") {
             projectiles.push(
               new Projectile(
-                currentUnit.x + 12,
-                currentUnit.y + 20,
+                currentUnit.x + 24,
+                currentUnit.y - 40,
                 currentUnit.range,
                 currentUnit,
-                currentUnit.lane,
+                currentUnit.lane - 1,
                 Math.random() * -5 + 1.5,
                 -currentUnit.range / 12
               )
@@ -190,7 +197,7 @@ function updateEntities() {
         break;
       }
       if (entities[j].x < -50) {
-        if (entities[j].team == "left") laneWeight[entities[j].lane]--;
+        if (entities[j].team == "right") enemyWeight[entities[j].lane]--;
         entities.splice(entities.indexOf(entities[j]), 1);
         score -= entities[j].weight;
         break;
