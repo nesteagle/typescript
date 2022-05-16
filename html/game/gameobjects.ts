@@ -9,12 +9,12 @@ export class LaneArrow {
   constructor(lane, x?, y?) {
     this.lane = lane;
     this.x = 25;
-    this.y = this.lane * 80 + 200;
+    this.y = this.lane * 80 + 185;
   }
   move(direction): void {
     if (direction == "up" && this.lane !== 1) this.lane -= 1;
     if (direction == "down" && this.lane !== 8) this.lane += 1;
-    this.y = this.lane * 80 + 200;
+    this.y = this.lane * 80 + 185;
   }
   draw(): void {
     context.drawImage(image, 0, 0);

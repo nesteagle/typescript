@@ -86,7 +86,7 @@ function KeyInput(event: KeyboardEvent) {
       break;
     case " ":
       if (canSpawn == true) {
-        entities.push(new selectable[selected](-25, lane.y - 16, "left"));
+        entities.push(new selectable[selected](-25, lane.y + 15, "left"));
         laneWeight[lane.lane] += entities[entities.length - 1].weight;
         canSpawn = false;
         for (let i = 0; i < cooldownbars.length; i++) {
@@ -117,8 +117,8 @@ function updateProjectiles(): void {
     projectiles[i].draw();
     for (let j in entities) {
       if (
-        Math.abs(projectiles[i].x - entities[j].x) < 30 &&
-        Math.abs(projectiles[i].y - entities[j].y) < 22 &&
+        Math.abs(projectiles[i].x - entities[j].x) < 15 &&
+        Math.abs(projectiles[i].y - entities[j].y) < 19.5 &&
         projectiles[i].lane == entities[j].lane &&
         projectiles[i].parent.team !== entities[j].team
       ) {
@@ -161,17 +161,8 @@ function updateEntities() {
         if (currentUnit.name == "Archer" && currentUnit.state == "move") {
           let direction: number;
           currentUnit.team == "left" ? (direction = currentUnit.range / 15) : (direction = -currentUnit.range / 15);
-          console.log(currentUnit, direction);
           projectiles.push(
-            new Projectile(
-              currentUnit.x + 12,
-              currentUnit.y + 20,
-              currentUnit.range,
-              currentUnit,
-              currentUnit.lane,
-              Math.random() * -5 + 1.5,
-              direction
-            )
+            new Projectile(currentUnit.x, currentUnit.y, currentUnit.range, currentUnit, currentUnit.lane, Math.random() * -5 + 1.5, direction)
           );
         }
         currentUnit.attack(entities[j]);
@@ -195,11 +186,11 @@ function updateEntities() {
 function checkScore(): void {
   if (score > 100) {
     alert("LEFT SIDE VICTORY!");
-    window.cancelAnimationFrame(windowID);
+    window.cancelAnimationFrame(windowID); //return to menu here
   }
   if (score < 0) {
     alert("RIGHT SIDE VICTORY!");
-    window.cancelAnimationFrame(windowID);
+    window.cancelAnimationFrame(windowID); //return to menu here
   }
 }
 function checkEnemy(): void {
@@ -210,7 +201,7 @@ function checkEnemy(): void {
     if (enemyCanSpawn == true) {
       enemySelected = Math.round(Math.random()); //enemy selects a random unit between 0 and 1
       let random = Math.round(Math.random() * 7 + 1);
-      entities.push(new enemyselectable[enemySelected](1225, random * 80 + 184, "right"));
+      entities.push(new enemyselectable[enemySelected](1225, random * 80 + 200, "right"));
       enemyWeight[random] += entities[entities.length - 1].weight;
       enemyCanSpawn = false;
       for (let k = 0; k < enemycooldownbars.length; k++) {
@@ -226,25 +217,25 @@ function checkEnemy(): void {
         if (laneWeight[j] > enemyWeight[j]) {
           enemySelected = calculatePriorities(laneWeight, j);
           if (enemyCanSpawn == true) {
-            entities.push(new enemyselectable[enemySelected](1225, j * 80 + 184, "right"));
+            entities.push(new enemyselectable[enemySelected](1225, j * 80 + 200, "right"));
             enemyWeight[j] += entities[entities.length - 1].weight;
             enemyCanSpawn = false;
             for (let k = 0; k < enemycooldownbars.length; k++) {
               enemycooldownbars[k][1] = -90;
             }
-            break;
+            return;
           }
         } else {
           if (enemyCanSpawn == true) {
             enemySelected = Math.round(Math.random());
             let random = Math.round(Math.random() * 7 + 1);
-            entities.push(new enemyselectable[enemySelected](1225, random * 80 + 184, "right"));
+            entities.push(new enemyselectable[enemySelected](1225, random * 80 + 200, "right"));
             enemyWeight[random] += entities[entities.length - 1].weight;
             enemyCanSpawn = false;
             for (let k = 0; k < enemycooldownbars.length; k++) {
               enemycooldownbars[k][1] = -90;
             }
-            break;
+            return;
           }
         }
       }
@@ -252,13 +243,14 @@ function checkEnemy(): void {
   }
 }
 function calculatePriorities(heaviest: Array<number>, index: number): number {
-  if (heaviest[index] <= 1) {
-    return 0;
-  } else if (heaviest[index] > 1 && heaviest[index] < 3) {
-    return 1;
-  } else if (heaviest[index] >= 3) {
-    return 2; //more if more units added later
-  }
+  return 2;
+  // if (heaviest[index] <= 1) {
+  //   return 0;
+  // } else if (heaviest[index] > 1 && heaviest[index] < 3) {
+  //   return 1;
+  // } else if (heaviest[index] >= 3) {
+  //   return 2; //more if more units added later
+  // }
 }
 function updateCooldown() {
   box.text = selectable[selected].name;

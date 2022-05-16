@@ -1,5 +1,4 @@
 import { upgrades } from "./menu";
-
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let arrow = document.getElementById("source2") as CanvasImageSource;
@@ -36,7 +35,7 @@ abstract class Entity {
     if (this.name == "Axeman") context.fillStyle = "rgb(128,0,0)";
     if (this.name == "Halberdier") context.fillStyle = "rgb(0,64,64)";
     if (this.name == "MountedSpearman") context.fillStyle = "rgb(64,0,64)";
-    context.fillRect(this.x + 25, this.y + 12, 20, 40);
+    context.fillRect(this.x, this.y - 20, 20, 40);
   }
 
   wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -72,7 +71,6 @@ export class Projectile {
     return (Math.atan2(2 * xv, 2 * -yv) * 180) / Math.PI;
   }
 }
-
 export class Swordsman extends Entity {
   constructor(
     public x: number,
@@ -109,7 +107,7 @@ export class Swordsman extends Entity {
     this.weight = 1;
     this.type = "Melee";
     this.name = "Swordsman";
-    this.lane = (this.y - 184) / 80;
+    this.lane = (this.y - 200) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -160,7 +158,7 @@ export class Spearman extends Entity {
     this.weight = 1;
     this.type = "Melee";
     this.name = "Spearman";
-    this.lane = (this.y - 184) / 80;
+    this.lane = (this.y - 200) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -211,7 +209,7 @@ export class Axeman extends Entity {
     this.weight = 2;
     this.type = "Melee";
     this.name = "Axeman";
-    this.lane = (this.y - 184) / 80;
+    this.lane = (this.y - 200) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -262,7 +260,7 @@ export class Halberdier extends Entity {
     this.weight = 2;
     this.type = "Melee";
     this.name = "Halberdier";
-    this.lane = (this.y - 184) / 80;
+    this.lane = (this.y - 200) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -313,7 +311,7 @@ export class MountedSpearman extends Entity {
     this.weight = 4;
     this.type = "Melee";
     this.name = "MountedSpearman";
-    this.lane = (this.y - 184) / 80;
+    this.lane = (this.y - 200) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
@@ -365,7 +363,7 @@ export class Archer extends Entity {
     this.type = "Ranged";
     this.name = "Archer";
     this.weight = 3;
-    this.lane = (this.y - 184) / 80;
+    this.lane = (this.y - 200) / 80;
   }
   attack(otherUnit) {
     if (this.state == "move") {
