@@ -33,7 +33,6 @@ eventListener.addEventListener(
     }
     box = new Text(10, 100, "", "25px Georgia", false, "start");
     enemybox = new Text(canvas.width - 10, 100, "", "25px Georgia", false, "end");
-
     for (let i = 0; i < selectable.length; i++) {
       cooldownbars.push([new CooldownBar(), -90]);
     }
@@ -243,14 +242,13 @@ function checkEnemy(): void {
   }
 }
 function calculatePriorities(heaviest: Array<number>, index: number): number {
-  return 2;
-  // if (heaviest[index] <= 1) {
-  //   return 0;
-  // } else if (heaviest[index] > 1 && heaviest[index] < 3) {
-  //   return 1;
-  // } else if (heaviest[index] >= 3) {
-  //   return 2; //more if more units added later
-  // }
+  if (heaviest[index] <= 1) {
+    return 0;
+  } else if (heaviest[index] > 1 && heaviest[index] < 3) {
+    return 1;
+  } else if (heaviest[index] >= 3) {
+    return 2; //more if more units added later
+  }
 }
 function updateCooldown() {
   box.text = selectable[selected].name;
