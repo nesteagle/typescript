@@ -89,7 +89,7 @@ export class Swordsman extends Entity {
   ) {
     super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 50;
-    this.speed = 4;
+    this.speed = 0.4;
     this.health = 140;
     this.strength = 20;
     this.armor = 5;
@@ -140,7 +140,7 @@ export class Spearman extends Entity {
   ) {
     super(x, y, team, health, speed, armor, strength, range, name, type, state, lane, weight);
     this.range = 80;
-    this.speed = 7;
+    this.speed = 0.7;
     this.health = 100;
     this.strength = 15;
     this.armor = 0;
