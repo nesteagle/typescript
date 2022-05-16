@@ -72,7 +72,6 @@ function update(): void {
   updateEntities();
   updateCooldown();
   context.restore();
-  checkScore();
 }
 function KeyInput(event: KeyboardEvent) {
   switch (event.key) {
@@ -112,7 +111,6 @@ function KeyInput(event: KeyboardEvent) {
         window.cancelAnimationFrame(windowID);
         paused = true;
       }
-      console.log(paused);
       break;
     default:
   }
@@ -183,19 +181,21 @@ function updateEntities() {
       if (entities[j].x < -50) {
         if (entities[j].team == "right") enemyWeight[entities[j].lane]--;
         entities.splice(entities.indexOf(entities[j]), 1);
-        score -= entities[j].weight;
+        checkScore(-entities[j].weight);
         continue;
       }
       if (entities[j].x > canvas.width + 50) {
         if (entities[j].team == "left") laneWeight[entities[j].lane]--;
         entities.splice(entities.indexOf(entities[j]), 1);
-        score += entities[j].weight;
+        checkScore(entities[j].weight);
         continue;
       }
     }
   }
 }
-function checkScore(): void {
+function checkScore(number): void {
+  score += number;
+  scoreBar.draw(score);
   if (score > 100) {
     alert("LEFT SIDE VICTORY!");
     window.cancelAnimationFrame(windowID); //return to menu here
@@ -292,4 +292,7 @@ function updateCooldown() {
       enemyCanSpawn = true;
     }
   }
+}
+function wait(ms: number) {
+  new Promise((resolve) => setTimeout(resolve, ms));
 }

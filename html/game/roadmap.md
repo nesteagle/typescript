@@ -1,12 +1,14 @@
 # Roadmap
 
-# PATCH EXISTING BUGS
+# PATCH EXISTING BUGS - patched all noticable bugs
 
 # UPGRADE IMPLEMENTATION FINISH - finished, if bugs patch them
 
 #GUI Improvements in-game, menu improvements - underway
 
 #Tweens for gui and better interface - underway
+
+## AI random wait system and better swapping
 
 ## Add animations - up soon
 
