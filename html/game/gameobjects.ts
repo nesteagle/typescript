@@ -58,6 +58,7 @@ export class Text {
     public font: string,
     public box: boolean,
     public alignment?: any,
+    public baseline?: any,
     public boxColor?: string
   ) {
     this.x = x;
@@ -67,11 +68,12 @@ export class Text {
     this.box = box;
     this.boxColor = boxColor;
     this.alignment = alignment;
+    this.baseline = baseline;
   }
   draw(): void {
     context.font = this.font;
     context.textAlign = this.alignment;
-    context.textBaseline = "hanging";
+    context.textBaseline = this.baseline;
     context.fillText(this.text, this.x, this.y);
     let measurements = context.measureText(this.text);
     let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);

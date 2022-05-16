@@ -31,8 +31,8 @@ eventListener.addEventListener(
           break;
       }
     }
-    box = new Text(10, 100, "", "25px Georgia", false, "start");
-    enemybox = new Text(canvas.width - 10, 100, "", "25px Georgia", false, "end");
+    box = new Text(10, 100, "", "25px Georgia", false, "start", "hanging");
+    enemybox = new Text(canvas.width - 10, 100, "", "25px Georgia", false, "end", "hanging");
     for (let i = 0; i < selectable.length; i++) {
       cooldownbars.push([new CooldownBar(), -90]);
     }
@@ -60,6 +60,7 @@ let enemySelected: number = 0;
 let canSpawn: boolean = false;
 let enemyCanSpawn: boolean = false;
 let windowID: number;
+let paused: boolean;
 function update(): void {
   windowID = window.requestAnimationFrame(update);
   context.save();
@@ -100,6 +101,18 @@ function KeyInput(event: KeyboardEvent) {
     case "Right":
     case "ArrowRight":
       selected == selectable.length - 1 ? (selected = 0) : (selected += 1);
+      break;
+    case "p":
+      if (paused === true) {
+        windowID = window.requestAnimationFrame(update);
+        paused = false;
+      } else {
+        let pausedText = new Text(canvas.width / 2, canvas.height / 2, "Paused", "50px Georgia", false, "center", "middle"); //create screen here
+        pausedText.draw();
+        window.cancelAnimationFrame(windowID);
+        paused = true;
+      }
+      console.log(paused);
       break;
     default:
   }
