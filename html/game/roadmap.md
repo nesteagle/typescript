@@ -1,8 +1,6 @@
 # Roadmap
 
-# PATCH EXISTING BUGS - patched all noticable bugs
-
-# UPGRADE IMPLEMENTATION FINISH - finished, if bugs patch them
+# Merge Upgrade Tree and upgrade system
 
 #GUI Improvements in-game, menu improvements - underway
 
