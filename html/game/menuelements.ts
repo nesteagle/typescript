@@ -193,3 +193,16 @@ export class Background {
     }
   }
 }
+export class Box {
+  constructor(public x, public y, public width, public height, public fillStyle?) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.fillStyle == undefined ? (this.fillStyle = "black") : (this.fillStyle = fillStyle);
+  }
+  draw() {
+    context.fillStyle = this.fillStyle;
+    context.fillRect(this.x, this.y, this.width, this.height);
+  }
+}
