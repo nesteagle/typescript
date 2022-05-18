@@ -174,24 +174,25 @@ export class TreeBox extends UpgradeBox {
     context.fillStyle = "black";
     context.strokeRect(this.x - 5, this.y - 5, this.width, this.height);
     if (this.selected == true) {
-      context.font = 40 * (this.width / 400) + "px Georgia";
-      context.fillText(this.upgrade + ":", this.x + 10, this.y + 25);
+      context.font = 28 * (this.width / 300) + "px Georgia";
+      context.fillText(this.upgrade + ":", this.x + 5, this.y + 25);
       switch (this.upgrade) {
         case "Archery":
-          context.font = 20 * (this.width / 400) + "px Georgia";
-          context.fillText("The ability to shoot arrows. Grants Archer.", this.x + 10, this.y + 70);
-          context.font = 18 * (this.width / 400) + "px Georgia";
-          context.fillText("Upgrade Archery to improve Archer accuracy.", this.x + 10, this.y + 110);
+          context.font = 15.5 * (this.width / 300) + "px Georgia";
+          context.fillText("The ability to shoot arrows. Grants Archer.", this.x + 5, this.y + 70);
+          context.font = 14 * (this.width / 300) + "px Georgia";
+          context.fillText("Upgrade Archery to improve Archer accuracy.", this.x + 5, this.y + 110);
           break;
         case "Polearms":
-          context.font = 18 * (this.width / 400) + "px Georgia";
-          context.fillText("The ability to use halberds. Unlocks Halberdier.", this.x + 10, this.y + 70);
-          context.font = 14 * (this.width / 400) + "px Georgia";
-          context.fillText("Upgrade Polearms to improve damage done with Halberdier.", this.x + 10, this.y + 110);
+          context.font = 13.5 * (this.width / 300) + "px Georgia";
+          context.fillText("The ability to use halberds. Unlocks Halberdier.", this.x + 5, this.y + 70);
+          context.font = 10.5 * (this.width / 300) + "px Georgia";
+          context.fillText("Upgrade Polearms to improve damage done with Halberdier.", this.x + 5, this.y + 100);
           break;
       }
     } else {
-      context.fillText(this.upgrade, this.x, this.y + 70);
+      context.font = 28 * (this.width / 125) + "px Georgia";
+      context.fillText(this.upgrade, this.x + 2, this.y + 70, 125);
     }
     context.translate(-scrollOffset[0], -scrollOffset[1]);
   }
@@ -214,21 +215,21 @@ export class TreeBox extends UpgradeBox {
       mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
       mousePos.y < this.y + scrollOffset[1] + this.height + 10
     ) {
-      if (this.width < 400) {
-        this.width += (400 / this.width) * 6;
+      if (this.width < 300) {
+        this.width += (300 / this.width) * 10;
       }
-      if (this.height < 247) {
-        this.height += (247 / this.height) * 3.7;
+      if (this.height < 185) {
+        this.height += (185 / this.height) * 6.18;
       }
       return true;
     }
   }
   restoreSize() {
     if (this.width > 140) {
-      this.width -= (this.width / 140) * 6;
+      this.width -= (this.width / 140) * 10;
     }
     if (this.height > 140) {
-      this.height -= (this.height / 140) * 3.7;
+      this.height -= (this.height / 140) * 6.18;
     }
   }
 }
