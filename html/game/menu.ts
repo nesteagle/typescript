@@ -6,6 +6,7 @@ let currency: number = 160000;
 let exp: number = 4000;
 let windowID: number;
 let textbox;
+let mousePos;
 menu.style.display = "block";
 game.style.display = "none";
 export let upgrades: Array<any> = [
@@ -32,6 +33,24 @@ function update() {
   context.fillStyle = "black";
   context.save();
   background.draw();
+  if (mousePos !== undefined) {
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].type == "Button") {
+        if (elements[i].hoveredOver(mousePos) !== true) {
+          elements[i].restoreSize();
+        }
+      }
+      if (elements[i].type == "UpgradeTree") {
+        if (elements[i].hoveredOver(mousePos) == true) {
+          elements[i].selected = true;
+        } else {
+          elements[i].restoreSize();
+          elements[i].selected = false;
+        }
+      }
+    }
+  }
+
   for (let i = 0; i < elements.length; i++) {
     elements[i].draw();
   }
@@ -49,19 +68,12 @@ function hasPurchased(index) {
   return false;
 }
 menu.addEventListener("mousemove", function (event) {
-  let mousePos = getMousePos(menu, event);
-  for (let i = 0; i < elements.length; i++) {
-    if (elements[i].type == "Button") {
-      if (elements[i].hoveredOver(mousePos) !== true) {
-        elements[i].restoreSize();
-      }
-    }
-  }
+  mousePos = getMousePos(menu, event);
 });
 menu.addEventListener(
   "click",
   function (event) {
-    let mousePos = getMousePos(menu, event);
+    mousePos = getMousePos(menu, event);
     console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].type == "Upgrade") {

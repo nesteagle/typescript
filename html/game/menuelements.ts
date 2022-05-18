@@ -153,12 +153,17 @@ export class UpgradeBox {
   }
 }
 export class TreeBox extends UpgradeBox {
-  constructor(public x, public y, public upgrade, public font?, public path?, public type?, public text?) {
+  constructor(public x, public y, public upgrade, public font?, public path?, public type?, private width?, private height?, public selected?) {
     super(x, y, upgrade, font, type);
     this.path = path;
     this.type = "UpgradeTree";
+    this.width = 140;
+    this.height = 140;
   }
   draw(): void {
+    if (this.selected == true) {
+      console.log(this.selected);
+    }
     context.fillStyle = "rgb(100,70,40)";
     for (let i = 4; i < upgrades.length; i++) {
       if (upgrades[i][0] == this.upgrade) {
@@ -167,8 +172,9 @@ export class TreeBox extends UpgradeBox {
     }
     context.font = this.font;
     context.textBaseline = "middle";
-    context.fillRect(this.x - 5, this.y - 5, 140, 140);
+    context.fillRect(this.x - 5, this.y - 5, this.width, this.height);
     context.fillStyle = "black";
+    context.strokeRect(this.x - 5, this.y - 5, this.width, this.height);
     context.fillText(this.upgrade, this.x, this.y + 70);
   }
   detectClick(mousePos: any): boolean {
@@ -176,6 +182,25 @@ export class TreeBox extends UpgradeBox {
     if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + 140 && mousePos.y < this.y + 140) {
       return true;
     } else {
+    }
+  }
+  hoveredOver(mousePos) {
+    if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + this.width + 10 && mousePos.y < this.y + this.height + 10) {
+      if (this.width < 400) {
+        this.width += (400 / this.width) * 6;
+      }
+      if (this.height < 247) {
+        this.height += (247 / this.height) * 3.7;
+      }
+      return true;
+    }
+  }
+  restoreSize() {
+    if (this.width > 140) {
+      this.width -= (this.width / 140) * 6;
+    }
+    if (this.height > 140) {
+      this.height -= (this.height / 140) * 3.7;
     }
   }
 }
