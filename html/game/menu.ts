@@ -105,11 +105,11 @@ menu.addEventListener(
             upgrades.push([elements[i].upgrade, 0]);
             switch (elements[i].path) {
               case "ranged1":
-                // elements.push(new TreeBox(350, 100, "Crossbows", "28px Georgia", "ranged3"));
-                // elements.push(new TreeBox(350, 300, "Longbows", "28px Georgia", "ranged2"));
+                elements.push(new TreeBox(600, 50, "Crossbows", "28px Georgia", "ranged3"));
+                elements.push(new TreeBox(600, 350, "Longbows", "28px Georgia", "ranged2"));
                 break;
               case "melee1":
-                elements.push(new TreeBox(350, 500, "Axes", "28px Georgia", "melee2"));
+                elements.push(new TreeBox(600, 500, "Axes", "28px Georgia", "melee2"));
                 break;
               case "melee2":
                 elements.push(new TreeBox(550, 500, "Horsemanship", "28px Georgia", "melee3"));
@@ -153,8 +153,8 @@ menu.addEventListener(
             case "upgrade2":
               elements = [
                 new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "upgrade1"),
-                new TreeBox(150, 300, "Archery", "28px Georgia", "ranged1"),
-                new TreeBox(150, 500, "Polearms", "28px Georgia", "melee1"),
+                new TreeBox(150, 350, "Archery", "28px Georgia", "ranged1"),
+                new TreeBox(150, 700, "Polearms", "28px Georgia", "melee1"),
                 new TextBox(150, 150, `xp:${exp}`, "200 35px Georgia", false),
               ];
               for (let i = 4; i < upgrades.length; i++) {

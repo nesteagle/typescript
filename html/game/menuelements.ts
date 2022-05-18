@@ -161,9 +161,6 @@ export class TreeBox extends UpgradeBox {
     this.height = 140;
   }
   draw(): void {
-    if (this.selected == true) {
-      console.log(this.selected);
-    }
     context.fillStyle = "rgb(100,70,40)";
     for (let i = 4; i < upgrades.length; i++) {
       if (upgrades[i][0] == this.upgrade) {
@@ -175,7 +172,26 @@ export class TreeBox extends UpgradeBox {
     context.fillRect(this.x - 5, this.y - 5, this.width, this.height);
     context.fillStyle = "black";
     context.strokeRect(this.x - 5, this.y - 5, this.width, this.height);
-    context.fillText(this.upgrade, this.x, this.y + 70);
+    if (this.selected == true) {
+      context.font = 40 * (this.width / 400) + "px Georgia";
+      context.fillText(this.upgrade + ":", this.x + 10, this.y + 25);
+      switch (this.upgrade) {
+        case "Archery":
+          context.font = 20 * (this.width / 400) + "px Georgia";
+          context.fillText("The ability to shoot arrows. Grants Archer.", this.x + 10, this.y + 70);
+          context.font = 18 * (this.width / 400) + "px Georgia";
+          context.fillText("Upgrade Archery to improve Archer accuracy.", this.x + 10, this.y + 110);
+          break;
+        case "Polearms":
+          context.font = 18 * (this.width / 400) + "px Georgia";
+          context.fillText("The ability to use halberds. Unlocks Halberdier.", this.x + 10, this.y + 70);
+          context.font = 14 * (this.width / 400) + "px Georgia";
+          context.fillText("Upgrade Polearms to improve damage done with Halberdier.", this.x + 10, this.y + 110);
+          break;
+      }
+    } else {
+      context.fillText(this.upgrade, this.x, this.y + 70);
+    }
   }
   detectClick(mousePos: any): boolean {
     context.font = this.font;
