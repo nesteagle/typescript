@@ -6,7 +6,6 @@ let currency: number = 160000;
 let exp: number = 4000;
 let windowID: number;
 let textbox;
-let openGUI: Array<any> = [];
 menu.style.display = "block";
 game.style.display = "none";
 export let upgrades: Array<any> = [
@@ -36,9 +35,7 @@ function update() {
   for (let i = 0; i < elements.length; i++) {
     elements[i].draw();
   }
-  for (let i = 0; i < openGUI.length; i++) {
-    openGUI[i].draw();
-  }
+
   context.restore();
 }
 update();
@@ -57,13 +54,6 @@ menu.addEventListener("mousemove", function (event) {
     if (elements[i].type == "Button") {
       if (elements[i].hoveredOver(mousePos) !== true) {
         elements[i].restoreSize();
-      }
-    }
-  }
-  for (let j = 0; j < openGUI.length; j++) {
-    if (openGUI[j].type == "Button") {
-      if (openGUI[j].hoveredOver(mousePos) !== true) {
-        openGUI[j].restoreSize();
       }
     }
   }
@@ -103,8 +93,6 @@ menu.addEventListener(
             upgrades.push([elements[i].upgrade, 0]);
             switch (elements[i].path) {
               case "ranged1":
-                openGUI.push(new Box(400, 400, 600, 400, "rgb(70,70,100)"));
-                openGUI.push(new TextButton(400, 400, "Buy", "25px Georgia", true, "null", "null", "rgb(100,150,100)"));
                 // elements.push(new TreeBox(350, 100, "Crossbows", "28px Georgia", "ranged3"));
                 // elements.push(new TreeBox(350, 300, "Longbows", "28px Georgia", "ranged2"));
                 break;
