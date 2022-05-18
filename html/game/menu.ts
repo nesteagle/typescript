@@ -7,6 +7,11 @@ let exp: number = 4000;
 let windowID: number;
 let textbox;
 let mousePos;
+let scrollxv = 0;
+let scrollyv = 0;
+export let scrollOffset = [0, 0];
+let isScrolling = false;
+window.addEventListener("keydown", KeyInput, false);
 menu.style.display = "block";
 game.style.display = "none";
 export let upgrades: Array<any> = [
@@ -32,6 +37,10 @@ function update() {
   windowID = window.requestAnimationFrame(update);
   context.fillStyle = "black";
   context.save();
+  scrollxv *= 0.93;
+  scrollyv *= 0.93;
+  scrollOffset[0] += scrollxv;
+  scrollOffset[1] += scrollyv;
   background.draw();
   if (mousePos !== undefined) {
     for (let i = 0; i < elements.length; i++) {
@@ -50,11 +59,9 @@ function update() {
       }
     }
   }
-
   for (let i = 0; i < elements.length; i++) {
     elements[i].draw();
   }
-
   context.restore();
 }
 update();
@@ -105,20 +112,20 @@ menu.addEventListener(
             upgrades.push([elements[i].upgrade, 0]);
             switch (elements[i].path) {
               case "ranged1":
-                elements.push(new TreeBox(600, 50, "Crossbows", "28px Georgia", "ranged3"));
-                elements.push(new TreeBox(600, 350, "Longbows", "28px Georgia", "ranged2"));
+                elements.push(new TreeBox(600, 25, "Crossbows", "28px Georgia", "ranged3"));
+                elements.push(new TreeBox(600, 300, "Longbows", "28px Georgia", "ranged2"));
                 break;
               case "melee1":
-                elements.push(new TreeBox(600, 500, "Axes", "28px Georgia", "melee2"));
+                elements.push(new TreeBox(600, 600, "Axes", "28px Georgia", "melee2"));
                 break;
               case "melee2":
-                elements.push(new TreeBox(550, 500, "Horsemanship", "28px Georgia", "melee3"));
+                elements.push(new TreeBox(1050, 600, "Horsemanship", "28px Georgia", "melee3"));
                 break;
               case "ranged2":
-                elements.push(new TreeBox(550, 300, "longbowpath", "28px Georgia", "ranged3"));
+                elements.push(new TreeBox(1050, 300, "longbowpath", "28px Georgia", "ranged3"));
                 break;
               case "ranged3":
-                elements.push(new TreeBox(550, 100, "crossbowpath", "28px Georgia", "ranged2"));
+                elements.push(new TreeBox(1050, 25, "crossbowpath", "28px Georgia", "ranged2"));
                 break;
             }
           }
@@ -153,9 +160,9 @@ menu.addEventListener(
             case "upgrade2":
               elements = [
                 new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "upgrade1"),
-                new TreeBox(150, 350, "Archery", "28px Georgia", "ranged1"),
-                new TreeBox(150, 700, "Polearms", "28px Georgia", "melee1"),
-                new TextBox(150, 150, `xp:${exp}`, "200 35px Georgia", false),
+                new TreeBox(150, 300, "Archery", "28px Georgia", "ranged1"),
+                new TreeBox(150, 600, "Polearms", "28px Georgia", "melee1"),
+                new TextBox(50, 50, `xp:${exp}`, "200 35px Georgia", false),
               ];
               for (let i = 4; i < upgrades.length; i++) {
                 switch (upgrades[i][0]) {
@@ -176,8 +183,9 @@ menu.addEventListener(
                     elements.push(new TreeBox(550, 100, "crossbowpath", "28px Georgia", "ranged2"));
                     break;
                 }
-                console.log(elements);
               }
+              isScrolling = true;
+              scrollOffset = [0, 0];
               textbox = elements[elements.length - 1];
               break;
             case "upgrade3":
@@ -197,3 +205,30 @@ menu.addEventListener(
   },
   false
 );
+function KeyInput(event: KeyboardEvent) {
+  if (isScrolling == true) {
+    switch (event.key) {
+      case "Up":
+      case "ArrowUp":
+        scrollyv += 2;
+        break;
+      case "Down":
+      case "ArrowDown":
+        scrollyv -= 2;
+        break;
+      case "Left":
+      case "ArrowLeft":
+        scrollxv += 2;
+        break;
+      case "Right":
+      case "ArrowRight":
+        scrollxv -= 2;
+        break;
+      case "r":
+        scrollOffset = [0, 0];
+        scrollxv = 0;
+        scrollyv = 0;
+        break;
+    }
+  }
+}

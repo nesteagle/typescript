@@ -4,7 +4,7 @@ let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
 import { customEvent } from "./world";
-import { upgrades } from "./menu";
+import { upgrades, scrollOffset } from "./menu";
 let eventListener: any = document.getElementById("listener");
 export class TextBox {
   constructor(
@@ -161,6 +161,7 @@ export class TreeBox extends UpgradeBox {
     this.height = 140;
   }
   draw(): void {
+    context.translate(scrollOffset[0], scrollOffset[1]);
     context.fillStyle = "rgb(100,70,40)";
     for (let i = 4; i < upgrades.length; i++) {
       if (upgrades[i][0] == this.upgrade) {
@@ -192,16 +193,27 @@ export class TreeBox extends UpgradeBox {
     } else {
       context.fillText(this.upgrade, this.x, this.y + 70);
     }
+    context.translate(-scrollOffset[0], -scrollOffset[1]);
   }
   detectClick(mousePos: any): boolean {
     context.font = this.font;
-    if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + 140 && mousePos.y < this.y + 140) {
+    if (
+      mousePos.x + scrollOffset[0] > this.x + scrollOffset[0] - 5 &&
+      mousePos.y + scrollOffset[1] > this.y + scrollOffset[1] - 5 &&
+      mousePos.x + scrollOffset[0] < this.x + scrollOffset[0] + 140 &&
+      mousePos.y + scrollOffset[1] < this.y + scrollOffset[1] + 140
+    ) {
       return true;
     } else {
     }
   }
   hoveredOver(mousePos) {
-    if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + this.width + 10 && mousePos.y < this.y + this.height + 10) {
+    if (
+      mousePos.x > this.x - 5 + scrollOffset[0] &&
+      mousePos.y > this.y - 5 + scrollOffset[1] &&
+      mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
+      mousePos.y < this.y + scrollOffset[1] + this.height + 10
+    ) {
       if (this.width < 400) {
         this.width += (400 / this.width) * 6;
       }
