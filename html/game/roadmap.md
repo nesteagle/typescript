@@ -1,10 +1,12 @@
 # Roadmap
 
-# Merge Upgrade Tree and upgrade system
+# Merge Upgrade Tree and upgrade system-- Almost complete
 
 #GUI Improvements in-game, menu improvements - underway
 
 #Tweens for gui and better interface - underway
+
+## Improve Upgrade tree and add more settings
 
 ## AI random wait system and better swapping
 
