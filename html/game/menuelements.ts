@@ -70,7 +70,6 @@ export class TextButton extends TextBox {
       mousePos.y < this.y + height + 10
     ) {
       if (this.event == "menu") {
-        console.log(this.path);
         return true;
       } else if (this.event == "play") {
         eventListener.dispatchEvent(customEvent);
@@ -78,7 +77,6 @@ export class TextButton extends TextBox {
         menu.style.display = "none";
         return;
       }
-      console.log("in bounds");
       return true;
     } else {
     }
@@ -124,7 +122,7 @@ export class UpgradeBox {
   }
   draw(): void {
     context.translate(scrollOffset[0], scrollOffset[1]);
-    context.fillStyle = "rgb(100,70,40)";
+    context.fillStyle = "rgb(115,85,50)";
     for (let i = 0; i < upgrades.length; i++) {
       if (upgrades[i][0] == this.upgrade) {
         context.fillStyle = "rgb(140,110,80)";

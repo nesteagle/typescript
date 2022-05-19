@@ -66,7 +66,6 @@ function update() {
 update();
 function hasPurchased(index) {
   for (let i = 0; i < upgrades.length; i++) {
-    console.log(upgrades[i][0], elements[index].upgrade, elements[index].upgrade == upgrades[i][0]);
     if (elements[index].upgrade == upgrades[i][0]) {
       return true;
     }
@@ -80,11 +79,9 @@ menu.addEventListener(
   "click",
   function (event) {
     mousePos = getMousePos(menu, event);
-    console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].type == "Upgrade") {
         if (elements[i].detectClick(mousePos) == true) {
-          console.log(elements[i]);
           if (hasPurchased(i) == false) {
             exp -= 100;
             expbox.text = `xp:${exp}`;
@@ -122,7 +119,6 @@ menu.addEventListener(
                 }
               }
             }
-            console.log(currency, upgrades);
             currencybox.text = `currency:${currency}`;
             currencybox.draw();
           }

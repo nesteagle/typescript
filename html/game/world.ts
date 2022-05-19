@@ -11,7 +11,7 @@ eventListener.addEventListener(
   function () {
     selectable = [Spearman, Swordsman];
     enemyselectable = [Spearman, Swordsman, Archer];
-    for (let i = 4; i < upgrades.length; i++) {
+    for (let i = 0; i < upgrades.length; i++) {
       switch (upgrades[i][0]) {
         case "Archery":
           selectable.push(Archer);
