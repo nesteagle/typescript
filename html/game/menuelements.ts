@@ -163,7 +163,7 @@ export class TreeBox extends UpgradeBox {
   draw(): void {
     context.translate(scrollOffset[0], scrollOffset[1]);
     context.fillStyle = "rgb(100,70,40)";
-    for (let i = 4; i < upgrades.length; i++) {
+    for (let i = 0; i < upgrades.length; i++) {
       if (upgrades[i][0] == this.upgrade) {
         context.fillStyle = "rgb(140,110,80)";
       }
@@ -178,46 +178,60 @@ export class TreeBox extends UpgradeBox {
       context.fillText(this.upgrade + ":", this.x + 5, this.y + 25);
       if (detectUpgrade(this.upgrade) !== false) {
         switch (this.upgrade) {
+          case "Spears":
+            context.font = 14.5 * (this.width / 300) + "px Georgia";
+            context.fillText("Basic spear-wielding unit. Great for getting", this.x + 5, this.y + 70);
+            context.fillText("across the map quickly. Also great in groups.", this.x + 5, this.y + 90);
+            context.font = 13.5 * (this.width / 300) + "px Georgia";
+            context.fillText("Upgrade to improve damage done by Spearman.", this.x + 5, this.y + 120);
+            break;
+          case "Swords":
+            context.font = 16 * (this.width / 300) + "px Georgia";
+            context.fillText("Basic melee unit. Strong against all", this.x + 5, this.y + 70);
+            context.fillText("melee units, weak against ranged units.", this.x + 5, this.y + 90);
+            context.font = 13 * (this.width / 300) + "px Georgia";
+            context.fillText("Upgrade to improve damage done by Swordsman.", this.x + 5, this.y + 120);
+            break;
           case "Archery":
             context.font = 16 * (this.width / 300) + "px Georgia";
             context.fillText("Basic bow-wielding unit. Shoots arrows.", this.x + 5, this.y + 70);
             context.font = 13.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade Archery to improve projectile accuracy.", this.x + 5, this.y + 110);
+            context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
             break;
           case "Polearms":
             context.font = 14 * (this.width / 300) + "px Georgia";
             context.fillText("The ability to use halberds: a heavy weapon", this.x + 5, this.y + 70);
             context.fillText("with long range. ", this.x + 5, this.y + 90);
             context.font = 10.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade Polearms to improve damage done with Halberdier.", this.x + 5, this.y + 120);
+            context.fillText("Upgrade to improve damage done by Halberdier.", this.x + 5, this.y + 120);
             break;
           case "Axes":
             context.font = 16 * (this.width / 300) + "px Georgia";
             context.fillText("Axemen are fearless and will charge ", this.x + 5, this.y + 70);
             context.fillText("at the enemy! ", this.x + 5, this.y + 90);
             context.font = 14 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade Axes to improve damage done with Axeman.", this.x + 5, this.y + 120);
+            context.fillText("Upgrade to improve damage done by Axeman.", this.x + 5, this.y + 120);
             break;
           case "Crossbows":
             context.font = 16 * (this.width / 300) + "px Georgia";
             context.fillText("Hits heavier than a bow at the cost", this.x + 5, this.y + 70);
             context.fillText("of its accuracy! ", this.x + 5, this.y + 90);
             context.font = 12 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade Crossbows to improve projectile accuracy.", this.x + 5, this.y + 120);
+            context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
             break;
           case "Longbows":
             context.font = 16 * (this.width / 300) + "px Georgia";
             context.fillText("Shoots farther than a bow, with more ", this.x + 5, this.y + 70);
             context.fillText("accuracy!", this.x + 5, this.y + 90);
             context.font = 12 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade Longbows to improve projectile accuracy.", this.x + 5, this.y + 120);
+            context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
             break;
           case "Horsemanship":
             context.font = 16 * (this.width / 300) + "px Georgia";
             context.fillText("Basic cavalry, fast unit, strong attack,", this.x + 5, this.y + 70);
             context.fillText("but less hitpoints.", this.x + 5, this.y + 90);
             context.font = 13.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Click here to unlock Horsemanship." + "add xp later", this.x + 5, this.y + 120);
+            context.fillText("Upgrade to increase damage done by Horseman.", this.x + 5, this.y + 120);
             break;
         }
         context.font = 15.5 * (this.width / 300) + "px Georgia";
