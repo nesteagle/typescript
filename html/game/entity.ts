@@ -275,7 +275,7 @@ export class Halberdier extends Entity {
     }
   }
 }
-export class MountedSpearman extends Entity {
+export class Horseman extends Entity {
   constructor(
     public x: number,
     public y: number,

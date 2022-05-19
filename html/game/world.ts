@@ -1,4 +1,4 @@
-import { Swordsman, Spearman, Archer, Axeman, Halberdier, MountedSpearman, Projectile } from "./entity";
+import { Swordsman, Spearman, Archer, Axeman, Halberdier, Horseman, Projectile } from "./entity";
 import { LaneArrow, ScoreBar, CooldownBar, Text } from "./gameobjects";
 import { upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
 let lane = new LaneArrow(1);
@@ -26,7 +26,7 @@ eventListener.addEventListener(
           cooldownTable.push(1.6);
           break;
         case "Horsemanship":
-          selectable.push(MountedSpearman);
+          selectable.push(Horseman);
           cooldownTable.push(1);
           break;
       }
