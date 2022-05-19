@@ -50,6 +50,7 @@ function update() {
         }
       }
       if (elements[i].type == "UpgradeTree") {
+        renderLines();
         if (elements[i].hoveredOver(mousePos) == true) {
           elements[i].selected = true;
         } else {
@@ -231,4 +232,20 @@ function KeyInput(event: KeyboardEvent) {
         break;
     }
   }
+}
+function renderLines() {
+  context.translate(scrollOffset[0], scrollOffset[1]);
+  for (let i = 0; i < elements.length; i++) {
+    for (let j = 0; j < elements.length; j++) {
+      if (elements[i].x == elements[j].x && elements[i].type == "UpgradeTree" && elements[j].type == "UpgradeTree") {
+        context.fillRect(elements[i].x + 60, elements[i].y, 10, elements[j].y - elements[i].y);
+        continue;
+      }
+      if (elements[i].y == elements[j].y && elements[i].type == "UpgradeTree" && elements[j].type == "UpgradeTree") {
+        context.fillRect(elements[i].x, elements[i].y + 60, elements[j].x - elements[i].x, 10);
+        continue;
+      }
+    }
+  }
+  context.translate(-scrollOffset[0], -scrollOffset[1]);
 }

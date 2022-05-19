@@ -6,7 +6,7 @@
 
 #Tweens for gui and better interface - underway
 
-## Improve Upgrade tree and add more settings
+## Improve Upgrade tree and add more settings -- Minimap
 
 ## AI random wait system and better swapping
 
