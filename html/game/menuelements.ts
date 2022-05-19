@@ -195,7 +195,7 @@ export class TreeBox extends UpgradeBox {
             context.font = 16 * (this.width / 300) + "px Georgia";
             context.fillText("Axemen are fearless and will charge ", this.x + 5, this.y + 70);
             context.fillText("at the enemy! ", this.x + 5, this.y + 90);
-            context.font = 10.5 * (this.width / 300) + "px Georgia";
+            context.font = 14 * (this.width / 300) + "px Georgia";
             context.fillText("Upgrade Axes to improve damage done with Axeman.", this.x + 5, this.y + 120);
             break;
           case "Crossbows":
@@ -214,8 +214,8 @@ export class TreeBox extends UpgradeBox {
             break;
           case "Horsemanship":
             context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Unlocks cavalry, a fast unit but with", this.x + 5, this.y + 70);
-            context.fillText("lower hitpoints. Unlocks Horseman.", this.x + 5, this.y + 90);
+            context.fillText("Basic cavalry, fast unit, strong attack,", this.x + 5, this.y + 70);
+            context.fillText("but less hitpoints.", this.x + 5, this.y + 90);
             context.font = 13.5 * (this.width / 300) + "px Georgia";
             context.fillText("Click here to unlock Horsemanship." + "add xp later", this.x + 5, this.y + 120);
             break;
@@ -260,8 +260,8 @@ export class TreeBox extends UpgradeBox {
             break;
           case "Horsemanship":
             context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Unlocks cavalry, a fast unit but with", this.x + 5, this.y + 70);
-            context.fillText("lower hitpoints. Unlocks Horseman.", this.x + 5, this.y + 90);
+            context.fillText("Basic cavalry, fast unit, strong attack,", this.x + 5, this.y + 70);
+            context.fillText("but less hitpoints. Unlocks Horseman.", this.x + 5, this.y + 90);
             context.font = 13.5 * (this.width / 300) + "px Georgia";
             context.fillText("Click here to unlock Horsemanship." + "add xp later", this.x + 5, this.y + 120);
             break;

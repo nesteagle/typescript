@@ -5,7 +5,7 @@ let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let currency: number = 160000;
 let exp: number = 4000;
 let windowID: number;
-let textbox;
+let expbox, currencybox;
 let mousePos;
 let scrollxv = 0;
 let scrollyv = 0;
@@ -98,8 +98,8 @@ menu.addEventListener(
             upgrades[i - 2][1]++;
             currency -= (upgrades[i - 2][1] + 1) * 400;
           }
-          textbox.text = `currency:${currency}`;
-          textbox.draw();
+          currencybox.text = `currency:${currency}`;
+          currencybox.draw();
           break;
         }
       }
@@ -108,8 +108,8 @@ menu.addEventListener(
           console.log(elements[i]);
           if (hasPurchased(i) == false) {
             exp -= 100;
-            textbox.text = `xp:${exp}`;
-            textbox.draw();
+            expbox.text = `xp:${exp}`;
+            expbox.draw();
             upgrades.push([elements[i].upgrade, 0]);
             switch (elements[i].path) {
               case "ranged1":
@@ -130,6 +130,22 @@ menu.addEventListener(
                 break;
             }
           } else {
+            for (let k = 0; k < upgrades.length; k++) {
+              if (upgrades[k][0] == elements[i].upgrade) {
+                if (upgrades[k][1] == 0) {
+                  if (currency > 400) {
+                    currency -= 400;
+                    upgrades[k][1]++;
+                  }
+                } else if (currency > (upgrades[k][1] + 1) * 400) {
+                  upgrades[k][1]++;
+                  currency -= (upgrades[k][1] + 1) * 400;
+                }
+              }
+            }
+            console.log(currency, upgrades);
+            currencybox.text = `currency:${currency}`;
+            currencybox.draw();
           }
         }
       }
@@ -165,6 +181,7 @@ menu.addEventListener(
                 new TreeBox(100, 300, "Archery", "28px Georgia", "ranged1"),
                 new TreeBox(100.1, 600, "Polearms", "28px Georgia", "melee1"),
                 new TextBox(50, 50, `xp:${exp}`, "200 35px Georgia", false),
+                new TextBox(50, 100, `currency:${currency}`, "200 35px Georgia", false),
               ];
               for (let i = 4; i < upgrades.length; i++) {
                 switch (upgrades[i][0]) {
@@ -188,7 +205,8 @@ menu.addEventListener(
               }
               isScrolling = true;
               scrollOffset = [0, 0];
-              textbox = elements[elements.length - 1];
+              expbox = elements[elements.length - 2];
+              currencybox = elements[elements.length - 1];
               break;
             case "upgrade3":
               elements = [
@@ -198,7 +216,7 @@ menu.addEventListener(
               for (i = 0; i < upgrades.length; i++) {
                 elements.push(new UpgradeBox(150, i * 50 + 300, upgrades[i][0], "200 25px Georgia"));
               }
-              textbox = elements[0];
+              currencybox = elements[0];
               break;
           }
         }
