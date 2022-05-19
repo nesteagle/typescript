@@ -92,20 +92,20 @@ menu.addEventListener(
             upgrades.push([elements[i].upgrade, 0]);
             switch (elements[i].path) {
               case "ranged1":
-                elements.push(new TreeBox(750, 50, "Crossbows", "28px Georgia", "ranged3"));
-                elements.push(new TreeBox(750, 300, "Longbows", "28px Georgia", "ranged2"));
+                elements.push(new TreeBox(750, 50, "Crossbows", "ranged3"));
+                elements.push(new TreeBox(750, 300, "Longbows", "ranged2"));
                 break;
               case "melee1":
-                elements.push(new TreeBox(750.1, 600, "Axes", "28px Georgia", "melee2"));
+                elements.push(new TreeBox(750.1, 600, "Axes", "melee2"));
                 break;
               case "melee2":
-                elements.push(new TreeBox(1100.1, 600, "Horsemanship", "28px Georgia", "melee3"));
+                elements.push(new TreeBox(1100.1, 600, "Horsemanship", "melee3"));
                 break;
               case "ranged2":
-                elements.push(new TreeBox(1100, 300, "longbowpath", "28px Georgia", "ranged3"));
+                elements.push(new TreeBox(1100, 300, "longbowpath", "ranged3"));
                 break;
               case "ranged3":
-                elements.push(new TreeBox(1099.9, 50, "crossbowpath", "28px Georgia", "ranged2"));
+                elements.push(new TreeBox(1099.9, 50, "crossbowpath", "ranged2"));
                 break;
             }
           } else {
@@ -156,30 +156,30 @@ menu.addEventListener(
             case "upgrade2":
               elements = [
                 new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "upgrade1"),
-                new TreeBox(400, 300, "Archery", "28px Georgia", "ranged1"),
-                new TreeBox(400.1, 600, "Polearms", "28px Georgia", "melee1"),
-                new TreeBox(50, 600, "Swords", "28px Georgia"),
-                new TreeBox(50, 300, "Spears", "28px Georgia"),
+                new TreeBox(400, 300, "Archery", "ranged1"),
+                new TreeBox(400.1, 600, "Polearms", "melee1"),
+                new TreeBox(50, 600, "Swords"),
+                new TreeBox(50, 300, "Spears"),
                 new TextBox(50, 50, `xp:${exp}`, "200 35px Georgia", false),
                 new TextBox(50, 100, `currency:${currency}`, "200 35px Georgia", false),
               ];
               for (let i = 4; i < upgrades.length; i++) {
                 switch (upgrades[i][0]) {
                   case "Archery":
-                    elements.push(new TreeBox(750, 50, "Crossbows", "28px Georgia", "ranged3"));
-                    elements.push(new TreeBox(750, 300, "Longbows", "28px Georgia", "ranged2"));
+                    elements.push(new TreeBox(750, 50, "Crossbows", "ranged3"));
+                    elements.push(new TreeBox(750, 300, "Longbows", "ranged2"));
                     break;
                   case "Polearms":
-                    elements.push(new TreeBox(750.1, 600, "Axes", "28px Georgia", "melee2"));
+                    elements.push(new TreeBox(750.1, 600, "Axes", "melee2"));
                     break;
                   case "Axes":
-                    elements.push(new TreeBox(1100.1, 600, "Horses", "28px Georgia", "melee3"));
+                    elements.push(new TreeBox(1100.1, 600, "Horses", "melee3"));
                     break;
                   case "Longbows":
-                    elements.push(new TreeBox(1100, 300, "longbowpath", "28px Georgia", "ranged3"));
+                    elements.push(new TreeBox(1100, 300, "longbowpath", "ranged3"));
                     break;
                   case "Crossbows":
-                    elements.push(new TreeBox(1099.9, 50, "crossbowpath", "28px Georgia", "ranged2"));
+                    elements.push(new TreeBox(1099.9, 50, "crossbowpath", "ranged2"));
                     break;
                 }
               }
