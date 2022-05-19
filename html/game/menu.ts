@@ -238,11 +238,19 @@ function renderLines() {
   for (let i = 0; i < elements.length; i++) {
     for (let j = 0; j < elements.length; j++) {
       if (elements[i].x == elements[j].x && elements[i].type == "UpgradeTree" && elements[j].type == "UpgradeTree") {
-        context.fillRect(elements[i].x + 60, elements[i].y, 10, elements[j].y - elements[i].y);
+        for (let k = 0; k < upgrades.length; k++) {
+          if (upgrades[k][0] == elements[i].upgrade) {
+            context.fillRect(elements[i].x + 60, elements[i].y, 10, elements[j].y - elements[i].y);
+          }
+        }
         continue;
       }
       if (elements[i].y == elements[j].y && elements[i].type == "UpgradeTree" && elements[j].type == "UpgradeTree") {
-        context.fillRect(elements[i].x, elements[i].y + 60, elements[j].x - elements[i].x, 10);
+        for (let k = 0; k < upgrades.length; k++) {
+          if (upgrades[k][0] == elements[i].upgrade) {
+            context.fillRect(elements[i].x, elements[i].y + 60, elements[j].x - elements[i].x, 10);
+          }
+        }
         continue;
       }
     }
