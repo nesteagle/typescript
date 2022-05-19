@@ -151,13 +151,13 @@ function updateEntities() {
     } else continue;
     if (currentUnit.health <= 0) {
       if (currentUnit.team == "left") {
-        entities.splice(entities.indexOf(currentUnit), 1);
         laneWeight[currentUnit.lane] -= entities[units].weight;
+        entities.splice(entities.indexOf(currentUnit), 1);
         continue;
       }
       if (currentUnit.team == "right") {
-        entities.splice(entities.indexOf(currentUnit), 1);
         enemyWeight[currentUnit.lane] -= entities[units].weight;
+        entities.splice(entities.indexOf(currentUnit), 1);
         continue;
       }
     }

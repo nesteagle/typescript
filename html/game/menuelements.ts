@@ -39,7 +39,6 @@ export class TextBox {
     context.fillText(this.text, this.x, this.y);
   }
 }
-
 export class TextButton extends TextBox {
   constructor(
     public x: number,
@@ -112,15 +111,14 @@ export class TextButton extends TextBox {
     }
   }
 }
-
-export class TreeBox {
+export class UpgradeBox {
   constructor(public x, public y, public upgrade, public path?, public type?, private width?, private height?, public selected?) {
     this.x = x;
     this.y = y;
     this.upgrade = upgrade;
     this.type = type;
     this.path = path;
-    this.type = "UpgradeTree";
+    this.type = "Upgrade";
     this.width = 140;
     this.height = 140;
   }

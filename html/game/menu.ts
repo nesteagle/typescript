@@ -1,4 +1,4 @@
-import { TextBox, TextButton, TreeBox, Background, Box } from "./menuelements";
+import { TextBox, TextButton, UpgradeBox, Background, Box } from "./menuelements";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
@@ -47,7 +47,7 @@ function update() {
           elements[i].restoreSize();
         }
       }
-      if (elements[i].type == "UpgradeTree") {
+      if (elements[i].type == "Upgrade") {
         renderLines();
         if (elements[i].hoveredOver(mousePos) == true) {
           elements[i].selected = true;
@@ -82,7 +82,7 @@ menu.addEventListener(
     mousePos = getMousePos(menu, event);
     console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
-      if (elements[i].type == "UpgradeTree") {
+      if (elements[i].type == "Upgrade") {
         if (elements[i].detectClick(mousePos) == true) {
           console.log(elements[i]);
           if (hasPurchased(i) == false) {
@@ -92,20 +92,20 @@ menu.addEventListener(
             upgrades.push([elements[i].upgrade, 0]);
             switch (elements[i].path) {
               case "ranged1":
-                elements.push(new TreeBox(750, 50, "Crossbows", "ranged3"));
-                elements.push(new TreeBox(750, 300, "Longbows", "ranged2"));
+                elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
+                elements.push(new UpgradeBox(750, 300, "Longbows", "ranged2"));
                 break;
               case "melee1":
-                elements.push(new TreeBox(750.1, 600, "Axes", "melee2"));
+                elements.push(new UpgradeBox(750.1, 600, "Axes", "melee2"));
                 break;
               case "melee2":
-                elements.push(new TreeBox(1100.1, 600, "Horsemanship", "melee3"));
+                elements.push(new UpgradeBox(1100.1, 600, "Horsemanship", "melee3"));
                 break;
               case "ranged2":
-                elements.push(new TreeBox(1100, 300, "longbowpath", "ranged3"));
+                elements.push(new UpgradeBox(1100, 300, "longbowpath", "ranged3"));
                 break;
               case "ranged3":
-                elements.push(new TreeBox(1099.9, 50, "crossbowpath", "ranged2"));
+                elements.push(new UpgradeBox(1099.9, 50, "crossbowpath", "ranged2"));
                 break;
             }
           } else {
@@ -156,30 +156,30 @@ menu.addEventListener(
             case "upgrade2":
               elements = [
                 new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "upgrade1"),
-                new TreeBox(400, 300, "Archery", "ranged1"),
-                new TreeBox(400.1, 600, "Polearms", "melee1"),
-                new TreeBox(50, 600, "Swords"),
-                new TreeBox(50, 300, "Spears"),
+                new UpgradeBox(400, 300, "Archery", "ranged1"),
+                new UpgradeBox(400.1, 600, "Polearms", "melee1"),
+                new UpgradeBox(50, 600, "Swords"),
+                new UpgradeBox(50, 300, "Spears"),
                 new TextBox(50, 50, `xp:${exp}`, "200 35px Georgia", false),
                 new TextBox(50, 100, `currency:${currency}`, "200 35px Georgia", false),
               ];
               for (let i = 4; i < upgrades.length; i++) {
                 switch (upgrades[i][0]) {
                   case "Archery":
-                    elements.push(new TreeBox(750, 50, "Crossbows", "ranged3"));
-                    elements.push(new TreeBox(750, 300, "Longbows", "ranged2"));
+                    elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
+                    elements.push(new UpgradeBox(750, 300, "Longbows", "ranged2"));
                     break;
                   case "Polearms":
-                    elements.push(new TreeBox(750.1, 600, "Axes", "melee2"));
+                    elements.push(new UpgradeBox(750.1, 600, "Axes", "melee2"));
                     break;
                   case "Axes":
-                    elements.push(new TreeBox(1100.1, 600, "Horses", "melee3"));
+                    elements.push(new UpgradeBox(1100.1, 600, "Horses", "melee3"));
                     break;
                   case "Longbows":
-                    elements.push(new TreeBox(1100, 300, "longbowpath", "ranged3"));
+                    elements.push(new UpgradeBox(1100, 300, "longbowpath", "ranged3"));
                     break;
                   case "Crossbows":
-                    elements.push(new TreeBox(1099.9, 50, "crossbowpath", "ranged2"));
+                    elements.push(new UpgradeBox(1099.9, 50, "crossbowpath", "ranged2"));
                     break;
                 }
               }
@@ -226,7 +226,7 @@ function renderLines() {
   context.translate(scrollOffset[0], scrollOffset[1]);
   for (let i = 0; i < elements.length; i++) {
     for (let j = 0; j < elements.length; j++) {
-      if (elements[i].x == elements[j].x && elements[i].type == "UpgradeTree" && elements[j].type == "UpgradeTree") {
+      if (elements[i].x == elements[j].x && elements[i].type == "Upgrade" && elements[j].type == "Upgrade") {
         for (let k = 0; k < upgrades.length; k++) {
           if (upgrades[k][0] == elements[i].upgrade) {
             context.fillRect(elements[i].x + 60, elements[i].y, 10, elements[j].y - elements[i].y);
@@ -234,7 +234,7 @@ function renderLines() {
         }
         continue;
       }
-      if (elements[i].y == elements[j].y && elements[i].type == "UpgradeTree" && elements[j].type == "UpgradeTree") {
+      if (elements[i].y == elements[j].y && elements[i].type == "Upgrade" && elements[j].type == "Upgrade") {
         for (let k = 0; k < upgrades.length; k++) {
           if (upgrades[k][0] == elements[i].upgrade) {
             context.fillRect(elements[i].x, elements[i].y + 60, elements[j].x - elements[i].x, 10);
