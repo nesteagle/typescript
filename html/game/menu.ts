@@ -1,4 +1,4 @@
-import { TextBox, TextButton, UpgradeBox, TreeBox, Background, Box } from "./menuelements";
+import { TextBox, TextButton, TreeBox, Background, Box } from "./menuelements";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
@@ -82,25 +82,6 @@ menu.addEventListener(
     mousePos = getMousePos(menu, event);
     console.log(mousePos);
     for (let i = 0; i < elements.length; i++) {
-      if (elements[i].type == "Upgrade") {
-        //Yes, I know that it counts when you click upgrade tree, I might implement it as a feature!
-        if (elements[i].detectClick(mousePos) == true) {
-          console.log(elements[i], upgrades[i - 2]);
-          if (upgrades[i - 2] === undefined) break;
-          if (upgrades[i - 2][1] == 0) {
-            if (currency > 400) {
-              currency -= 400;
-              upgrades[i - 2][1]++;
-            }
-          } else if (currency > (upgrades[i - 2][1] + 1) * 400) {
-            upgrades[i - 2][1]++;
-            currency -= (upgrades[i - 2][1] + 1) * 400;
-          }
-          currencybox.text = `currency:${currency}`;
-          currencybox.draw();
-          break;
-        }
-      }
       if (elements[i].type == "UpgradeTree") {
         if (elements[i].detectClick(mousePos) == true) {
           console.log(elements[i]);
@@ -170,7 +151,6 @@ menu.addEventListener(
               elements = [
                 new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "menu"),
                 new TextButton(150, 400, "Tech Tree", "200 40px Georgia", true, "menu", "upgrade2"),
-                new TextButton(150, 500, "My Upgrades", "200 40px Georgia", true, "menu", "upgrade3"),
               ];
               break;
             case "upgrade2":
@@ -207,16 +187,6 @@ menu.addEventListener(
               scrollOffset = [0, 0];
               expbox = elements[elements.length - 2];
               currencybox = elements[elements.length - 1];
-              break;
-            case "upgrade3":
-              elements = [
-                new TextBox(150, 250, `currency:${currency}`, "200 35px Georgia", false),
-                new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "upgrade1"),
-              ];
-              for (i = 0; i < upgrades.length; i++) {
-                elements.push(new UpgradeBox(150, i * 50 + 300, upgrades[i][0], "200 25px Georgia"));
-              }
-              currencybox = elements[0];
               break;
           }
         }

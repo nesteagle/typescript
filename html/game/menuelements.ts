@@ -113,48 +113,12 @@ export class TextButton extends TextBox {
   }
 }
 
-export class UpgradeBox {
-  constructor(public x, public y, public upgrade, public font?, public type?, public text?) {
+export class TreeBox {
+  constructor(public x, public y, public upgrade, public path?, public type?, private width?, private height?, public selected?) {
     this.x = x;
     this.y = y;
     this.upgrade = upgrade;
-    this.font = font;
-    this.type = "Upgrade";
-  }
-  draw(): void {
-    context.font = this.font;
-    context.fillStyle = "black";
-    for (let i = 0; i < upgrades.length; i++) {
-      if (upgrades[i][0] == this.upgrade) {
-        context.fillText(`Upgrade ${this.upgrade}:${(upgrades[i][1] + 1) * 400}, ${upgrades[i][1]} upgrades`, this.x + 55, this.y);
-      }
-    }
-    context.fillText("Buy", this.x, this.y);
-    let measurements = context.measureText("Buy");
-    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
-    context.fillStyle = "rgb(100,100,100)";
-    context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
-    context.fillStyle = "black";
-    context.fillText("Buy", this.x, this.y);
-  }
-  detectClick(mousePos): boolean {
-    context.font = this.font;
-    let measurements = context.measureText(this.text);
-    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
-    if (
-      mousePos.x > this.x - 5 &&
-      mousePos.y > this.y - 5 &&
-      mousePos.x < this.x + measurements.width + 10 &&
-      mousePos.y < this.y + height + 10
-    ) {
-      return true;
-    } else {
-    }
-  }
-}
-export class TreeBox extends UpgradeBox {
-  constructor(public x, public y, public upgrade, public font?, public path?, public type?, private width?, private height?, public selected?) {
-    super(x, y, upgrade, font, type);
+    this.type = type;
     this.path = path;
     this.type = "UpgradeTree";
     this.width = 140;
@@ -168,7 +132,6 @@ export class TreeBox extends UpgradeBox {
         context.fillStyle = "rgb(140,110,80)";
       }
     }
-    context.font = this.font;
     context.textBaseline = "middle";
     context.fillRect(this.x - 5, this.y - 5, this.width, this.height);
     context.fillStyle = "black";
@@ -288,12 +251,11 @@ export class TreeBox extends UpgradeBox {
     context.translate(-scrollOffset[0], -scrollOffset[1]);
   }
   detectClick(mousePos: any): boolean {
-    context.font = this.font;
     if (
       mousePos.x + scrollOffset[0] > this.x + scrollOffset[0] - 5 &&
       mousePos.y + scrollOffset[1] > this.y + scrollOffset[1] - 5 &&
-      mousePos.x + scrollOffset[0] < this.x + scrollOffset[0] + 140 &&
-      mousePos.y + scrollOffset[1] < this.y + scrollOffset[1] + 140
+      mousePos.x + scrollOffset[0] < this.x + scrollOffset[0] + this.width &&
+      mousePos.y + scrollOffset[1] < this.y + scrollOffset[1] + this.height
     ) {
       return true;
     } else {
