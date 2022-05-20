@@ -1,12 +1,8 @@
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 let image = document.getElementById("source") as CanvasImageSource;
-
 export class LaneArrow {
-  public x: number;
-  public y: number;
-  public lane: number;
-  constructor(lane, x?, y?) {
+  constructor(public lane, public x?: number, public y?: number) {
     this.lane = lane;
     this.x = 25;
     this.y = this.lane * 80 + 185;

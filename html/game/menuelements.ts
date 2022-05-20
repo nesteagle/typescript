@@ -110,7 +110,16 @@ export class TextButton extends TextBox {
   }
 }
 export class UpgradeBox {
-  constructor(public x, public y, public upgrade, public path?, public type?, private width?, private height?, public selected?) {
+  constructor(
+    public x: number,
+    public y: number,
+    public upgrade: string,
+    public path?: string,
+    public type?: string,
+    private width?: number,
+    private height?: number,
+    public selected?: boolean
+  ) {
     this.x = x;
     this.y = y;
     this.upgrade = upgrade;
@@ -297,7 +306,7 @@ export class Background {
   }
 }
 export class Box {
-  constructor(public x, public y, public width, public height, public fillStyle?) {
+  constructor(public x: number, public y: number, public width: number, public height: number, public fillStyle?: string) {
     this.x = x;
     this.y = y;
     this.width = width;

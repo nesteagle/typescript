@@ -118,6 +118,10 @@ function KeyInput(event: KeyboardEvent) {
 function updateProjectiles(): void {
   for (let i in projectiles) {
     projectiles[i].lifetime -= 1;
+    if (projectiles[i] && projectiles[i].lifetime <= 0) {
+      projectiles.splice(projectiles[i], 1);
+      return;
+    }
     let angle: number = projectiles[i].triangulate(projectiles[i].xv, projectiles[i].yv);
     projectiles[i].angle = angle;
     projectiles[i].xv *= 0.98;
@@ -136,9 +140,6 @@ function updateProjectiles(): void {
         projectiles.splice(projectiles[i], 1);
         break;
       }
-    }
-    if (projectiles[i] && projectiles[i].lifetime <= 0) {
-      projectiles.splice(projectiles[i], 1);
     }
   }
 }
