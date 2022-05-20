@@ -282,7 +282,7 @@ function updateCooldown() {
   }
   for (let j = 0; j < enemycooldownbars.length; j++) {
     if (j == enemySelected) {
-      enemycooldownbars[selected][0].draw(canvas.width - j * 60 - 40, 58, 30, enemycooldownbars[j][1], true);
+      enemycooldownbars[enemySelected][0].draw(canvas.width - j * 60 - 40, 58, 30, enemycooldownbars[j][1], true);
       enemycooldownbars[j][1] += cooldownTable[j];
       continue;
     }
