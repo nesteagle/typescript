@@ -1,4 +1,4 @@
-import { TextBox, TextButton, UpgradeBox, Background, Box } from "./menuelements";
+import { TextBox, TextButton, UpgradeBox, Background, Box, Minimap } from "./menuelements";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
@@ -19,7 +19,7 @@ export let upgrades: Array<any> = [
   ["Spears", 0],
 ];
 let background = new Background(0, 0, false);
-let elements: Array<any> = [
+export let elements: Array<any> = [
   new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
   new TextButton(100, 500, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
   new TextButton(100, 600, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
@@ -156,6 +156,7 @@ menu.addEventListener(
                 new UpgradeBox(400.1, 600, "Polearms", "melee1"),
                 new UpgradeBox(50, 600, "Swords"),
                 new UpgradeBox(50, 300, "Spears"),
+                new Minimap(990, 690),
                 new TextBox(50, 50, `xp:${exp}`, "200 35px Georgia", false),
                 new TextBox(50, 100, `currency:${currency}`, "200 35px Georgia", false),
               ];

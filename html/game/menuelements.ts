@@ -4,7 +4,7 @@ let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
 import { customEvent } from "./world";
-import { upgrades, scrollOffset } from "./menu";
+import { upgrades, scrollOffset, elements } from "./menu";
 let eventListener: any = document.getElementById("listener");
 export class TextBox {
   constructor(
@@ -325,4 +325,38 @@ function detectUpgrade(upgrade) {
     }
   }
   return false;
+}
+export class Minimap {
+  constructor(public x: number, public y: number, public zoom?: number, public type?: string) {
+    this.x = x;
+    this.y = y;
+    this.type = "Minimap";
+    this.zoom = 16; //for now is to show where said variable is used
+  }
+  draw() {
+    context.fillStyle = "rgb(120,100,60)";
+    context.fillRect(this.x, this.y, 200, 200); //add width/height if needed
+    context.strokeRect(this.x, this.y, 200, 200);
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].type == "Upgrade") {
+        if (detectUpgrade(elements[i].upgrade) !== false) {
+          context.fillStyle = "rgb(64,80,64)";
+        } else {
+          context.fillStyle = "rgb(50,50,50)";
+        }
+        context.fillRect(
+          15 + this.x + elements[i].x / this.zoom, // + scrollOffset[0] / this.zoom ,
+          this.y + elements[i].y / this.zoom + this.zoom * 4.5 - 6, // + scrollOffset[1] / this.zoom + this.zoom * 4.5,
+          12,
+          12 //add zoom for this later
+        );
+        context.strokeRect(
+          this.x + scrollOffset[0] / this.zoom + 5,
+          this.y + scrollOffset[1] / this.zoom + this.zoom * 4.5 - 6,
+          1200 / this.zoom,
+          1200 / this.zoom
+        );
+      }
+    }
+  }
 }
