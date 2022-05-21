@@ -1,6 +1,8 @@
 # Roadmap
 
-# Improve Upgrade tree and add more settings -- add Minimap
+# Improve Upgrade tree and add more settings
+
+#Minimap-in progress
 
 ## AI random wait system and better swapping
 
