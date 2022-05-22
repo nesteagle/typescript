@@ -9,7 +9,7 @@ let expbox: any, currencybox: any, minimap: any;
 let mousePos: any;
 let scrollxv: number = 0;
 let scrollyv: number = 0;
-export let scrollOffset = [0, 0];
+export let scrollOffset: Array<number> = [0, 0];
 let isScrolling = false;
 window.addEventListener("keydown", KeyInput, false);
 menu.style.display = "block";
@@ -38,7 +38,7 @@ function update() {
   scrollxv *= 0.93;
   scrollyv *= 0.93;
   scrollOffset[0] += scrollxv;
-  scrollOffset[1] += scrollyv;
+  scrollOffset[1] -= scrollyv;
   background.draw();
   if (mousePos !== undefined) {
     for (let i = 0; i < elements.length; i++) {
@@ -224,7 +224,6 @@ function KeyInput(event: KeyboardEvent) {
 }
 function renderLines() {
   context.translate(scrollOffset[0], scrollOffset[1]);
-  console.log(scrollOffset);
   for (let i = 0; i < elements.length; i++) {
     for (let j = 0; j < elements.length; j++) {
       if (elements[i].x == elements[j].x && elements[i].type == "Upgrade" && elements[j].type == "Upgrade") {
