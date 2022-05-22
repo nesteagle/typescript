@@ -2,20 +2,16 @@
 
 # Improve Upgrade tree and add more settings
 
-#Minimap-in progress
+#Minimap-nearly finished
+
+## Campaign mode with real conquests after you can return to main menu
+
+## Improve campaign gameplay, add enemy progression system with cumulative player kills
 
 ## AI random wait system and better swapping
 
-#GUI Improvements in-game, menu improvements - underway
-
-#Tweens for gui and better interface - underway
-
 ## Add animations - up soon
 
-## Campaign mode with real conquests
-
 ## Design more assets
-
-### Improve campaign gameplay, add enemy progression system with cumulative player kills
 
 ### refactor code
