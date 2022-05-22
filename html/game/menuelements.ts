@@ -345,17 +345,12 @@ export class Minimap {
         } else {
           context.fillStyle = "rgb(50,50,50)";
         }
-        context.fillRect(
-          this.x + elements[i].x / this.zoom + this.zoom,
-          this.y + elements[i].y / this.zoom + this.zoom,
-          140 / this.zoom,
-          140 / this.zoom
-        );
+        context.fillRect(this.x + elements[i].x / this.zoom + this.zoom, this.y + elements[i].y / this.zoom, 140 / this.zoom, 140 / this.zoom);
       }
     }
     context.strokeRect(
       this.x + this.zoom - scrollOffset[0] / this.zoom,
-      this.y - scrollOffset[1] / this.zoom + this.zoom,
+      this.y - scrollOffset[1] / this.zoom,
       1200 / this.zoom,
       800 / this.zoom
     );

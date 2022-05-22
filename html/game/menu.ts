@@ -89,7 +89,6 @@ menu.addEventListener(
             upgrades.push([elements[i].upgrade, 0]);
             switch (elements[i].path) {
               case "ranged1":
-                elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
                 elements.push(new UpgradeBox(750, 300, "Longbows", "ranged2"));
                 break;
               case "melee1":
@@ -99,6 +98,7 @@ menu.addEventListener(
                 elements.push(new UpgradeBox(1100.1, 600, "Horsemanship", "melee3"));
                 break;
               case "ranged2":
+                elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
                 elements.push(new UpgradeBox(1100, 300, "longbowpath", "ranged3"));
                 break;
               case "ranged3":
@@ -164,7 +164,6 @@ menu.addEventListener(
               for (let i = 4; i < upgrades.length; i++) {
                 switch (upgrades[i][0]) {
                   case "Archery":
-                    elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
                     elements.push(new UpgradeBox(750, 300, "Longbows", "ranged2"));
                     break;
                   case "Polearms":
@@ -174,6 +173,7 @@ menu.addEventListener(
                     elements.push(new UpgradeBox(1100.1, 600, "Horses", "melee3"));
                     break;
                   case "Longbows":
+                    elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
                     elements.push(new UpgradeBox(1100, 300, "longbowpath", "ranged3"));
                     break;
                   case "Crossbows":
