@@ -5,7 +5,7 @@ let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let currency: number = 160000;
 let exp: number = 4000;
 let windowID: number;
-let expbox: any, currencybox: any;
+let expbox: any, currencybox: any, minimap: any;
 let mousePos: any;
 let scrollxv: number = 0;
 let scrollyv: number = 0;
@@ -58,9 +58,10 @@ function update() {
       }
     }
   }
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].draw();
+  for (let j = 0; j < elements.length; j++) {
+    elements[j].draw();
   }
+  if (minimap !== undefined) minimap.draw();
   context.restore();
 }
 update();
@@ -134,6 +135,7 @@ menu.addEventListener(
                 new TextButton(100, 500, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
                 new TextButton(100, 600, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
               ];
+              minimap = undefined;
               break;
             case "campaign1":
               background.rendering = true;
@@ -182,6 +184,7 @@ menu.addEventListener(
               }
               isScrolling = true;
               scrollOffset = [0, 0];
+              minimap = elements[elements.length - 2];
               expbox = elements[elements.length - 2];
               currencybox = elements[elements.length - 1];
               break;
@@ -205,11 +208,11 @@ function KeyInput(event: KeyboardEvent) {
         break;
       case "Left":
       case "ArrowLeft":
-        scrollxv += 2;
+        scrollxv -= 2;
         break;
       case "Right":
       case "ArrowRight":
-        scrollxv -= 2;
+        scrollxv += 2;
         break;
       case "r":
         scrollOffset = [0, 0];
@@ -221,6 +224,7 @@ function KeyInput(event: KeyboardEvent) {
 }
 function renderLines() {
   context.translate(scrollOffset[0], scrollOffset[1]);
+  console.log(scrollOffset);
   for (let i = 0; i < elements.length; i++) {
     for (let j = 0; j < elements.length; j++) {
       if (elements[i].x == elements[j].x && elements[i].type == "Upgrade" && elements[j].type == "Upgrade") {

@@ -327,11 +327,11 @@ function detectUpgrade(upgrade) {
   return false;
 }
 export class Minimap {
-  constructor(public x: number, public y: number, public zoom?: number, public type?: string) {
+  constructor(public x: number, public y: number, public zoom?: number, public type?: string, public xpos?: number, public ypos?: number) {
     this.x = x;
     this.y = y;
     this.type = "Minimap";
-    this.zoom = 16; //for now is to show where said variable is used
+    this.zoom = 11; //for now is to show where said variable is used
   }
   draw() {
     context.fillStyle = "rgb(120,100,60)";
@@ -345,18 +345,50 @@ export class Minimap {
           context.fillStyle = "rgb(50,50,50)";
         }
         context.fillRect(
-          15 + this.x + elements[i].x / this.zoom, // + scrollOffset[0] / this.zoom ,
-          this.y + elements[i].y / this.zoom + this.zoom * 4.5 - 6, // + scrollOffset[1] / this.zoom + this.zoom * 4.5,
-          12,
-          12 //add zoom for this later
-        );
-        context.strokeRect(
-          this.x + scrollOffset[0] / this.zoom + 5,
-          this.y + scrollOffset[1] / this.zoom + this.zoom * 4.5 - 6,
-          1200 / this.zoom,
-          1200 / this.zoom
+          this.x + elements[i].x / this.zoom + this.zoom, // + scrollOffset[0] / this.zoom ,
+          this.y + elements[i].y / this.zoom + this.zoom, // + scrollOffset[1] / this.zoom + this.zoom * 4.5,
+          140 / this.zoom,
+          140 / this.zoom //add zoom for this later
         );
       }
     }
+    context.strokeRect(
+      15 + this.x - scrollOffset[0] / this.zoom,
+      this.y - scrollOffset[1] / this.zoom + this.zoom,
+      1200 / this.zoom,
+      800 / this.zoom //add zoom for this later
+    );
+    context.fillStyle = "black"; //debug
+    context.font = "15px Arial"; //debug
+    context.fillText(Math.round(scrollOffset[0]) + " " + Math.round(scrollOffset[1]), this.x - 50, this.y - 50); //debug
+
+    console.log(scrollOffset[0], 1200 / this.zoom, scrollOffset[1]);
+    if (scrollOffset[1] >= this.zoom * this.zoom) {
+      console.log("TRUE1");
+      scrollOffset[1] = this.zoom * this.zoom;
+    }
+    if (scrollOffset[0] >= 15 * this.zoom) {
+      console.log("TRUE2");
+      scrollOffset[0] = 15 * this.zoom;
+    }
+    // if (scrollOffset[1] - 800 / this.zoom <= (-200 + this.zoom) * this.zoom) {
+    //   console.log("true3");
+    //   // scrollOffset[1] = (-200 + this.zoom) * this.zoom + 800 / this.zoom;
+    // }
+    // console.log(scrollOffset[1] / this.zoom >= -this.zoom * 2);
+    // if (scrollOffset[1] / this.zoom >= 15) {
+    //   console.log((scrollOffset[1] = 15 * this.zoom));
+    // }
+    // // if (15 + this.x - scrollOffset[0] / this.zoom >= 15 * this.zoom) {
+    // //   scrollOffset[0] = 15 * this.zoom;
+    // // }
+    // //console.log(scrollOffset[1], this.ypos);
+    // if (this.ypos <= -185 * this.zoom) {
+    //   console.log((scrollOffset[1] = -185 * this.zoom));
+    // }
+    // // if (15 + this.x - scrollOffset[0] / this.zoom <= -185 * this.zoom + 1215) {
+    // //   scrollOffset[0] = -185 * this.zoom + 1215;
+    // // }
+    // //console.log(this.xpos, this.ypos);
   }
 }
