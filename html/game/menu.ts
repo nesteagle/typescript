@@ -10,7 +10,6 @@ let mousePos: any;
 let scrollxv: number = 0;
 let scrollyv: number = 0;
 export let scrollOffset: Array<number> = [0, 0];
-let isScrolling = false;
 window.addEventListener("keydown", KeyInput, false);
 menu.style.display = "block";
 game.style.display = "none";
@@ -182,11 +181,11 @@ menu.addEventListener(
                     break;
                 }
               }
-              isScrolling = true;
               scrollOffset = [0, 0];
               minimap = elements[elements.length - 2];
               expbox = elements[elements.length - 2];
               currencybox = elements[elements.length - 1];
+              minimap.Scrolling = true;
               break;
           }
         }
@@ -196,7 +195,8 @@ menu.addEventListener(
   false
 );
 function KeyInput(event: KeyboardEvent) {
-  if (isScrolling == true) {
+  if (minimap.Scrolling == undefined) return;
+  if (minimap.Scrolling == true) {
     switch (event.key) {
       case "Up":
       case "ArrowUp":

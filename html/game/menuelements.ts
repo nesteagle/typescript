@@ -327,15 +327,16 @@ function detectUpgrade(upgrade) {
   return false;
 }
 export class Minimap {
-  constructor(public x: number, public y: number, public zoom?: number, public type?: string, public xpos?: number, public ypos?: number) {
+  constructor(public x: number, public y: number, public zoom?: number, public type?: string, public Scrolling?: boolean) {
     this.x = x;
     this.y = y;
     this.type = "Minimap";
-    this.zoom = 15; //for now is to show where said variable is used
+    this.zoom = 15;
   }
   draw() {
+    this.Scrolling = true;
     context.fillStyle = "rgb(120,100,60)";
-    context.fillRect(this.x, this.y, 200, 200); //add width/height if needed
+    context.fillRect(this.x, this.y, 200, 200);
     context.strokeRect(this.x, this.y, 200, 200);
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].type == "Upgrade") {
@@ -352,28 +353,27 @@ export class Minimap {
         );
       }
     }
-    console.log(scrollOffset[0]);
-
     context.strokeRect(
       this.x + this.zoom - scrollOffset[0] / this.zoom,
       this.y - scrollOffset[1] / this.zoom + this.zoom,
       1200 / this.zoom,
       800 / this.zoom
     );
-    context.fillStyle = "black"; //debug
-    context.font = "15px Arial"; //debug
-    context.fillText(Math.round(scrollOffset[0]) + " " + Math.round(scrollOffset[1]), this.x - 50, this.y - 50); //debug
     if (scrollOffset[1] >= this.zoom * this.zoom) {
       scrollOffset[1] = this.zoom * this.zoom;
+      this.Scrolling = false;
     }
     if (scrollOffset[0] >= this.zoom * this.zoom) {
       scrollOffset[0] = this.zoom * this.zoom;
+      this.Scrolling = false;
     }
     if (scrollOffset[0] - 1200 <= -200 * this.zoom + this.zoom * this.zoom) {
       scrollOffset[0] = -200 * this.zoom + this.zoom * this.zoom + 1200;
+      this.Scrolling = false;
     }
     if (scrollOffset[1] - 800 <= -200 * this.zoom + this.zoom * this.zoom) {
       scrollOffset[1] = -200 * this.zoom + this.zoom * this.zoom + 800;
+      this.Scrolling = false;
     }
   }
 }
