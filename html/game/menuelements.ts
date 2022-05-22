@@ -331,7 +331,7 @@ export class Minimap {
     this.x = x;
     this.y = y;
     this.type = "Minimap";
-    this.zoom = 10; //for now is to show where said variable is used
+    this.zoom = 15; //for now is to show where said variable is used
   }
   draw() {
     context.fillStyle = "rgb(120,100,60)";
@@ -363,11 +363,17 @@ export class Minimap {
     context.fillStyle = "black"; //debug
     context.font = "15px Arial"; //debug
     context.fillText(Math.round(scrollOffset[0]) + " " + Math.round(scrollOffset[1]), this.x - 50, this.y - 50); //debug
-    // if (scrollOffset[1] >= this.zoom * this.zoom) {
-    //   scrollOffset[1] = this.zoom * this.zoom;
-    // }
-    // if (scrollOffset[0] <= -15 * this.zoom) {
-    //   scrollOffset[0] = -15 * this.zoom;
-    // }
+    if (scrollOffset[1] >= this.zoom * this.zoom) {
+      scrollOffset[1] = this.zoom * this.zoom;
+    }
+    if (scrollOffset[0] >= this.zoom * this.zoom) {
+      scrollOffset[0] = this.zoom * this.zoom;
+    }
+    if (scrollOffset[0] - 1200 <= -200 * this.zoom + this.zoom * this.zoom) {
+      scrollOffset[0] = -200 * this.zoom + this.zoom * this.zoom + 1200;
+    }
+    if (scrollOffset[1] - 800 <= -200 * this.zoom + this.zoom * this.zoom) {
+      scrollOffset[1] = -200 * this.zoom + this.zoom * this.zoom + 800;
+    }
   }
 }

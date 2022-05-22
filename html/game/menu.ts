@@ -37,8 +37,8 @@ function update() {
   context.save();
   scrollxv *= 0.93;
   scrollyv *= 0.93;
-  scrollOffset[0] += scrollxv;
-  scrollOffset[1] -= scrollyv;
+  scrollOffset[0] -= scrollxv;
+  scrollOffset[1] += scrollyv;
   background.draw();
   if (mousePos !== undefined) {
     for (let i = 0; i < elements.length; i++) {
