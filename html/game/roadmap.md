@@ -2,6 +2,8 @@
 
 # Improve Upgrade tree and add more settings
 
+#Expand on campaign mode gui
+
 #Minimap-nearly finished
 
 ## Campaign mode with real conquests after you can return to main menu

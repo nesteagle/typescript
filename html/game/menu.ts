@@ -35,6 +35,7 @@ function getMousePos(canvas, event) {
 eventListener.addEventListener(
   "event",
   function () {
+    //add game results here and a round summary
     menu.style.display = "block";
     game.style.display = "none";
     elements = [
