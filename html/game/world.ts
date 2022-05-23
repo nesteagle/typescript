@@ -11,7 +11,8 @@ eventListener.addEventListener(
   "event",
   function () {
     score = 50;
-    cooldownTable = [2.7, 2, 1.8];
+    cooldownTable = [2.7, 2];
+    enemycooldownTable = [2.7, 2, 1.8];
     entities = [];
     cooldownbars = [];
     enemycooldownbars = [];
@@ -75,7 +76,8 @@ let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
 let selectable: Array<any> = [];
 let enemyselectable: Array<any> = [];
-let cooldownTable: Array<number> = [2.7, 2, 1.8]; //FIND SOLUTION TO ENEMY COOLDOWN
+let cooldownTable: Array<number> = [2.7, 2]; //FIND SOLUTION TO ENEMY COOLDOWN
+let enemycooldownTable: Array<number> = [2.7, 2, 1.8]; //FIND SOLUTION TO ENEMY COOLDOWN
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let selected: number = 0;
@@ -307,11 +309,11 @@ function updateCooldown() {
   for (let j = 0; j < enemycooldownbars.length; j++) {
     if (j == enemySelected) {
       enemycooldownbars[enemySelected][0].draw(canvas.width - j * 60 - 40, 58, 30, enemycooldownbars[j][1], true);
-      enemycooldownbars[j][1] += cooldownTable[j];
+      enemycooldownbars[j][1] += enemycooldownTable[j];
       continue;
     }
     enemycooldownbars[j][0].draw(canvas.width - j * 60 - 40, 56, 24, enemycooldownbars[j][1]);
-    enemycooldownbars[j][1] += cooldownTable[j];
+    enemycooldownbars[j][1] += enemycooldownTable[j];
     if (enemycooldownbars[enemySelected][1] >= 270) {
       enemyCanSpawn = true;
     }
