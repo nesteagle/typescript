@@ -6,10 +6,10 @@ let box: any, enemybox: any;
 let score: number = 50;
 let eventListener: any = document.getElementById("listener");
 export let gameEvent = new CustomEvent("event");
+const orderCategory = { Spears: 0, Swords: 1, Archery: 2, Polearms: 3, Axes: 4, Horsemanship: 5 };
 eventListener.addEventListener(
   "event",
   function () {
-    console.log(upgrades);
     score = 50;
     cooldownTable = [2.7, 2, 1.8];
     entities = [];
@@ -22,39 +22,46 @@ eventListener.addEventListener(
     enemySelected = 0;
     canSpawn = false;
     enemyCanSpawn = false;
+    let sorted = [...upgrades];
+    sorted.sort((a, b) => {
+      console.log(a, b);
+      if (a[0] !== b[0]) {
+        console.log(orderCategory[a[0]]);
+        return orderCategory[a[0]] - orderCategory[b[0]];
+      } else {
+        return a[0] - b[0];
+      }
+    });
     selectable = [Spearman, Swordsman];
     enemyselectable = [Spearman, Swordsman, Archer];
-    for (let i = 0; i < upgrades.length; i++) {
-      switch (upgrades[i][0]) {
+    for (let i = 0; i < sorted.length; i++) {
+      switch (sorted[i][0]) {
         case "Archery":
-          selectable[2] = Archer;
-          cooldownTable[2] = 1.8;
+          selectable.push(Archer);
+          cooldownTable.push(1.8);
           break;
         case "Polearms":
-          selectable[3] = Halberdier;
-          cooldownTable[3] = 1.9;
+          selectable.push(Halberdier);
+          cooldownTable.push(1.9);
           break;
         case "Axes":
-          selectable[4] = Axeman;
-          cooldownTable[4] = 1.9;
+          selectable.push(Axeman);
+          cooldownTable.push(1.9);
           break;
         case "Horsemanship":
-          selectable[5] = Horseman;
-          cooldownTable[5] = 1.3;
+          selectable.push(Horseman);
+          cooldownTable.push(1.3);
           break;
       }
     }
     box = new Text(10, 100, "", "25px Georgia", false, "start", "hanging");
     enemybox = new Text(canvas.width - 10, 100, "", "25px Georgia", false, "end", "hanging");
     for (let i = 0; i < selectable.length; i++) {
-      if (selectable[i] !== undefined) {
-        cooldownbars.push([new CooldownBar(), -90]);
-      }
+      cooldownbars.push([new CooldownBar(), -90]);
     }
     for (let j = 0; j < enemyselectable.length; j++) {
       enemycooldownbars.push([new CooldownBar(), -90]);
     }
-
     update();
   }.bind(this)
 );
