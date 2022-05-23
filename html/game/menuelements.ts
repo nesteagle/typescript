@@ -3,7 +3,7 @@ let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
-import { customEvent } from "./world";
+import { gameEvent } from "./world";
 import { upgrades, scrollOffset, elements } from "./menu";
 let eventListener: any = document.getElementById("listener");
 export class TextBox {
@@ -72,7 +72,7 @@ export class TextButton extends TextBox {
       if (this.event == "menu") {
         return true;
       } else if (this.event == "play") {
-        eventListener.dispatchEvent(customEvent);
+        eventListener.dispatchEvent(gameEvent);
         game.style.display = "block";
         menu.style.display = "none";
         return;

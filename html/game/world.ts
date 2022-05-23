@@ -1,44 +1,60 @@
 import { Swordsman, Spearman, Archer, Axeman, Halberdier, Horseman, Projectile } from "./entity";
 import { LaneArrow, ScoreBar, CooldownBar, Text } from "./gameobjects";
-import { upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
+import { menuEvent, upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
 let lane = new LaneArrow(1);
 let box: any, enemybox: any;
 let score: number = 50;
 let eventListener: any = document.getElementById("listener");
-export let customEvent = new CustomEvent("event");
+export let gameEvent = new CustomEvent("event");
 eventListener.addEventListener(
   "event",
   function () {
+    console.log(upgrades);
+    score = 50;
+    cooldownTable = [2.7, 2, 1.8];
+    entities = [];
+    cooldownbars = [];
+    enemycooldownbars = [];
+    projectiles = [];
+    laneWeight = [0, 0, 0, 0, 0, 0, 0, 0];
+    enemyWeight = [0, 0, 0, 0, 0, 0, 0, 0];
+    selected = 0;
+    enemySelected = 0;
+    canSpawn = false;
+    enemyCanSpawn = false;
     selectable = [Spearman, Swordsman];
     enemyselectable = [Spearman, Swordsman, Archer];
     for (let i = 0; i < upgrades.length; i++) {
       switch (upgrades[i][0]) {
         case "Archery":
-          selectable.push(Archer);
-          cooldownTable.push(1.5);
+          selectable[2] = Archer;
+          cooldownTable[2] = 1.8;
           break;
         case "Polearms":
-          selectable.push(Halberdier);
-          cooldownTable.push(1.6);
+          selectable[3] = Halberdier;
+          cooldownTable[3] = 1.9;
           break;
         case "Axes":
-          selectable.push(Axeman);
-          cooldownTable.push(1.6);
+          selectable[4] = Axeman;
+          cooldownTable[4] = 1.9;
           break;
         case "Horsemanship":
-          selectable.push(Horseman);
-          cooldownTable.push(1);
+          selectable[5] = Horseman;
+          cooldownTable[5] = 1.3;
           break;
       }
     }
     box = new Text(10, 100, "", "25px Georgia", false, "start", "hanging");
     enemybox = new Text(canvas.width - 10, 100, "", "25px Georgia", false, "end", "hanging");
     for (let i = 0; i < selectable.length; i++) {
-      cooldownbars.push([new CooldownBar(), -90]);
+      if (selectable[i] !== undefined) {
+        cooldownbars.push([new CooldownBar(), -90]);
+      }
     }
     for (let j = 0; j < enemyselectable.length; j++) {
       enemycooldownbars.push([new CooldownBar(), -90]);
     }
+
     update();
   }.bind(this)
 );
@@ -52,7 +68,7 @@ let projectiles: Array<any> = [];
 let scoreBar = new ScoreBar();
 let selectable: Array<any> = [];
 let enemyselectable: Array<any> = [];
-let cooldownTable: Array<number> = [2.3, 1.7, 1.5]; //FIND SOLUTION TO ENEMY COOLDOWN
+let cooldownTable: Array<number> = [2.7, 2, 1.8]; //FIND SOLUTION TO ENEMY COOLDOWN
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let selected: number = 0;
@@ -181,14 +197,14 @@ function updateEntities() {
       }
       if (entities[j].x < -50) {
         if (entities[j].team == "right") enemyWeight[entities[j].lane]--;
-        entities.splice(entities.indexOf(entities[j]), 1);
         checkScore(-entities[j].weight);
+        entities.splice(entities.indexOf(entities[j]), 1);
         continue;
       }
       if (entities[j].x > canvas.width + 50) {
         if (entities[j].team == "left") laneWeight[entities[j].lane]--;
-        entities.splice(entities.indexOf(entities[j]), 1);
         checkScore(entities[j].weight);
+        entities.splice(entities.indexOf(entities[j]), 1);
         continue;
       }
     }
@@ -198,12 +214,12 @@ function checkScore(number): void {
   score += number;
   scoreBar.draw(score);
   if (score > 100) {
-    alert("LEFT SIDE VICTORY!");
-    window.cancelAnimationFrame(windowID); //return to menu here
+    window.cancelAnimationFrame(windowID);
+    eventListener.dispatchEvent(menuEvent);
   }
   if (score < 0) {
-    alert("RIGHT SIDE VICTORY!");
-    window.cancelAnimationFrame(windowID); //return to menu here
+    window.cancelAnimationFrame(windowID);
+    eventListener.dispatchEvent(menuEvent);
   }
 }
 function checkEnemy(): void {
@@ -272,7 +288,7 @@ function updateCooldown() {
   for (let i = 0; i < cooldownbars.length; i++) {
     if (i == selected) {
       cooldownbars[selected][0].draw(i * 60 + 40, 58, 30, cooldownbars[i][1], true);
-      cooldownbars[i][1] += cooldownTable[i];
+      cooldownbars[i][1] += cooldownTable[selected];
       continue;
     }
     cooldownbars[i][0].draw(i * 60 + 40, 56, 24, cooldownbars[i][1]);

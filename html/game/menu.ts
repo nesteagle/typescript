@@ -9,6 +9,8 @@ let expbox: any, currencybox: any, minimap: any;
 let mousePos: any;
 let scrollxv: number = 0;
 let scrollyv: number = 0;
+let eventListener: any = document.getElementById("listener");
+export let menuEvent = new CustomEvent("event");
 export let scrollOffset: Array<number> = [0, 0];
 window.addEventListener("keydown", KeyInput, false);
 menu.style.display = "block";
@@ -30,6 +32,22 @@ function getMousePos(canvas, event) {
     y: event.clientY - bounds.top,
   };
 }
+eventListener.addEventListener(
+  "event",
+  function () {
+    menu.style.display = "block";
+    game.style.display = "none";
+    elements = [
+      new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
+      new TextButton(100, 500, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
+      new TextButton(100, 600, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
+    ];
+    scrollOffset = [0, 0];
+    scrollxv = 0;
+    scrollyv = 0;
+    update();
+  }.bind(this)
+);
 function update() {
   windowID = window.requestAnimationFrame(update);
   context.fillStyle = "black";
@@ -195,7 +213,7 @@ menu.addEventListener(
   false
 );
 function KeyInput(event: KeyboardEvent) {
-  if (minimap.Scrolling == undefined) return;
+  if (minimap == undefined) return;
   if (minimap.Scrolling == true) {
     switch (event.key) {
       case "Up":
