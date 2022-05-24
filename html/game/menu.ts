@@ -1,4 +1,5 @@
 import { TextBox, TextButton, UpgradeBox, Background, Box, Minimap } from "./menuelements";
+import { playerStats } from "./world";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
@@ -10,7 +11,9 @@ let mousePos: any;
 let scrollxv: number = 0;
 let scrollyv: number = 0;
 let eventListener: any = document.getElementById("listener");
-export let menuEvent = new CustomEvent("event");
+export let lostGame = new CustomEvent("event", { detail: { won: false } });
+export let wonGame = new CustomEvent("event", { detail: { won: true } });
+
 export let scrollOffset: Array<number> = [0, 0];
 window.addEventListener("keydown", KeyInput, false);
 menu.style.display = "block";
@@ -34,14 +37,26 @@ function getMousePos(canvas, event) {
 }
 eventListener.addEventListener(
   "event",
-  function () {
+  function (e) {
     //add game results here and a round summary
+    let won: string;
     menu.style.display = "block";
     game.style.display = "none";
+    if (e.detail !== null) {
+      if (e.detail.won == true) {
+        context.fillStyle = "rgb(40,80,40)";
+        won = "were victorious!";
+      } else {
+        context.fillStyle = "rgb(80,40,40)";
+        won = "were defeated!";
+      }
+    }
     elements = [
-      new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
-      new TextButton(100, 500, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
-      new TextButton(100, 600, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
+      new TextBox(100, 100, "You " + won, "500 50px Georgia", false),
+      new TextBox(100, 200, "Total Kills: " + playerStats[0].kills, "100 35px Georgia", false),
+      new TextBox(100, 300, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
+      new TextBox(100, 400, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
+      new TextButton(100, 600, "Return to Menu", "200 45px Georgia", true, "menu", "menu"),
     ];
     scrollOffset = [0, 0];
     scrollxv = 0;

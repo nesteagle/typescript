@@ -1,6 +1,6 @@
 import { Swordsman, Spearman, Archer, Axeman, Halberdier, Horseman, Projectile } from "./entity";
 import { LaneArrow, ScoreBar, CooldownBar, Text } from "./gameobjects";
-import { menuEvent, upgrades } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
+import { lostGame, upgrades, wonGame } from "./menu"; //CHANGE TO EQUIP LAYOUT SOMETIME
 let lane = new LaneArrow(1);
 let box: any, enemybox: any;
 let score: number = 50;
@@ -10,7 +10,7 @@ const orderCategory = { Spears: 0, Swords: 1, Archery: 2, Polearms: 3, Axes: 4, 
 eventListener.addEventListener(
   "event",
   function () {
-    score = 50;
+    score = 123;
     cooldownTable = [2.7, 2];
     enemycooldownTable = [2.7, 2, 1.8];
     entities = [];
@@ -78,6 +78,7 @@ let selectable: Array<any> = [];
 let enemyselectable: Array<any> = [];
 let cooldownTable: Array<number> = [2.7, 2]; //FIND SOLUTION TO ENEMY COOLDOWN
 let enemycooldownTable: Array<number> = [2.7, 2, 1.8]; //FIND SOLUTION TO ENEMY COOLDOWN
+export let playerStats: Array<any> = [{ kills: 0 }, { deaths: 0 }, { crosses: 0 }];
 let laneWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let enemyWeight: Array<any> = [0, 0, 0, 0, 0, 0, 0, 0];
 let selected: number = 0;
@@ -109,6 +110,7 @@ function KeyInput(event: KeyboardEvent) {
       lane.move("down");
       break;
     case " ":
+      checkScore(0);
       if (canSpawn == true) {
         entities.push(new selectable[selected](-25, lane.y + 15, "left"));
         laneWeight[lane.lane] += entities[entities.length - 1].weight;
@@ -178,11 +180,13 @@ function updateEntities() {
     if (currentUnit.health <= 0) {
       if (currentUnit.team == "left") {
         laneWeight[currentUnit.lane] -= entities[units].weight;
+        playerStats[1].deaths++;
         entities.splice(entities.indexOf(currentUnit), 1);
         continue;
       }
       if (currentUnit.team == "right") {
         enemyWeight[currentUnit.lane] -= entities[units].weight;
+        playerStats[0].kills++;
         entities.splice(entities.indexOf(currentUnit), 1);
         continue;
       }
@@ -211,7 +215,10 @@ function updateEntities() {
         continue;
       }
       if (entities[j].x > canvas.width + 50) {
-        if (entities[j].team == "left") laneWeight[entities[j].lane]--;
+        if (entities[j].team == "left") {
+          laneWeight[entities[j].lane]--;
+          playerStats[2].crosses++;
+        }
         checkScore(entities[j].weight);
         entities.splice(entities.indexOf(entities[j]), 1);
         continue;
@@ -220,15 +227,15 @@ function updateEntities() {
   }
 }
 function checkScore(number): void {
-  score += number;
+  score += number * 2;
   scoreBar.draw(score);
   if (score > 100) {
     window.cancelAnimationFrame(windowID);
-    eventListener.dispatchEvent(menuEvent);
+    eventListener.dispatchEvent(wonGame);
   }
   if (score < 0) {
     window.cancelAnimationFrame(windowID);
-    eventListener.dispatchEvent(menuEvent);
+    eventListener.dispatchEvent(lostGame);
   }
 }
 function checkEnemy(): void {
