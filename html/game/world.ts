@@ -10,7 +10,7 @@ const orderCategory = { Spears: 0, Swords: 1, Archery: 2, Polearms: 3, Axes: 4, 
 eventListener.addEventListener(
   "event",
   function () {
-    score = 123;
+    score = -123;
     cooldownTable = [2.7, 2];
     enemycooldownTable = [2.7, 2, 1.8];
     entities = [];

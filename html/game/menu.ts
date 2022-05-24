@@ -38,26 +38,27 @@ function getMousePos(canvas, event) {
 eventListener.addEventListener(
   "event",
   function (e) {
-    //add game results here and a round summary
     let won: string;
+    let colortemp: string;
     menu.style.display = "block";
     game.style.display = "none";
     if (e.detail !== null) {
       if (e.detail.won == true) {
-        context.fillStyle = "rgb(40,80,40)";
+        colortemp = "rgb(32,60,32)";
         won = "were victorious!";
       } else {
-        context.fillStyle = "rgb(80,40,40)";
+        colortemp = "rgb(60,32,32)";
         won = "were defeated!";
       }
     }
     elements = [
       new TextBox(100, 100, "You " + won, "500 50px Georgia", false),
       new TextBox(100, 200, "Total Kills: " + playerStats[0].kills, "100 35px Georgia", false),
-      new TextBox(100, 300, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
-      new TextBox(100, 400, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
+      new TextBox(100, 250, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
+      new TextBox(100, 300, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
       new TextButton(100, 600, "Return to Menu", "200 45px Georgia", true, "menu", "menu"),
     ];
+    elements[0].textColor = colortemp;
     scrollOffset = [0, 0];
     scrollxv = 0;
     scrollyv = 0;

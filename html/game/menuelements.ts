@@ -14,7 +14,8 @@ export class TextBox {
     public font: string,
     public box: boolean,
     public boxColor?: string,
-    public type?: string
+    public type?: string,
+    public textColor?: string
   ) {
     this.x = x;
     this.y = y;
@@ -23,6 +24,7 @@ export class TextBox {
     this.box = box;
     this.boxColor = boxColor;
     this.type = "TextBox";
+    this.textColor = textColor;
   }
   draw(): void {
     context.font = this.font;
@@ -35,7 +37,7 @@ export class TextBox {
       this.boxColor == undefined ? (context.fillStyle = "rgb(100,110,144)") : (context.fillStyle = this.boxColor);
       context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
     }
-    context.fillStyle = "black";
+    this.textColor == undefined ? (context.fillStyle = "black") : (context.fillStyle = this.textColor);
     context.fillText(this.text, this.x, this.y);
   }
 }
