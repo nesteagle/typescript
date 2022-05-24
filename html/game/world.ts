@@ -10,7 +10,7 @@ const orderCategory = { Spears: 0, Swords: 1, Archery: 2, Polearms: 3, Axes: 4, 
 eventListener.addEventListener(
   "event",
   function () {
-    score = -123;
+    score = 50;
     cooldownTable = [2.7, 2];
     enemycooldownTable = [2.7, 2, 1.8];
     entities = [];
@@ -25,9 +25,7 @@ eventListener.addEventListener(
     enemyCanSpawn = false;
     let sorted = [...upgrades];
     sorted.sort((a, b) => {
-      console.log(a, b);
       if (a[0] !== b[0]) {
-        console.log(orderCategory[a[0]]);
         return orderCategory[a[0]] - orderCategory[b[0]];
       } else {
         return a[0] - b[0];
@@ -110,7 +108,6 @@ function KeyInput(event: KeyboardEvent) {
       lane.move("down");
       break;
     case " ":
-      checkScore(0);
       if (canSpawn == true) {
         entities.push(new selectable[selected](-25, lane.y + 15, "left"));
         laneWeight[lane.lane] += entities[entities.length - 1].weight;

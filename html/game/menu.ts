@@ -13,7 +13,6 @@ let scrollyv: number = 0;
 let eventListener: any = document.getElementById("listener");
 export let lostGame = new CustomEvent("event", { detail: { won: false } });
 export let wonGame = new CustomEvent("event", { detail: { won: true } });
-
 export let scrollOffset: Array<number> = [0, 0];
 window.addEventListener("keydown", KeyInput, false);
 menu.style.display = "block";
@@ -48,14 +47,15 @@ eventListener.addEventListener(
         won = "were victorious!";
       } else {
         colortemp = "rgb(60,32,32)";
-        won = "were defeated!";
+        won = "were defeated!"; //add art when assets are designed :o
       }
     }
     elements = [
       new TextBox(100, 100, "You " + won, "500 50px Georgia", false),
       new TextBox(100, 200, "Total Kills: " + playerStats[0].kills, "100 35px Georgia", false),
-      new TextBox(100, 250, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
-      new TextBox(100, 300, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
+      new TextBox(100, 260, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
+      new TextBox(100, 320, "Kill-Death Ratio: " + playerStats[0].kills / +playerStats[1].deaths, "100 35px Georgia", false),
+      new TextBox(100, 400, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
       new TextButton(100, 600, "Return to Menu", "200 45px Georgia", true, "menu", "menu"),
     ];
     elements[0].textColor = colortemp;
