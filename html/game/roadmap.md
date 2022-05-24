@@ -1,10 +1,14 @@
 # Roadmap
 
+# Add equip menu and drag+drop feature --TODO
+
+# Easier way to find upgrades --TODO
+
+# General textbox that will expand on hover --TODO
+
 # Improve Upgrade tree and add more settings
 
-#Expand on campaign mode gui
-
-#Minimap-nearly finished
+# Expand on campaign mode gui-in progress
 
 ## Campaign mode with real conquests after you can return to main menu
 
