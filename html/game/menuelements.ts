@@ -307,7 +307,7 @@ export class Background {
     }
   }
 }
-export class Box {
+export class InteractiveBox {
   constructor(public x: number, public y: number, public width: number, public height: number, public fillStyle?: string) {
     this.x = x;
     this.y = y;
@@ -319,14 +319,30 @@ export class Box {
     context.fillStyle = this.fillStyle;
     context.fillRect(this.x, this.y, this.width, this.height);
   }
-}
-function detectUpgrade(upgrade) {
-  for (let k = 0; k < upgrades.length; k++) {
-    if (upgrades[k][0] == upgrade) {
-      return upgrades[k];
+  hoveredOver(mousePos) {
+    if (
+      mousePos.x > this.x - 5 + scrollOffset[0] &&
+      mousePos.y > this.y - 5 + scrollOffset[1] &&
+      mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
+      mousePos.y < this.y + scrollOffset[1] + this.height + 10
+    ) {
+      if (this.width < 300) {
+        this.width += (300 / this.width) * 10;
+      }
+      if (this.height < 185) {
+        this.height += (185 / this.height) * 6.18;
+      }
+      return true;
     }
   }
-  return false;
+  restoreSize() {
+    if (this.width > 140) {
+      this.width -= (this.width / 140) * 10;
+    }
+    if (this.height > 140) {
+      this.height -= (this.height / 140) * 6.18;
+    }
+  }
 }
 export class Minimap {
   constructor(public x: number, public y: number, public zoom?: number, public type?: string, public Scrolling?: boolean) {
@@ -373,4 +389,12 @@ export class Minimap {
       this.Scrolling = false;
     }
   }
+}
+function detectUpgrade(upgrade) {
+  for (let k = 0; k < upgrades.length; k++) {
+    if (upgrades[k][0] == upgrade) {
+      return upgrades[k];
+    }
+  }
+  return false;
 }

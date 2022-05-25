@@ -1,4 +1,4 @@
-import { TextBox, TextButton, UpgradeBox, Background, Box, Minimap } from "./menuelements";
+import { TextBox, TextButton, UpgradeBox, Background, Minimap } from "./menuelements";
 import { playerStats } from "./world";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
@@ -24,8 +24,9 @@ export let upgrades: Array<any> = [
 let background = new Background(0, 0, false);
 export let elements: Array<any> = [
   new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
-  new TextButton(100, 500, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
-  new TextButton(100, 600, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
+  new TextButton(100, 450, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
+  new TextButton(100, 550, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
+  new TextButton(100, 650, "Loadout", "200 45px Georgia", true, "menu", "equip"),
 ];
 function getMousePos(canvas, event) {
   let bounds = canvas.getBoundingClientRect();
@@ -166,8 +167,9 @@ menu.addEventListener(
               background.rendering = false;
               elements = [
                 new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
-                new TextButton(100, 500, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
-                new TextButton(100, 600, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
+                new TextButton(100, 450, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
+                new TextButton(100, 550, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
+                new TextButton(100, 650, "Loadout", "200 45px Georgia", true, "menu", "equip"),
               ];
               minimap = undefined;
               break;
@@ -221,6 +223,13 @@ menu.addEventListener(
               expbox = elements[elements.length - 2];
               currencybox = elements[elements.length - 1];
               minimap.Scrolling = true;
+              break;
+            case "equip":
+              background.rendering = true;
+              elements = [new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "menu")];
+              for (let i = 0; i < upgrades.length; i++) {
+                elements.push(new TextBox(100, 100 + i * 50, upgrades[i][0], "25px Georgia", true));
+              }
               break;
           }
         }
