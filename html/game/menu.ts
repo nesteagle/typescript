@@ -230,7 +230,9 @@ menu.addEventListener(
               for (let i = 0; i < upgrades.length; i++) {
                 elements.push(new TextBox(100, 100 + i * 50, upgrades[i][0], "25px Georgia", true));
               }
-              elements.push(new Box(500, 500, 100, 100, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!"));
+              elements.push(
+                new Box(500, 500, 100, 100, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia")
+              );
               break;
           }
         }

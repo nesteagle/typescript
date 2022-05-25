@@ -108,6 +108,7 @@ function KeyInput(event: KeyboardEvent) {
       lane.move("down");
       break;
     case " ":
+      // checkScore(0); //DEBUG
       if (canSpawn == true) {
         entities.push(new selectable[selected](-25, lane.y + 15, "left"));
         laneWeight[lane.lane] += entities[entities.length - 1].weight;

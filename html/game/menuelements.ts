@@ -313,8 +313,9 @@ export class Box {
     public y: number,
     public width: number,
     public height: number,
-    public originalText?: string,
-    public descriptionText?: string,
+    public originalText: string,
+    public descriptionText: string,
+    public font: string,
     public fillStyle?: string,
     public type?: string,
     public selected?: boolean,
@@ -328,6 +329,7 @@ export class Box {
     this.width = width;
     this.height = height;
     this.descriptionText = descriptionText;
+    this.font = font;
     this.fillStyle == undefined ? (this.fillStyle = "rgb(80,80,90)") : (this.fillStyle = fillStyle);
     this.type = "Box";
     this.selected = false;
@@ -343,7 +345,10 @@ export class Box {
       for (let i = 0; i < lines.length; i++) context.fillText(lines[i], this.x + 5, this.y + 5 + i * 30);
     } else {
       context.fillStyle = "black";
-      context.font = 25 * (this.width / 64) + "px Georgia";
+      let value = this.font.split("px")[0].split(" ");
+      if (value.length > 1) {
+        context.font = +this.font.split("px")[0].split(" ")[1] * (this.width / this.originWidth) + "px Georgia";
+      } else context.font = +this.font.split("px")[0].split(" ") * (this.width / this.originWidth) + "px Georgia";
       context.fillText(this.originalText, this.x, this.y + this.originHeight / 3);
     }
   }
