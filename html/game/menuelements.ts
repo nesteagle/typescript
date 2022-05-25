@@ -379,6 +379,14 @@ export class Box {
     }
   }
 }
+export class RecieveZone {
+  constructor(public x: number, public y: number, public width: number, public height: number) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+}
 export class Minimap {
   constructor(public x: number, public y: number, public zoom?: number, public type?: string, public Scrolling?: boolean) {
     this.x = x;
