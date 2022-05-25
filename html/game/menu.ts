@@ -1,4 +1,4 @@
-import { TextBox, TextButton, UpgradeBox, Background, Minimap } from "./menuelements";
+import { TextBox, TextButton, UpgradeBox, Box, Background, Minimap } from "./menuelements";
 import { playerStats } from "./world";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
@@ -82,7 +82,7 @@ function update() {
           elements[i].restoreSize();
         }
       }
-      if (elements[i].type == "Upgrade") {
+      if (elements[i].type == "Upgrade" || elements[i].type == "Box") {
         renderLines();
         if (elements[i].hoveredOver(mousePos) == true) {
           elements[i].selected = true;
@@ -230,6 +230,7 @@ menu.addEventListener(
               for (let i = 0; i < upgrades.length; i++) {
                 elements.push(new TextBox(100, 100 + i * 50, upgrades[i][0], "25px Georgia", true));
               }
+              elements.push(new Box(500, 500, 100, 100, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!"));
               break;
           }
         }

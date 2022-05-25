@@ -307,17 +307,45 @@ export class Background {
     }
   }
 }
-export class InteractiveBox {
-  constructor(public x: number, public y: number, public width: number, public height: number, public fillStyle?: string) {
+export class Box {
+  constructor(
+    public x: number,
+    public y: number,
+    public width: number,
+    public height: number,
+    public originalText?: string,
+    public descriptionText?: string,
+    public fillStyle?: string,
+    public type?: string,
+    public selected?: boolean,
+    private originWidth?: number,
+    private originHeight?: number
+  ) {
     this.x = x;
     this.y = y;
+    this.originWidth = width;
+    this.originHeight = height;
     this.width = width;
     this.height = height;
-    this.fillStyle == undefined ? (this.fillStyle = "black") : (this.fillStyle = fillStyle);
+    this.descriptionText = descriptionText;
+    this.fillStyle == undefined ? (this.fillStyle = "rgb(80,80,90)") : (this.fillStyle = fillStyle);
+    this.type = "Box";
+    this.selected = false;
   }
   draw() {
     context.fillStyle = this.fillStyle;
     context.fillRect(this.x, this.y, this.width, this.height);
+    context.strokeRect(this.x, this.y, this.width, this.height);
+    if (this.selected == true) {
+      let lines = this.descriptionText.split("\n");
+      context.fillStyle = "black";
+      context.font = 25 * (this.width / 300) + "px Georgia";
+      for (let i = 0; i < lines.length; i++) context.fillText(lines[i], this.x + 5, this.y + 5 + i * 30);
+    } else {
+      context.fillStyle = "black";
+      context.font = 25 * (this.width / 64) + "px Georgia";
+      context.fillText(this.originalText, this.x, this.y + this.originHeight / 3);
+    }
   }
   hoveredOver(mousePos) {
     if (
@@ -332,15 +360,17 @@ export class InteractiveBox {
       if (this.height < 185) {
         this.height += (185 / this.height) * 6.18;
       }
+      this.selected = true;
       return true;
     }
   }
   restoreSize() {
-    if (this.width > 140) {
-      this.width -= (this.width / 140) * 10;
+    this.selected = false;
+    if (this.width > this.originWidth) {
+      this.width -= (this.width / this.originWidth) * 10;
     }
-    if (this.height > 140) {
-      this.height -= (this.height / 140) * 6.18;
+    if (this.height > this.originHeight) {
+      this.height -= (this.height / this.originHeight) * 6.18;
     }
   }
 }
