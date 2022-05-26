@@ -313,9 +313,10 @@ export class Box {
     public y: number,
     public width: number,
     public height: number,
+    public isSelectable: boolean,
     public originalText: string,
     public descriptionText: string,
-    public font: string,
+    public font?: string,
     public fillStyle?: string,
     public type?: string,
     public selected?: boolean,
@@ -329,7 +330,7 @@ export class Box {
     this.width = width;
     this.height = height;
     this.descriptionText = descriptionText;
-    this.font = font;
+    font == undefined ? (this.font = "25px Georgia") : (this.font = font);
     this.fillStyle == undefined ? (this.fillStyle = "rgb(80,80,90)") : (this.fillStyle = fillStyle);
     this.type = "Box";
     this.selected = false;
@@ -385,9 +386,10 @@ export class DescriptionBox {
     public y: number,
     public width: number,
     public height: number,
-    public originalText: string,
-    public descriptionText: string,
-    public font: string,
+    public selectable: boolean,
+    public originalText?: string,
+    public descriptionText?: string,
+    public font?: string,
     public fillStyle?: string,
     public type?: string,
     public selected?: boolean,
@@ -403,34 +405,38 @@ export class DescriptionBox {
     this.width = width;
     this.height = height;
     this.descriptionText = descriptionText;
-    this.font = font;
+    font == undefined ? (this.font = "25px Georgia") : (this.font = font);
     this.fillStyle == undefined ? (this.fillStyle = "rgb(80,80,90)") : (this.fillStyle = fillStyle);
     this.type = "Description";
     this.selected = false;
   }
   draw() {
-    context.fillStyle = this.fillStyle;
-    context.fillRect(this.x, this.y, this.width, this.height);
-    context.strokeRect(this.x, this.y, this.width, this.height);
     context.fillStyle = "black";
     let value = this.font.split("px")[0].split(" ");
     if (value.length > 1) {
       context.font = +this.font.split("px")[0].split(" ")[1] * (this.width / this.originWidth) + "px Georgia";
     } else context.font = +this.font.split("px")[0].split(" ") * (this.width / this.originWidth) + "px Georgia";
+    // if(this.hasBox==true){
+    //   context.fillStyle = this.fillStyle;
+    //   context.fillRect(this.x, this.y, this.width, this.height);
+    //   context.strokeRect(this.x, this.y, this.width, this.height);
+    // }
     context.fillText(this.originalText, this.x, this.y + this.originHeight / 3);
-    if (this.selected == true) {
-      context.fillStyle = this.fillStyle;
-      let lines = this.descriptionText.split("\n");
-      context.font = "20px Georgia";
-      if (this.mouseX == undefined || this.mouseY == undefined) {
-        context.fillStyle = "black";
-        for (let i = 0; i < lines.length; i++) context.fillText(lines[i], this.x + 5, this.y + 5 + i * 30);
-      } else {
-        context.fillRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
-        context.strokeRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
-        context.fillStyle = "black";
-        for (let i = 0; i < lines.length; i++)
-          context.fillText(lines[i], this.x + 55 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY) + i * 30 + 5);
+    if (this.selectable == true) {
+      if (this.selected == true) {
+        context.fillStyle = this.fillStyle;
+        let lines = this.descriptionText.split("\n");
+        context.font = "20px Georgia";
+        if (this.mouseX == undefined || this.mouseY == undefined) {
+          context.fillStyle = "black";
+          for (let i = 0; i < lines.length; i++) context.fillText(lines[i], this.x + 5, this.y + 5 + i * 30);
+        } else {
+          context.fillRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
+          context.strokeRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
+          context.fillStyle = "black";
+          for (let i = 0; i < lines.length; i++)
+            context.fillText(lines[i], this.x + 55 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY) + i * 30 + 5);
+        }
       }
     }
   }
