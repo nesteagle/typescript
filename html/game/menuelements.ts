@@ -219,6 +219,7 @@ export class UpgradeBox {
     this.type = "Upgrade";
     this.width = 140;
     this.height = 140;
+    this.selectable = true;
   }
   draw(): void {
     context.translate(scrollOffset[0], scrollOffset[1]);
