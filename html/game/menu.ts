@@ -1,4 +1,4 @@
-import { TextBox, TextButton, UpgradeBox, Box, Background, Minimap } from "./menuelements";
+import { TextBox, TextButton, UpgradeBox, Box, DescriptionBox, Background, Minimap } from "./menuelements";
 import { playerStats } from "./world";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
@@ -82,14 +82,28 @@ function update() {
           elements[i].restoreSize();
         }
       }
-      if (elements[i].type == "Upgrade" || elements[i].type == "Box") {
-        renderLines();
-        if (elements[i].hoveredOver(mousePos) == true) {
-          elements[i].selected = true;
-        } else {
-          elements[i].restoreSize();
-          elements[i].selected = false;
-        }
+      switch (elements[i].type) {
+        case "Upgrade":
+          renderLines();
+          if (elements[i].hoveredOver(mousePos) == true) {
+            elements[i].selected = true;
+          } else {
+            elements[i].restoreSize();
+            elements[i].selected = false;
+          }
+          break;
+        case "Box":
+          if (elements[i].hoveredOver(mousePos) == true) {
+            elements[i].selected = true;
+          } else {
+            elements[i].restoreSize();
+            elements[i].selected = false;
+          }
+          break;
+        case "Description":
+          if (elements[i].hoveredOver(mousePos) == true) {
+            elements[i].selected = true;
+          } else elements[i].selected = false;
       }
     }
   }
@@ -231,7 +245,17 @@ menu.addEventListener(
                 elements.push(new TextBox(100, 100 + i * 50, upgrades[i][0], "25px Georgia", true));
               }
               elements.push(
-                new Box(500, 500, 100, 100, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia")
+                new Box(500, 500, 100, 100, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia"),
+                new DescriptionBox(
+                  400,
+                  650,
+                  100,
+                  100,
+                  "Hello",
+                  "Hello world! this box is\nanother test which is seperate\n from the original box.",
+                  "30px Georgia",
+                  "rgb(100,100,100)"
+                )
               );
               break;
           }

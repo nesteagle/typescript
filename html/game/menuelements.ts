@@ -379,6 +379,75 @@ export class Box {
     }
   }
 }
+export class DescriptionBox {
+  constructor(
+    public x: number,
+    public y: number,
+    public width: number,
+    public height: number,
+    public originalText: string,
+    public descriptionText: string,
+    public font: string,
+    public fillStyle?: string,
+    public type?: string,
+    public selected?: boolean,
+    private originWidth?: number,
+    private originHeight?: number,
+    private mouseX?: number,
+    private mouseY?: number
+  ) {
+    this.x = x;
+    this.y = y;
+    this.originWidth = width;
+    this.originHeight = height;
+    this.width = width;
+    this.height = height;
+    this.descriptionText = descriptionText;
+    this.font = font;
+    this.fillStyle == undefined ? (this.fillStyle = "rgb(80,80,90)") : (this.fillStyle = fillStyle);
+    this.type = "Description";
+    this.selected = false;
+  }
+  draw() {
+    context.fillStyle = this.fillStyle;
+    context.fillRect(this.x, this.y, this.width, this.height);
+    context.strokeRect(this.x, this.y, this.width, this.height);
+    context.fillStyle = "black";
+    let value = this.font.split("px")[0].split(" ");
+    if (value.length > 1) {
+      context.font = +this.font.split("px")[0].split(" ")[1] * (this.width / this.originWidth) + "px Georgia";
+    } else context.font = +this.font.split("px")[0].split(" ") * (this.width / this.originWidth) + "px Georgia";
+    context.fillText(this.originalText, this.x, this.y + this.originHeight / 3);
+    if (this.selected == true) {
+      context.fillStyle = this.fillStyle;
+      let lines = this.descriptionText.split("\n");
+      context.font = "20px Georgia";
+      if (this.mouseX == undefined || this.mouseY == undefined) {
+        context.fillStyle = "black";
+        for (let i = 0; i < lines.length; i++) context.fillText(lines[i], this.x + 5, this.y + 5 + i * 30);
+      } else {
+        context.fillRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
+        context.strokeRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
+        context.fillStyle = "black";
+        for (let i = 0; i < lines.length; i++)
+          context.fillText(lines[i], this.x + 55 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY) + i * 30 + 5);
+      }
+    }
+  }
+  hoveredOver(mousePos) {
+    this.mouseX = mousePos.x;
+    this.mouseY = mousePos.y;
+    if (
+      mousePos.x > this.x - 5 + scrollOffset[0] &&
+      mousePos.y > this.y - 5 + scrollOffset[1] &&
+      mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
+      mousePos.y < this.y + scrollOffset[1] + this.height + 10
+    ) {
+      this.selected = true;
+      return true;
+    }
+  }
+}
 export class RecieveZone {
   constructor(public x: number, public y: number, public width: number, public height: number) {
     this.x = x;
