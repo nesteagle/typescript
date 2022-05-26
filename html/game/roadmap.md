@@ -4,9 +4,7 @@
 
 # Easier way to find upgrades --TODO
 
-# General textbox that will expand on hover --in progress
-
-# ^^ Merge all textboxes and simplify code
+# Merge all textboxes and simplify code --PRIORITY
 
 # Improve Upgrade tree and add more settings
 
