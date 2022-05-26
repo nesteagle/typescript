@@ -12,7 +12,7 @@ export class TextBox {
     public y: number,
     public text: string,
     public font: string,
-    public box: boolean,
+    public box?: boolean,
     public boxColor?: string,
     public type?: string,
     public textColor?: string
@@ -41,7 +41,82 @@ export class TextBox {
     context.fillText(this.text, this.x, this.y);
   }
 }
-export class TextButton extends TextBox {
+export class InteractiveBox {
+  constructor(
+    public x: number,
+    public y: number,
+    public width: number,
+    public height: number,
+    public text: string,
+    public descriptionText: string,
+    public font: string,
+    public fillStyle?: string,
+    public box?: boolean,
+    public stroke?: boolean,
+    public selected?: boolean,
+    private originWidth?: number,
+    private originHeight?: number,
+    private mouseX?: number,
+    private mouseY?: number,
+    public selectable?: boolean
+  ) {
+    this.x = x;
+    this.y = y;
+    this.originWidth = width;
+    this.originHeight = height;
+    this.width = width;
+    this.height = height;
+    if (box == undefined) this.box = true;
+    this.descriptionText = descriptionText;
+    font == undefined ? (this.font = "25px Georgia") : (this.font = font);
+    this.fillStyle == undefined ? (this.fillStyle = "rgb(80,80,90)") : (this.fillStyle = fillStyle);
+    this.selected = false;
+    this.selectable = true;
+  }
+  draw() {
+    if (this.box == true) {
+      context.fillStyle = this.fillStyle;
+      context.fillRect(this.x, this.y, this.width, this.height);
+      context.strokeRect(this.x, this.y, this.width, this.height);
+    }
+    context.fillStyle = "black";
+    let value = this.font.split("px")[0].split(" ");
+    if (value.length > 1) {
+      context.font = +this.font.split("px")[0].split(" ")[1] * (this.width / this.originWidth) + "px Georgia";
+    } else context.font = +this.font.split("px")[0].split(" ") * (this.width / this.originWidth) + "px Georgia";
+    context.fillText(this.text, this.x, this.y + this.originHeight / 3);
+    if (this.selected == true) {
+      context.fillStyle = this.fillStyle;
+      let lines = this.descriptionText.split("\n");
+      context.font = "20px Georgia";
+      if (this.mouseX == undefined || this.mouseY == undefined) {
+        context.fillStyle = "black";
+        for (let i = 0; i < lines.length; i++) context.fillText(lines[i], this.x + 5, this.y + 5 + i * 30);
+      } else {
+        context.fillRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
+        context.strokeRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
+        context.fillStyle = "black";
+        for (let i = 0; i < lines.length; i++)
+          context.fillText(lines[i], this.x + 55 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY) + i * 30 + 5);
+      }
+    }
+  }
+  hoveredOver(mousePos) {
+    this.mouseX = mousePos.x;
+    this.mouseY = mousePos.y;
+    if (
+      mousePos.x > this.x - 5 + scrollOffset[0] &&
+      mousePos.y > this.y - 5 + scrollOffset[1] &&
+      mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
+      mousePos.y < this.y + scrollOffset[1] + this.height + 10
+    ) {
+      this.selected = true;
+      return true;
+    }
+  }
+}
+
+export class TextButton {
   constructor(
     public x: number,
     public y: number,
@@ -54,12 +129,25 @@ export class TextButton extends TextBox {
     public type?: string,
     public originalSize?: number
   ) {
-    super(x, y, text, font, box, boxColor, type);
     this.path = path;
     this.type = "Button";
     let tempsplit = this.font.split(" ")[1].split("px");
     this.originalSize = +tempsplit[0];
     path == undefined ? (this.path = "none") : (this.path = path);
+  }
+  draw(): void {
+    context.font = this.font;
+    context.textAlign = "start";
+    context.textBaseline = "hanging";
+    context.fillText(this.text, this.x, this.y);
+    let measurements = context.measureText(this.text);
+    let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
+    if (this.box == true) {
+      this.boxColor == undefined ? (context.fillStyle = "rgb(100,110,144)") : (context.fillStyle = this.boxColor);
+      context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
+    }
+    context.fillStyle = "black";
+    context.fillText(this.text, this.x, this.y);
   }
   detectClick(mousePos): boolean {
     context.font = this.font;
@@ -120,7 +208,8 @@ export class UpgradeBox {
     public type?: string,
     private width?: number,
     private height?: number,
-    public selected?: boolean
+    public selected?: boolean,
+    public selectable?: boolean
   ) {
     this.x = x;
     this.y = y;
@@ -313,7 +402,7 @@ export class Box {
     public y: number,
     public width: number,
     public height: number,
-    public isSelectable: boolean,
+    public selectable: boolean,
     public originalText: string,
     public descriptionText: string,
     public font?: string,
@@ -380,80 +469,7 @@ export class Box {
     }
   }
 }
-export class DescriptionBox {
-  constructor(
-    public x: number,
-    public y: number,
-    public width: number,
-    public height: number,
-    public selectable: boolean,
-    public originalText?: string,
-    public descriptionText?: string,
-    public font?: string,
-    public fillStyle?: string,
-    public type?: string,
-    public selected?: boolean,
-    private originWidth?: number,
-    private originHeight?: number,
-    private mouseX?: number,
-    private mouseY?: number
-  ) {
-    this.x = x;
-    this.y = y;
-    this.originWidth = width;
-    this.originHeight = height;
-    this.width = width;
-    this.height = height;
-    this.descriptionText = descriptionText;
-    font == undefined ? (this.font = "25px Georgia") : (this.font = font);
-    this.fillStyle == undefined ? (this.fillStyle = "rgb(80,80,90)") : (this.fillStyle = fillStyle);
-    this.type = "Description";
-    this.selected = false;
-  }
-  draw() {
-    context.fillStyle = "black";
-    let value = this.font.split("px")[0].split(" ");
-    if (value.length > 1) {
-      context.font = +this.font.split("px")[0].split(" ")[1] * (this.width / this.originWidth) + "px Georgia";
-    } else context.font = +this.font.split("px")[0].split(" ") * (this.width / this.originWidth) + "px Georgia";
-    // if(this.hasBox==true){
-    //   context.fillStyle = this.fillStyle;
-    //   context.fillRect(this.x, this.y, this.width, this.height);
-    //   context.strokeRect(this.x, this.y, this.width, this.height);
-    // }
-    context.fillText(this.originalText, this.x, this.y + this.originHeight / 3);
-    if (this.selectable == true) {
-      if (this.selected == true) {
-        context.fillStyle = this.fillStyle;
-        let lines = this.descriptionText.split("\n");
-        context.font = "20px Georgia";
-        if (this.mouseX == undefined || this.mouseY == undefined) {
-          context.fillStyle = "black";
-          for (let i = 0; i < lines.length; i++) context.fillText(lines[i], this.x + 5, this.y + 5 + i * 30);
-        } else {
-          context.fillRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
-          context.strokeRect(this.x + 50 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY), 300, 150);
-          context.fillStyle = "black";
-          for (let i = 0; i < lines.length; i++)
-            context.fillText(lines[i], this.x + 55 + Math.abs(this.x - this.mouseX - 5), this.y + Math.abs(this.y - this.mouseY) + i * 30 + 5);
-        }
-      }
-    }
-  }
-  hoveredOver(mousePos) {
-    this.mouseX = mousePos.x;
-    this.mouseY = mousePos.y;
-    if (
-      mousePos.x > this.x - 5 + scrollOffset[0] &&
-      mousePos.y > this.y - 5 + scrollOffset[1] &&
-      mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
-      mousePos.y < this.y + scrollOffset[1] + this.height + 10
-    ) {
-      this.selected = true;
-      return true;
-    }
-  }
-}
+
 export class RecieveZone {
   constructor(public x: number, public y: number, public width: number, public height: number) {
     this.x = x;

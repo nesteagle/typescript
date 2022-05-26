@@ -1,4 +1,4 @@
-import { TextBox, TextButton, UpgradeBox, Box, DescriptionBox, Background, Minimap } from "./menuelements";
+import { TextBox, TextButton, UpgradeBox, Box, Background, Minimap, InteractiveBox } from "./menuelements";
 import { playerStats } from "./world";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
@@ -87,7 +87,7 @@ function update() {
           renderLines();
           break;
       }
-      handle(elements[i], i);
+      handleInteraction(elements[i], i);
     }
   }
   for (let j = 0; j < elements.length; j++) {
@@ -108,24 +108,6 @@ function hasPurchased(index) {
 menu.addEventListener("mousemove", function (event) {
   mousePos = getMousePos(menu, event);
 });
-interface interactive {
-  selectable: string;
-}
-function isInteractive(object: any): object is interactive {
-  return "selectable" in object;
-}
-function handle(obj: interactive, index: number) {
-  if (isInteractive(obj)) {
-    console.log(obj.selectable);
-    if (elements[index].hoveredOver(mousePos) == true) {
-      console.log("HEY");
-      elements[index].selected = true;
-    } else {
-      if (elements[index].type == "Upgrade" || elements[index].type == "Box") elements[index].restoreSize();
-      elements[index].selected = false;
-    }
-  }
-}
 menu.addEventListener(
   "click",
   function (event) {
@@ -242,17 +224,13 @@ menu.addEventListener(
             case "equip":
               background.rendering = true;
               elements = [new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "menu")];
-              for (let i = 0; i < upgrades.length; i++) {
-                elements.push(new TextBox(100, 100 + i * 50, upgrades[i][0], "25px Georgia", true));
-              }
               elements.push(
                 new Box(500, 500, 100, 100, true, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia"),
-                new DescriptionBox(
+                new InteractiveBox(
                   400,
                   650,
                   100,
                   100,
-                  false,
                   "Hello",
                   "Hello world! this box is\nanother test which is seperate\n from the original box.",
                   "30px Georgia",
@@ -318,4 +296,23 @@ function renderLines() {
     }
   }
   context.translate(-scrollOffset[0], -scrollOffset[1]);
+}
+interface interactive {
+  selectable: boolean;
+}
+function isInteractive(object: any): object is interactive {
+  return "selectable" in object;
+}
+function handleInteraction(obj: interactive, index: number) {
+  if (isInteractive(obj)) {
+    if (obj.selectable == true) {
+      if (elements[index].hoveredOver(mousePos) == true) {
+        console.log("HEY");
+        elements[index].selected = true;
+      } else {
+        if (elements[index].type == "Upgrade" || elements[index].type == "Box") elements[index].restoreSize();
+        elements[index].selected = false;
+      }
+    }
+  }
 }
