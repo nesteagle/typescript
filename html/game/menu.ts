@@ -1,4 +1,4 @@
-import { TextBox, TextButton, UpgradeBox, Box, Background, Minimap, InteractiveBox } from "./menuelements";
+import { Text, TextButton, UpgradeBox, Box, Background, Minimap, InteractiveBox } from "./menuelements";
 import { playerStats } from "./world";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
@@ -23,7 +23,7 @@ export let upgrades: Array<any> = [
 ];
 let background = new Background(0, 0, false);
 export let elements: Array<any> = [
-  new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
+  new Text(100, 200, "Game Title", "600 90px Georgia", true),
   new TextButton(100, 450, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
   new TextButton(100, 550, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
   new TextButton(100, 650, "Loadout", "200 45px Georgia", true, "menu", "equip"),
@@ -52,11 +52,11 @@ eventListener.addEventListener(
       }
     }
     elements = [
-      new TextBox(100, 100, "You " + won, "500 50px Georgia", false),
-      new TextBox(100, 200, "Total Kills: " + playerStats[0].kills, "100 35px Georgia", false),
-      new TextBox(100, 260, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
-      new TextBox(100, 320, "Kill-Death Ratio: " + playerStats[0].kills / +playerStats[1].deaths, "100 35px Georgia", false),
-      new TextBox(100, 400, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
+      new Text(100, 100, "You " + won, "500 50px Georgia", false),
+      new Text(100, 200, "Total Kills: " + playerStats[0].kills, "100 35px Georgia", false),
+      new Text(100, 260, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
+      new Text(100, 320, "Kill-Death Ratio: " + playerStats[0].kills / +playerStats[1].deaths, "100 35px Georgia", false),
+      new Text(100, 400, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
       new TextButton(100, 600, "Return to Menu", "200 45px Georgia", true, "menu", "menu"),
     ];
     elements[0].textColor = colortemp;
@@ -163,7 +163,7 @@ menu.addEventListener(
             case "menu":
               background.rendering = false;
               elements = [
-                new TextBox(100, 200, "Game Title", "600 90px Georgia", true),
+                new Text(100, 200, "Game Title", "600 90px Georgia", true),
                 new TextButton(100, 450, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
                 new TextButton(100, 550, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
                 new TextButton(100, 650, "Loadout", "200 45px Georgia", true, "menu", "equip"),
@@ -192,8 +192,8 @@ menu.addEventListener(
                 new UpgradeBox(50, 600, "Swords"),
                 new UpgradeBox(50, 300, "Spears"),
                 new Minimap(990, 690),
-                new TextBox(50, 50, `xp:${exp}`, "200 35px Georgia", false),
-                new TextBox(50, 100, `currency:${currency}`, "200 35px Georgia", false),
+                new Text(50, 50, `xp:${exp}`, "200 35px Georgia", false),
+                new Text(50, 100, `currency:${currency}`, "200 35px Georgia", false),
               ];
               for (let i = 4; i < upgrades.length; i++) {
                 switch (upgrades[i][0]) {

@@ -6,7 +6,7 @@ let backgroundMain = document.getElementById("source") as CanvasImageSource; // 
 import { gameEvent } from "./world";
 import { upgrades, scrollOffset, elements } from "./menu";
 let eventListener: any = document.getElementById("listener");
-export class TextBox {
+export class Text {
   constructor(
     public x: number,
     public y: number,
@@ -23,7 +23,7 @@ export class TextBox {
     this.font = font;
     this.box = box;
     this.boxColor = boxColor;
-    this.type = "TextBox";
+    this.type = "Text";
     this.textColor = textColor;
   }
   draw(): void {
