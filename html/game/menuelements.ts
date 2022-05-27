@@ -42,6 +42,7 @@ export class Text {
   }
 }
 export class InteractiveBox {
+  //mainly for hover-over images?
   constructor(
     public x: number,
     public y: number,
@@ -115,7 +116,6 @@ export class InteractiveBox {
     }
   }
 }
-
 export class TextButton {
   constructor(
     public x: number,
@@ -472,7 +472,7 @@ export class Box {
   }
 }
 
-export class RecieveZone {
+export class DropZone {
   constructor(public x: number, public y: number, public width: number, public height: number) {
     this.x = x;
     this.y = y;

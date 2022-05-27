@@ -1,5 +1,10 @@
 import { Text, TextButton, UpgradeBox, Box, Background, Minimap, InteractiveBox } from "./menuelements";
 import { playerStats } from "./world";
+let drag = false;
+document.addEventListener("mousedown", () => (drag = false));
+document.addEventListener("mousemove", () => (drag = true));
+document.addEventListener("mouseup", () => console.log(drag ? "drag" : "click"));
+
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
