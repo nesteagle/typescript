@@ -187,6 +187,7 @@ export class TextButton {
         value += 1;
         this.font = split[0] + " " + value + "px " + split[2];
       }
+      // context.fillText("Specific action", this.x + measurements.width + 25, this.y + height); maybe expand upon later
       return true;
     }
   }
@@ -507,8 +508,8 @@ export class Minimap {
       1200 / this.zoom,
       800 / this.zoom
     );
-    if (scrollOffset[1] >= this.zoom * this.zoom) {
-      scrollOffset[1] = this.zoom * this.zoom;
+    if (scrollOffset[1] >= this.zoom) {
+      scrollOffset[1] = this.zoom;
       this.Scrolling = false;
     }
     if (scrollOffset[0] >= this.zoom * this.zoom) {
@@ -519,8 +520,8 @@ export class Minimap {
       scrollOffset[0] = -200 * this.zoom + this.zoom * this.zoom + 1200;
       this.Scrolling = false;
     }
-    if (scrollOffset[1] - 800 <= -200 * this.zoom + this.zoom * this.zoom) {
-      scrollOffset[1] = -200 * this.zoom + this.zoom * this.zoom + 800;
+    if (scrollOffset[1] - 800 <= -200 * this.zoom + this.zoom) {
+      scrollOffset[1] = -200 * this.zoom + this.zoom + 800;
       this.Scrolling = false;
     }
   }
