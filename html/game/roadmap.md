@@ -2,7 +2,7 @@
 
 # Add equip menu and drag+drop feature --TODO,drag detection finished
 
-# Easier way to find upgrades --TODO
+# Easier way to find upgrades --TODO -- maybe search system? will expand further
 
 # Merge all textboxes and simplify code --PRIORITY
 
