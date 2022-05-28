@@ -311,7 +311,6 @@ function handleInteraction(obj: interactive, index: number) {
   if (isInteractive(obj)) {
     if (obj.selectable == true) {
       if (elements[index].hoveredOver(mousePos) == true) {
-        console.log("HEY");
         elements[index].selected = true;
       } else {
         if (elements[index].type == "Upgrade" || elements[index].type == "Box") elements[index].restoreSize();

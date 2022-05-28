@@ -168,7 +168,6 @@ export class TextButton {
         return;
       }
       return true;
-    } else {
     }
   }
   hoveredOver(mousePos) {
