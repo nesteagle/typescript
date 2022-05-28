@@ -1,6 +1,6 @@
 # Roadmap
 
-# Add equip menu and drag+drop feature --TODO
+# Add equip menu and drag+drop feature --TODO,drag detection finished
 
 # Easier way to find upgrades --TODO
 

@@ -4,7 +4,6 @@ let drag = false;
 document.addEventListener("mousedown", () => (drag = false));
 document.addEventListener("mousemove", () => (drag = true));
 document.addEventListener("mouseup", () => console.log(drag ? "drag" : "click"));
-
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
