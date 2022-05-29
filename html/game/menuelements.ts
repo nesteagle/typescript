@@ -19,7 +19,7 @@ export class Text {
     public path?: string,
     public textColor?: string,
     public type?: string,
-    private originalSize?: number
+    private originalSize?: any
   ) {
     //     public x: number,
     //     public y: number,
@@ -38,8 +38,8 @@ export class Text {
     this.box = box;
     clickable == undefined ? (this.clickable = false) : (this.clickable = clickable);
     selectable == undefined ? (this.selectable = false) : (this.selectable = selectable);
-    context.font = this.font;
-    this.originalSize = context.measureText(this.text).width;
+    this.originalSize = +this.font.split(" ")[1].split("px")[0];
+    console.log(this.originalSize);
     boxColor == undefined || boxColor == null ? (this.boxColor = "rgb(100,110,144)") : (this.boxColor = boxColor);
     this.type = "Text";
     this.textColor = textColor;
@@ -91,15 +91,15 @@ export class Text {
       ) {
         let value = this.font.split("px")[0].split(" ").map(Number);
         if (value.length > 1) {
-          console.log(this.originalSize, +value[1] < this.originalSize);
           if (value[1] < this.originalSize * 1.1) {
-            // value[1]++;
-            console.log(value);
-            this.font = value[1] * (measurements.width / this.originalSize) + "px Georgia";
+            value[1]++;
+            console.log(value[1], this.originalSize, value[1] > this.originalSize);
+            this.font = value[1] + "px Georgia";
           }
         } else if (value[0] < this.originalSize * 1.1) {
+          console.log(value[0], this.originalSize);
           value[0]++;
-          this.font = value[0] * (measurements.width / this.originalSize) + "px Georgia";
+          this.font = value[0] + "px Georgia";
         }
         // context.fillText("Specific action", this.x + measurements.width + 25, this.y + height); maybe expand upon later
         return true;
@@ -109,12 +109,14 @@ export class Text {
   restoreSize() {
     let split = this.font.split(" ");
     let value = this.font.split("px")[0].split(" ").map(Number);
+    context.font = this.font;
+    let measurements = context.measureText(this.text);
     if (value.length > 1) {
-      if (+value[1] > this.originalSize) {
+      if (value[1] > measurements.width / this.originalSize) {
         value[1]--;
         this.font = split[0] + " " + value[1] + "px " + split[2];
       } else {
-        if (+value[0] > this.originalSize) {
+        if (value[0] > this.originalSize) {
           value[0]--;
           this.font = split[0] + " " + value[0] + "px " + split[2];
         }

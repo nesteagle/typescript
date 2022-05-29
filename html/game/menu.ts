@@ -311,11 +311,6 @@ function isClickable(object: any): object is interactive {
 }
 function handleClick(obj: clickable, index: number) {
   if (isClickable(obj)) {
-    if (obj.clickable == true) {
-      if (elements[index].hoveredOver(mousePos) !== true) {
-        elements[index].restoreSize();
-      }
-    }
   }
 }
 function handleInteraction(obj: interactive, index: number) {
