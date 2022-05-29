@@ -1,4 +1,4 @@
-import { Text, TextButton, UpgradeBox, Box, Background, Minimap, InteractiveBox } from "./menuelements";
+import { Text, UpgradeBox, Box, Background, Minimap, InteractiveBox } from "./menuelements";
 import { playerStats } from "./world";
 let drag = false;
 document.addEventListener("mousedown", () => (drag = false));
@@ -27,10 +27,10 @@ export let upgrades: Array<any> = [
 ];
 let background = new Background(0, 0, false);
 export let elements: Array<any> = [
-  new Text(100, 200, "Game Title", "600 90px Georgia", true),
-  new TextButton(100, 450, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
-  new TextButton(100, 550, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
-  new TextButton(100, 650, "Loadout", "200 45px Georgia", true, "menu", "equip"),
+  new Text(100, 200, "Game Title", "600 90px Georgia", false, false, true),
+  new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, true, null, "campaign1"),
+  new Text(100, 550, "Upgrades", "200 45px Georgia", true, true, true, null, "upgrade1"),
+  new Text(100, 650, "Loadout", "200 45px Georgia", true, true, true, null, "equip"),
 ];
 function getMousePos(canvas, event) {
   let bounds = canvas.getBoundingClientRect();
@@ -56,12 +56,12 @@ eventListener.addEventListener(
       }
     }
     elements = [
-      new Text(100, 100, "You " + won, "500 50px Georgia", false),
-      new Text(100, 200, "Total Kills: " + playerStats[0].kills, "100 35px Georgia", false),
-      new Text(100, 260, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false),
-      new Text(100, 320, "Kill-Death Ratio: " + playerStats[0].kills / +playerStats[1].deaths, "100 35px Georgia", false),
-      new Text(100, 400, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false),
-      new TextButton(100, 600, "Return to Menu", "200 45px Georgia", true, "menu", "menu"),
+      new Text(100, 100, "You " + won, "500 50px Georgia", false, false),
+      new Text(100, 200, "Total Kills: " + playerStats[0].kills, "100 35px Georgia", false, false),
+      new Text(100, 260, "Total Deaths:" + playerStats[1].deaths, "100 35px Georgia", false, false),
+      new Text(100, 320, "Kill-Death Ratio: " + playerStats[0].kills / +playerStats[1].deaths, "100 35px Georgia", false, false),
+      new Text(100, 400, "Units Crossed: " + playerStats[2].crosses, "100 35px Georgia", false, false),
+      new Text(100, 600, "Return to Menu", "200 45px Georgia", true, true, null, "menu"),
     ];
     elements[0].textColor = colortemp;
     scrollOffset = [0, 0];
@@ -81,11 +81,7 @@ function update() {
   background.draw();
   if (mousePos !== undefined) {
     for (let i = 0; i < elements.length; i++) {
-      if (elements[i].type == "Button") {
-        if (elements[i].hoveredOver(mousePos) !== true) {
-          elements[i].restoreSize();
-        }
-      }
+      handleClick(elements[i], i);
       switch (elements[i].type) {
         case "Upgrade":
           renderLines();
@@ -167,37 +163,37 @@ menu.addEventListener(
             case "menu":
               background.rendering = false;
               elements = [
-                new Text(100, 200, "Game Title", "600 90px Georgia", true),
-                new TextButton(100, 450, "Play Campaign", "200 45px Georgia", true, "menu", "campaign1"),
-                new TextButton(100, 550, "Upgrades", "200 45px Georgia", true, "menu", "upgrade1"),
-                new TextButton(100, 650, "Loadout", "200 45px Georgia", true, "menu", "equip"),
+                new Text(100, 200, "Game Title", "600 90px Georgia", false, false, true),
+                new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, true, null, "menu", "campaign1"),
+                new Text(100, 550, "Upgrades", "200 45px Georgia", true, true, true, null, "upgrade1"),
+                new Text(100, 650, "Loadout", "200 45px Georgia", true, true, true, null, "equip"),
               ];
               minimap = undefined;
               break;
             case "campaign1":
               background.rendering = true;
               elements = [
-                new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "menu"),
-                new TextButton(150, 400, "Start Campaign", "200 40px Georgia", true, "play", "play"),
+                new Text(50, 850, "Back", "200 25px Georgia", true, true, true, null, "menu"),
+                new Text(150, 400, "Start Campaign", "200 40px Georgia", true, true, true, null, "play"),
               ];
               break;
             case "upgrade1":
               background.rendering = true;
               elements = [
-                new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "menu"),
-                new TextButton(150, 400, "Tech Tree", "200 40px Georgia", true, "menu", "upgrade2"),
+                new Text(50, 850, "Back", "200 25px Georgia", true, true, true, null, "menu"),
+                new Text(150, 400, "Tech Tree", "200 40px Georgia", true, true, true, null, "upgrade2"),
               ];
               break;
             case "upgrade2":
               elements = [
-                new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "upgrade1"),
+                new Text(50, 850, "Back", "200 25px Georgia", true, true, true, null, "upgrade1"),
                 new UpgradeBox(400, 300, "Archery", "ranged1"),
                 new UpgradeBox(400.1, 600, "Polearms", "melee1"),
                 new UpgradeBox(50, 600, "Swords"),
                 new UpgradeBox(50, 300, "Spears"),
                 new Minimap(990, 690),
-                new Text(50, 50, `xp:${exp}`, "200 35px Georgia", false),
-                new Text(50, 100, `currency:${currency}`, "200 35px Georgia", false),
+                new Text(50, 50, `xp:${exp}`, "200 35px Georgia", false, false),
+                new Text(50, 100, `currency:${currency}`, "200 35px Georgia", false, false),
               ];
               for (let i = 4; i < upgrades.length; i++) {
                 switch (upgrades[i][0]) {
@@ -227,7 +223,7 @@ menu.addEventListener(
               break;
             case "equip":
               background.rendering = true;
-              elements = [new TextButton(50, 850, "Back", "200 25px Georgia", true, "menu", "menu")];
+              elements = [new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu")];
               elements.push(
                 new Box(500, 500, 100, 100, true, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia"),
                 new InteractiveBox(
@@ -304,8 +300,23 @@ function renderLines() {
 interface interactive {
   selectable: boolean;
 }
+interface clickable {
+  clickable: boolean;
+}
 function isInteractive(object: any): object is interactive {
   return "selectable" in object;
+}
+function isClickable(object: any): object is interactive {
+  return "clickable" in object;
+}
+function handleClick(obj: clickable, index: number) {
+  if (isClickable(obj)) {
+    if (obj.clickable == true) {
+      if (elements[index].hoveredOver(mousePos) !== true) {
+        elements[index].restoreSize();
+      }
+    }
+  }
 }
 function handleInteraction(obj: interactive, index: number) {
   if (isInteractive(obj)) {
