@@ -27,10 +27,10 @@ export let upgrades: Array<any> = [
 ];
 let background = new Background(0, 0, false);
 export let elements: Array<any> = [
-  new Text(100, 200, "Game Title", "600 90px Georgia", false, false, true),
-  new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, true, null, "campaign1"),
-  new Text(100, 550, "Upgrades", "200 45px Georgia", true, true, true, null, "upgrade1"),
-  new Text(100, 650, "Loadout", "200 45px Georgia", true, true, true, null, "equip"),
+  new Text(100, 200, "Game Title", "600 90px Georgia", false, true),
+  new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, null, "campaign1"),
+  new Text(100, 550, "Upgrades", "200 45px Georgia", true, true, null, "upgrade1"),
+  new Text(100, 650, "Loadout", "200 45px Georgia", true, true, null, "equip"),
 ];
 function getMousePos(canvas, event) {
   let bounds = canvas.getBoundingClientRect();
@@ -86,6 +86,7 @@ function update() {
           renderLines();
           break;
       }
+      handleClick(elements[i], i);
       handleInteraction(elements[i], i);
     }
   }
@@ -157,86 +158,88 @@ menu.addEventListener(
         }
       }
       if (isClickable(elements[i])) {
-        if (elements[i].detectClick(mousePos) == true) {
-          switch (elements[i].path) {
-            case "menu":
-              background.rendering = false;
-              elements = [
-                new Text(100, 200, "Game Title", "600 90px Georgia", false, false, true),
-                new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, true, null, "menu", "campaign1"),
-                new Text(100, 550, "Upgrades", "200 45px Georgia", true, true, true, null, "upgrade1"),
-                new Text(100, 650, "Loadout", "200 45px Georgia", true, true, true, null, "equip"),
-              ];
-              minimap = undefined;
-              break;
-            case "campaign1":
-              background.rendering = true;
-              elements = [
-                new Text(50, 850, "Back", "200 25px Georgia", true, true, true, null, "menu"),
-                new Text(150, 400, "Start Campaign", "200 40px Georgia", true, true, true, null, "play"),
-              ];
-              break;
-            case "upgrade1":
-              background.rendering = true;
-              elements = [
-                new Text(50, 850, "Back", "200 25px Georgia", true, true, true, null, "menu"),
-                new Text(150, 400, "Tech Tree", "200 40px Georgia", true, true, true, null, "upgrade2"),
-              ];
-              break;
-            case "upgrade2":
-              elements = [
-                new Text(50, 850, "Back", "200 25px Georgia", true, true, true, null, "upgrade1"),
-                new UpgradeBox(400, 300, "Archery", "ranged1"),
-                new UpgradeBox(400.1, 600, "Polearms", "melee1"),
-                new UpgradeBox(50, 600, "Swords"),
-                new UpgradeBox(50, 300, "Spears"),
-                new Minimap(990, 690),
-                new Text(50, 50, `xp:${exp}`, "200 35px Georgia", false, false),
-                new Text(50, 100, `currency:${currency}`, "200 35px Georgia", false, false),
-              ];
-              for (let i = 4; i < upgrades.length; i++) {
-                switch (upgrades[i][0]) {
-                  case "Archery":
-                    elements.push(new UpgradeBox(750, 300, "Longbows", "ranged2"));
-                    break;
-                  case "Polearms":
-                    elements.push(new UpgradeBox(750.1, 600, "Axes", "melee2"));
-                    break;
-                  case "Axes":
-                    elements.push(new UpgradeBox(1100.1, 600, "Horses", "melee3"));
-                    break;
-                  case "Longbows":
-                    elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
-                    elements.push(new UpgradeBox(1100, 300, "longbowpath", "ranged3"));
-                    break;
-                  case "Crossbows":
-                    elements.push(new UpgradeBox(1099.9, 50, "crossbowpath", "ranged2"));
-                    break;
+        if (elements[i].clickable == true) {
+          if (elements[i].detectClick(mousePos) == true) {
+            switch (elements[i].path) {
+              case "menu":
+                background.rendering = false;
+                elements = [
+                  new Text(100, 200, "Game Title", "600 90px Georgia", false, true),
+                  new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, null, "campaign1"),
+                  new Text(100, 550, "Upgrades", "200 45px Georgia", true, true, null, "upgrade1"),
+                  new Text(100, 650, "Loadout", "200 45px Georgia", true, true, null, "equip"),
+                ];
+                minimap = undefined;
+                break;
+              case "campaign1":
+                background.rendering = true;
+                elements = [
+                  new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu"),
+                  new Text(150, 400, "Start Campaign", "200 40px Georgia", true, true, null, "play"),
+                ];
+                break;
+              case "upgrade1":
+                background.rendering = true;
+                elements = [
+                  new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu"),
+                  new Text(150, 400, "Tech Tree", "200 40px Georgia", true, true, null, "upgrade2"),
+                ];
+                break;
+              case "upgrade2":
+                elements = [
+                  new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "upgrade1"),
+                  new UpgradeBox(400, 300, "Archery", "ranged1"),
+                  new UpgradeBox(400.1, 600, "Polearms", "melee1"),
+                  new UpgradeBox(50, 600, "Swords"),
+                  new UpgradeBox(50, 300, "Spears"),
+                  new Minimap(990, 690),
+                  new Text(50, 50, `xp:${exp}`, "200 35px Georgia", false),
+                  new Text(50, 100, `currency:${currency}`, "200 35px Georgia", false),
+                ];
+                for (let i = 4; i < upgrades.length; i++) {
+                  switch (upgrades[i][0]) {
+                    case "Archery":
+                      elements.push(new UpgradeBox(750, 300, "Longbows", "ranged2"));
+                      break;
+                    case "Polearms":
+                      elements.push(new UpgradeBox(750.1, 600, "Axes", "melee2"));
+                      break;
+                    case "Axes":
+                      elements.push(new UpgradeBox(1100.1, 600, "Horses", "melee3"));
+                      break;
+                    case "Longbows":
+                      elements.push(new UpgradeBox(750, 50, "Crossbows", "ranged3"));
+                      elements.push(new UpgradeBox(1100, 300, "longbowpath", "ranged3"));
+                      break;
+                    case "Crossbows":
+                      elements.push(new UpgradeBox(1099.9, 50, "crossbowpath", "ranged2"));
+                      break;
+                  }
                 }
-              }
-              scrollOffset = [0, 0];
-              minimap = elements[elements.length - 2];
-              expbox = elements[elements.length - 2];
-              currencybox = elements[elements.length - 1];
-              minimap.Scrolling = true;
-              break;
-            case "equip":
-              background.rendering = true;
-              elements = [new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu")];
-              elements.push(
-                new Box(500, 500, 100, 100, true, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia"),
-                new InteractiveBox(
-                  400,
-                  650,
-                  100,
-                  100,
-                  "Hello",
-                  "Hello world! this box is\nanother test which is seperate\n from the original box.",
-                  "30px Georgia",
-                  "rgb(100,100,100)"
-                )
-              );
-              break;
+                scrollOffset = [0, 0];
+                minimap = elements[elements.length - 2];
+                expbox = elements[elements.length - 2];
+                currencybox = elements[elements.length - 1];
+                minimap.Scrolling = true;
+                break;
+              case "equip":
+                background.rendering = true;
+                elements = [new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu")];
+                elements.push(
+                  new Box(500, 500, 100, 100, true, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia"),
+                  new InteractiveBox(
+                    400,
+                    650,
+                    100,
+                    100,
+                    "Hello",
+                    "Hello world! this box is\nanother test which is seperate\n from the original box.",
+                    "30px Georgia",
+                    "rgb(100,100,100)"
+                  )
+                );
+                break;
+            }
           }
         }
       }
@@ -306,19 +309,25 @@ function isInteractive(object: any): object is interactive {
 interface clickable {
   clickable: boolean;
 }
-function isClickable(object: any): object is interactive {
+function isClickable(object: any): object is clickable {
   return "clickable" in object;
 }
-// function handleClick(obj: clickable, index: number) {
-
-// }
+function handleClick(obj: clickable, index: number) {
+  if (isClickable(obj)) {
+    if (obj.clickable == true) {
+      if (elements[index].hoveredOver(mousePos) !== true) {
+        elements[index].restoreSize();
+      }
+    }
+  }
+}
 function handleInteraction(obj: interactive, index: number) {
   if (isInteractive(obj)) {
     if (obj.selectable == true) {
       if (elements[index].hoveredOver(mousePos) == true) {
         elements[index].selected = true;
       } else {
-        if (elements[index].type == "Upgrade" || elements[index].type == "Box" || isClickable(elements[index])) elements[index].restoreSize();
+        if (elements[index].type == "Upgrade" || elements[index].type == "Box") elements[index].restoreSize();
         elements[index].selected = false;
       }
     }
