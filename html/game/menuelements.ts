@@ -20,16 +20,6 @@ export class Text {
     public type?: string,
     private originalSize?: any
   ) {
-    //     public x: number,
-    //     public y: number,
-    //     public text: string,
-    //     public font: string,
-    //     public box: boolean,
-    //     public event?: string,
-    //     public path?: string,
-    //     public boxColor?: string,
-    //     public type?: string,
-    //     public originalSize?: number
     this.x = x;
     this.y = y;
     this.text = text;

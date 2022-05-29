@@ -4,7 +4,9 @@
 
 # Easier way to find upgrades --TODO -- maybe search system? will expand further
 
-# Merge all textboxes and simplify code --PRIORITY
+# Merge all textboxes and simplify code --PRIORITY, nearly done
+
+# ^ BUG FIXES
 
 # Improve Upgrade tree and add more settings
 
