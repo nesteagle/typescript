@@ -108,18 +108,21 @@ export class Text {
   }
   restoreSize() {
     let split = this.font.split(" ");
+    console.log(split);
+
     let value = this.font.split("px")[0].split(" ").map(Number);
     context.font = this.font;
-    let measurements = context.measureText(this.text);
+
     if (value.length > 1) {
-      if (value[1] > measurements.width / this.originalSize) {
+      if (value[1] > this.originalSize) {
+        console.log(split);
         value[1]--;
-        this.font = split[0] + " " + value[1] + "px " + split[2];
-      } else {
-        if (value[0] > this.originalSize) {
-          value[0]--;
-          this.font = split[0] + " " + value[0] + "px " + split[2];
-        }
+        this.font = split[0] + " " + value[1] + "px Georgia";
+      }
+    } else {
+      if (value[0] > this.originalSize) {
+        value[0]--;
+        this.font = split[0] + " " + value[0] + "px Georgia"; //removed font implementation for now
       }
     }
   }

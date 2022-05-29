@@ -81,7 +81,6 @@ function update() {
   background.draw();
   if (mousePos !== undefined) {
     for (let i = 0; i < elements.length; i++) {
-      handleClick(elements[i], i);
       switch (elements[i].type) {
         case "Upgrade":
           renderLines();
@@ -157,7 +156,7 @@ menu.addEventListener(
           }
         }
       }
-      if (elements[i].type == "Button") {
+      if (isClickable(elements[i])) {
         if (elements[i].detectClick(mousePos) == true) {
           switch (elements[i].path) {
             case "menu":
@@ -300,26 +299,26 @@ function renderLines() {
 interface interactive {
   selectable: boolean;
 }
-interface clickable {
-  clickable: boolean;
-}
+
 function isInteractive(object: any): object is interactive {
   return "selectable" in object;
+}
+interface clickable {
+  clickable: boolean;
 }
 function isClickable(object: any): object is interactive {
   return "clickable" in object;
 }
-function handleClick(obj: clickable, index: number) {
-  if (isClickable(obj)) {
-  }
-}
+// function handleClick(obj: clickable, index: number) {
+
+// }
 function handleInteraction(obj: interactive, index: number) {
   if (isInteractive(obj)) {
     if (obj.selectable == true) {
       if (elements[index].hoveredOver(mousePos) == true) {
         elements[index].selected = true;
       } else {
-        if (elements[index].type == "Upgrade" || elements[index].type == "Box") elements[index].restoreSize();
+        if (elements[index].type == "Upgrade" || elements[index].type == "Box" || isClickable(elements[index])) elements[index].restoreSize();
         elements[index].selected = false;
       }
     }
