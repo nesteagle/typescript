@@ -3,22 +3,22 @@ let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
-let mousePos: any, originalmousePos: any, dragging: boolean;
+let mousePos: any, originalmousePos: any, finalmousePos: any, dragging: boolean, currentlyDragged: any;
 let drag = false;
 let mouseisDown = false;
 document.addEventListener("mousedown", (event) => {
   drag = false;
   mouseisDown = true;
   mousePos = getMousePos(event);
-  originalmousePos = getMousePos(event);
+  originalmousePos = mousePos;
 });
 document.addEventListener("mousemove", (event) => {
   mousePos = getMousePos(event);
   if (mouseisDown == true) drag = true;
 });
 document.addEventListener("mouseup", (event) => {
-  console.log(drag ? "drag" : "click");
   mousePos = getMousePos(event);
+  finalmousePos = mousePos;
   drag = false;
   mouseisDown = false;
 });
@@ -496,6 +496,7 @@ export class DraggableBox {
     dragging = this.mouseOver(originalmousePos);
     if (mouseisDown == true && dragging == true) {
       if (drag == true) {
+        currentlyDragged = this;
         context.fillStyle = "rgb(32,32,32)";
         context.fillRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
         context.strokeRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
@@ -516,7 +517,7 @@ export class DraggableBox {
   }
 }
 export class DropZone {
-  constructor(public x: number, public y: number, public width: number, public height: number, private draggedOver?: boolean) {
+  constructor(public x: number, public y: number, public width: number, public height: number, private dragging?: boolean) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -524,15 +525,21 @@ export class DropZone {
   }
   draw() {
     if (dragging == true) {
-      if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + this.width + 10 && mousePos.y < this.y + this.height + 10)
-        this.draggedOver = true;
+      this.dragging = true;
       context.strokeStyle = "rgba(120,100,0 ,0.8)";
       context.lineWidth = 10;
       context.strokeRect(this.x, this.y, this.width, this.height);
       context.strokeStyle = "black";
-    } else if (this.draggedOver == true) {
-      console.log("landed in zone");
-      this.draggedOver = false;
+    } else if (
+      finalmousePos.x > this.x - 5 &&
+      finalmousePos.y > this.y - 5 &&
+      finalmousePos.x < this.x + this.width + 10 &&
+      finalmousePos.y < this.y + this.height + 10 &&
+      this.dragging == true
+    ) {
+      currentlyDragged.x = mousePos.x - currentlyDragged.width / 2;
+      currentlyDragged.y = mousePos.y - currentlyDragged.height / 2;
+      this.dragging = false;
     }
   }
 }
