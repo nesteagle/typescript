@@ -3,6 +3,35 @@ let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
+let mousePos: any;
+let originalmousePos: any;
+let drag = false;
+let mouseisDown = false;
+document.addEventListener("mousedown", (event) => {
+  drag = false;
+  mouseisDown = true;
+  mousePos = getMousePos(event);
+  originalmousePos = getMousePos(event);
+});
+document.addEventListener("mousemove", (event) => {
+  mousePos = getMousePos(event);
+  if (mouseisDown == true) {
+    drag = true;
+  }
+});
+document.addEventListener("mouseup", (event) => {
+  console.log(drag ? "drag" : "click");
+  mousePos = getMousePos(event);
+  drag = false;
+  mouseisDown = false;
+});
+function getMousePos(event) {
+  let bounds = menu.getBoundingClientRect();
+  return {
+    x: event.clientX - bounds.left,
+    y: event.clientY - bounds.top,
+  };
+}
 import { gameEvent } from "./world";
 import { upgrades, scrollOffset, elements } from "./menu";
 let eventListener: any = document.getElementById("listener");
@@ -428,33 +457,70 @@ export class Box {
     }
   }
   hoveredOver(mousePos) {
+    if (this.selectable == true) {
+      if (
+        mousePos.x > this.x - 5 + scrollOffset[0] &&
+        mousePos.y > this.y - 5 + scrollOffset[1] &&
+        mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
+        mousePos.y < this.y + scrollOffset[1] + this.height + 10
+      ) {
+        if (this.width < 300) {
+          this.width += (300 / this.width) * 10;
+        }
+        if (this.height < 185) {
+          this.height += (185 / this.height) * 6.18;
+        }
+        this.selected = true;
+        return true;
+      }
+    }
+  }
+  restoreSize() {
+    if (this.selectable == true) {
+      this.selected = false;
+      if (this.width > this.originWidth) {
+        this.width -= (this.width / this.originWidth) * 10;
+      }
+      if (this.height > this.originHeight) {
+        this.height -= (this.height / this.originHeight) * 6.18;
+      }
+    }
+  }
+}
+
+export class DraggableBox {
+  constructor(public x: number, public y: number, public width: number, public height: number) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+  draw() {
+    if (mouseisDown == true && this.mouseOver(originalmousePos) == true) {
+      if (drag == true) {
+        console.log(drag);
+        context.fillRect(mousePos.x - this.width, mousePos.y - this.height, this.width, this.height);
+        context.strokeRect(mousePos.x - this.width, mousePos.y - this.height, this.width, this.height);
+        context.fillStyle = "rgba(32,32,32,0.7)";
+        context.fillRect(this.x, this.y, this.width, this.height);
+        context.strokeRect(this.x, this.y, this.width, this.height);
+      }
+    } else {
+      context.fillRect(this.x, this.y, this.width, this.height);
+      context.strokeRect(this.x, this.y, this.width, this.height);
+    }
+  }
+  mouseOver(mousePos) {
     if (
       mousePos.x > this.x - 5 + scrollOffset[0] &&
       mousePos.y > this.y - 5 + scrollOffset[1] &&
       mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
       mousePos.y < this.y + scrollOffset[1] + this.height + 10
     ) {
-      if (this.width < 300) {
-        this.width += (300 / this.width) * 10;
-      }
-      if (this.height < 185) {
-        this.height += (185 / this.height) * 6.18;
-      }
-      this.selected = true;
       return true;
     }
   }
-  restoreSize() {
-    this.selected = false;
-    if (this.width > this.originWidth) {
-      this.width -= (this.width / this.originWidth) * 10;
-    }
-    if (this.height > this.originHeight) {
-      this.height -= (this.height / this.originHeight) * 6.18;
-    }
-  }
 }
-
 export class DropZone {
   constructor(public x: number, public y: number, public width: number, public height: number) {
     this.x = x;

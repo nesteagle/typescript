@@ -1,9 +1,5 @@
-import { Text, UpgradeBox, Box, Background, Minimap, InteractiveBox } from "./menuelements";
+import { Text, UpgradeBox, Box, Background, Minimap, InteractiveBox, DraggableBox } from "./menuelements";
 import { playerStats } from "./world";
-let drag = false;
-document.addEventListener("mousedown", () => (drag = false));
-document.addEventListener("mousemove", () => (drag = true));
-document.addEventListener("mouseup", () => console.log(drag ? "drag" : "click"));
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
@@ -236,7 +232,8 @@ menu.addEventListener(
                     "Hello world! this box is\nanother test which is seperate\n from the original box.",
                     "30px Georgia",
                     "rgb(100,100,100)"
-                  )
+                  ),
+                  new DraggableBox(100, 100, 100, 100)
                 );
                 break;
             }
