@@ -27,7 +27,6 @@ export class Text {
     this.box = box;
     clickable == undefined ? (this.clickable = false) : (this.clickable = clickable);
     this.originalSize = +this.font.split(" ")[1].split("px")[0];
-    console.log(this.originalSize);
     boxColor == undefined || boxColor == null ? (this.boxColor = "rgb(100,110,144)") : (this.boxColor = boxColor);
     this.type = "Text";
     this.textColor = textColor;
@@ -81,11 +80,9 @@ export class Text {
         if (value.length > 1) {
           if (value[1] < this.originalSize * 1.1) {
             value[1]++;
-            console.log(value[1], this.originalSize, value[1] > this.originalSize);
             this.font = value[1] + "px Georgia";
           }
         } else if (value[0] < this.originalSize * 1.1) {
-          console.log(value[0], this.originalSize);
           value[0]++;
           this.font = value[0] + "px Georgia";
         }
@@ -95,12 +92,10 @@ export class Text {
     } else return;
   }
   restoreSize() {
-    let split = this.font.split(" ");
     let value = this.font.split("px")[0].split(" ").map(Number);
     context.font = this.font;
     if (value.length > 1) {
       if (value[1] > this.originalSize) {
-        console.log(split);
         value[1]--;
         this.font = value[1] + "px Georgia";
       }
