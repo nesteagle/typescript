@@ -1,4 +1,4 @@
-import { Text, UpgradeBox, Box, Background, Minimap, InteractiveBox, DraggableBox } from "./menuelements";
+import { Text, UpgradeBox, Box, Background, Minimap, InteractiveBox, DraggableBox, DropZone } from "./menuelements";
 import { playerStats } from "./world";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
@@ -233,7 +233,8 @@ menu.addEventListener(
                     "30px Georgia",
                     "rgb(100,100,100)"
                   ),
-                  new DraggableBox(100, 100, 100, 100)
+                  new DraggableBox(100, 100, 100, 100),
+                  new DropZone(500, 100, 300, 300)
                 );
                 break;
             }

@@ -3,8 +3,7 @@ let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
-let mousePos: any;
-let originalmousePos: any;
+let mousePos: any, originalmousePos: any, dragging: boolean;
 let drag = false;
 let mouseisDown = false;
 document.addEventListener("mousedown", (event) => {
@@ -15,9 +14,7 @@ document.addEventListener("mousedown", (event) => {
 });
 document.addEventListener("mousemove", (event) => {
   mousePos = getMousePos(event);
-  if (mouseisDown == true) {
-    drag = true;
-  }
+  if (mouseisDown == true) drag = true;
 });
 document.addEventListener("mouseup", (event) => {
   console.log(drag ? "drag" : "click");
@@ -496,37 +493,47 @@ export class DraggableBox {
     this.height = height;
   }
   draw() {
-    if (mouseisDown == true && this.mouseOver(originalmousePos) == true) {
+    dragging = this.mouseOver(originalmousePos);
+    if (mouseisDown == true && dragging == true) {
       if (drag == true) {
-        console.log(drag);
-        context.fillRect(mousePos.x - this.width, mousePos.y - this.height, this.width, this.height);
-        context.strokeRect(mousePos.x - this.width, mousePos.y - this.height, this.width, this.height);
-        context.fillStyle = "rgba(32,32,32,0.7)";
+        context.fillStyle = "rgb(32,32,32)";
+        context.fillRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
+        context.strokeRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
+        context.fillStyle = "rgba(32,32,32,0.8)";
         context.fillRect(this.x, this.y, this.width, this.height);
         context.strokeRect(this.x, this.y, this.width, this.height);
       }
     } else {
+      dragging = false;
       context.fillRect(this.x, this.y, this.width, this.height);
       context.strokeRect(this.x, this.y, this.width, this.height);
     }
   }
   mouseOver(mousePos) {
-    if (
-      mousePos.x > this.x - 5 + scrollOffset[0] &&
-      mousePos.y > this.y - 5 + scrollOffset[1] &&
-      mousePos.x < this.x + scrollOffset[0] + this.width + 10 &&
-      mousePos.y < this.y + scrollOffset[1] + this.height + 10
-    ) {
+    if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + this.width + 10 && mousePos.y < this.y + this.height + 10) {
       return true;
     }
   }
 }
 export class DropZone {
-  constructor(public x: number, public y: number, public width: number, public height: number) {
+  constructor(public x: number, public y: number, public width: number, public height: number, private draggedOver?: boolean) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+  }
+  draw() {
+    if (dragging == true) {
+      if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + this.width + 10 && mousePos.y < this.y + this.height + 10)
+        this.draggedOver = true;
+      context.strokeStyle = "rgba(120,100,0 ,0.8)";
+      context.lineWidth = 10;
+      context.strokeRect(this.x, this.y, this.width, this.height);
+      context.strokeStyle = "black";
+    } else if (this.draggedOver == true) {
+      console.log("landed in zone");
+      this.draggedOver = false;
+    }
   }
 }
 export class Minimap {
