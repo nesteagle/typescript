@@ -96,7 +96,6 @@ export class Text {
   }
   restoreSize() {
     let split = this.font.split(" ");
-    console.log(split[0]);
     let value = this.font.split("px")[0].split(" ").map(Number);
     context.font = this.font;
     if (value.length > 1) {
@@ -189,89 +188,6 @@ export class InteractiveBox {
     }
   }
 }
-// export class TextButton {
-//   constructor(
-//     public x: number,
-//     public y: number,
-//     public text: string,
-//     public font: string,
-//     public box: boolean,
-//     public event?: string,
-//     public path?: string,
-//     public boxColor?: string,
-//     public type?: string,
-//     public originalSize?: number
-//   ) {
-//     this.path = path;
-//     this.type = "Button";
-//     let tempsplit = this.font.split(" ")[1].split("px");
-//     this.originalSize = +tempsplit[0];
-//     path == undefined ? (this.path = "none") : (this.path = path);
-//   }
-//   draw(): void {
-//     context.font = this.font;
-//     context.textAlign = "start";
-//     context.textBaseline = "hanging";
-//     context.fillText(this.text, this.x, this.y);
-//     let measurements = context.measureText(this.text);
-//     let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
-//     if (this.box == true) {
-//       this.boxColor == undefined ? (context.fillStyle = "rgb(100,110,144)") : (context.fillStyle = this.boxColor);
-//       context.fillRect(this.x - 5, this.y - 5, measurements.width + 10, height + 10);
-//     }
-//     context.fillStyle = "black";
-//     context.fillText(this.text, this.x, this.y);
-//   }
-//   detectClick(mousePos): boolean {
-//     context.font = this.font;
-//     let measurements = context.measureText(this.text);
-//     let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
-//     if (
-//       mousePos.x > this.x - 5 &&
-//       mousePos.y > this.y - 5 &&
-//       mousePos.x < this.x + measurements.width + 10 &&
-//       mousePos.y < this.y + height + 10
-//     ) {
-//       if (this.event == "menu") {
-//         return true;
-//       } else if (this.event == "play") {
-//         eventListener.dispatchEvent(gameEvent);
-//         game.style.display = "block";
-//         menu.style.display = "none";
-//         return;
-//       }
-//       return true;
-//     }
-//   }
-//   hoveredOver(mousePos) {
-//     context.font = this.font;
-//     let measurements = context.measureText(this.text);
-//     let height = Math.abs(measurements.fontBoundingBoxDescent - measurements.fontBoundingBoxAscent);
-//     if (
-//       mousePos.x > this.x - 5 &&
-//       mousePos.y > this.y - 5 &&
-//       mousePos.x < this.x + measurements.width + 10 &&
-//       mousePos.y < this.y + height + 10
-//     ) {
-//       let split = this.font.split(" ");
-//       let value = +split[1].split("px")[0];
-//       if (value < this.originalSize * 1.1) {
-//         value += 1;
-//         this.font = split[0] + " " + value + "px " + split[2];
-//       }
-//       // context.fillText("Specific action", this.x + measurements.width + 25, this.y + height); maybe expand upon later
-//       return true;
-//     }
-//   }
-//   restoreSize() {
-//     let split = this.font.split(" ");
-//     let value = +split[1].split("px")[0];
-//     if (value > this.originalSize) {
-//       value -= 1;
-//       this.font = split[0] + " " + value + "px " + split[2];
-//     }
-//   }
-// }
 export class UpgradeBox {
   constructor(
     public x: number,
