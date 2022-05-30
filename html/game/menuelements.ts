@@ -1,3 +1,5 @@
+import { gameEvent } from "./world";
+import { upgrades, scrollOffset, elements } from "./menu";
 let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
@@ -29,8 +31,6 @@ function getMousePos(event) {
     y: event.clientY - bounds.top,
   };
 }
-import { gameEvent } from "./world";
-import { upgrades, scrollOffset, elements } from "./menu";
 let eventListener: any = document.getElementById("listener");
 export class Text {
   constructor(

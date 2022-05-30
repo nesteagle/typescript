@@ -1,16 +1,14 @@
 # Roadmap
 
-# Add equip menu and drag+drop feature --TODO,drag detection finished
+# ^ BUG FIXES and refactors
 
-# Easier way to find upgrades --TODO -- maybe search system? will expand further
-
-# Merge all textboxes and simplify code --PRIORITY, nearly done
-
-# ^ BUG FIXES
+# Add equip menu and drag+drop feature --features, albeit buggy are functional. implement later
 
 # Improve Upgrade tree and add more settings
 
 # Expand on campaign mode gui-in progress
+
+## Easier way to find upgrades --TODO -- maybe search system? will expand further
 
 ## Campaign mode with real conquests after you can return to main menu
 
