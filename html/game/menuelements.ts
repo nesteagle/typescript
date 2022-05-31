@@ -249,105 +249,156 @@ export class UpgradeBox {
       if (detectUpgrade(this.upgrade) !== false) {
         switch (this.upgrade) {
           case "Spears":
-            context.font = 14.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Basic spear-wielding unit. Great for getting", this.x + 5, this.y + 70);
-            context.fillText("across the map quickly. Also great in groups.", this.x + 5, this.y + 90);
-            context.font = 13.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to improve damage done by Spearman.", this.x + 5, this.y + 120);
+            renderText(
+              "Basic spear-wielding unit. Great for getting\nacross the map quickly. Also great in groups.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              14.5 * (this.width / 300) + "px Georgia"
+            );
+            renderText("Upgrade to improve damage done by Spearman.", this.x + 5, this.y + 120, 0, 13.5 * (this.width / 300) + "px Georgia");
             break;
           case "Swords":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Basic melee unit. Strong against all", this.x + 5, this.y + 70);
-            context.fillText("melee units, weak against ranged units.", this.x + 5, this.y + 90);
-            context.font = 13 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to improve damage done by Swordsman.", this.x + 5, this.y + 120);
+            renderText(
+              "Basic melee unit. Strong against all\nmelee units, weak against ranged units.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
+            renderText("Upgrade to improve damage done by Swordsman.", this.x + 5, this.y + 120, 0, 13 * (this.width / 300) + "px Georgia");
             break;
           case "Archery":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Basic bow-wielding unit. Shoots arrows.", this.x + 5, this.y + 70);
-            context.font = 13.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
+            renderText("Basic bow-wielding unit. Shoots arrows.", this.x + 5, this.y + 70, 0, 16 * (this.width / 300) + "px Georgia");
+            renderText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120, 0, 13.5 * (this.width / 300) + "px Georgia");
             break;
           case "Polearms":
-            context.font = 14 * (this.width / 300) + "px Georgia";
-            context.fillText("The ability to use halberds: a heavy weapon", this.x + 5, this.y + 70);
-            context.fillText("with long range. ", this.x + 5, this.y + 90);
-            context.font = 10.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to improve damage done by Halberdier.", this.x + 5, this.y + 120);
+            renderText(
+              "The ability to use halberds: a heavy weapon\nwith long range.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              14 * (this.width / 300) + "px Georgia"
+            );
+            renderText("Upgrade to improve damage done by Halberdier.", this.x + 5, this.y + 120, 0, 10.5 * (this.width / 300) + "px Georgia");
             break;
           case "Axes":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Axemen are fearless and will charge ", this.x + 5, this.y + 70);
-            context.fillText("at the enemy! ", this.x + 5, this.y + 90);
-            context.font = 14 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to improve damage done by Axeman.", this.x + 5, this.y + 120);
+            renderText(
+              "Axemen are fearless and will charge\nat the enemy!",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
+            renderText("Upgrade to improve damage done by Axeman.", this.x + 5, this.y + 120, 0, 14 * (this.width / 300) + "px Georgia");
             break;
           case "Crossbows":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Hits heavier than a bow at the cost", this.x + 5, this.y + 70);
-            context.fillText("of its accuracy! ", this.x + 5, this.y + 90);
+            renderText(
+              "Hits heavier than a bow at the cost\nof its accuracy!",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
             context.font = 12 * (this.width / 300) + "px Georgia";
             context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
             break;
           case "Longbows":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Shoots farther than a bow, with more ", this.x + 5, this.y + 70);
-            context.fillText("accuracy!", this.x + 5, this.y + 90);
+            renderText("Shoots farther than a bow, with more\naccuracy!", this.x + 5, this.y + 70, 20, 16 * (this.width / 300) + "px Georgia");
             context.font = 12 * (this.width / 300) + "px Georgia";
             context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
             break;
           case "Horsemanship":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Basic cavalry, fast unit, strong attack,", this.x + 5, this.y + 70);
-            context.fillText("but less hitpoints.", this.x + 5, this.y + 90);
+            renderText(
+              "Basic cavalry. Fast unit, strong attack,\ndecent armor.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
             context.font = 13.5 * (this.width / 300) + "px Georgia";
             context.fillText("Upgrade to increase damage done by Horseman.", this.x + 5, this.y + 120);
             break;
         }
-        context.font = 15.5 * (this.width / 300) + "px Georgia";
-        context.fillText("Current upgrades: " + detectUpgrade(this.upgrade)[1], this.x + 5, this.y + 150);
+        renderText(
+          "Current upgrades: " + detectUpgrade(this.upgrade)[1],
+          this.x + 5,
+          this.y + 150,
+          0,
+          15.5 * (this.width / 300) + "px Georgia"
+        );
       } else {
         switch (this.upgrade) {
           case "Archery":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Basic bow-wielding unit. Shoots arrows.", this.x + 5, this.y + 70);
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Click here to unlock Archery." + "add xp later", this.x + 5, this.y + 120);
+            renderText(
+              `Basic bow-wielding unit.Shoots arrows.\nClick here to unlock Archery.${0}`, //will be xp required
+              this.x + 5,
+              this.y + 70,
+              50,
+              16 * (this.width / 300) + "px Georgia"
+            );
             break;
           case "Polearms":
-            context.font = 14 * (this.width / 300) + "px Georgia";
-            context.fillText("The ability to use halberds: a heavy weapon", this.x + 5, this.y + 70);
-            context.fillText("with long range. Unlocks Halberdier.", this.x + 5, this.y + 90);
-            context.font = 15 * (this.width / 300) + "px Georgia";
-            context.fillText("Click here to unlock Polearms." + "add xp later", this.x + 5, this.y + 120);
+            renderText(
+              "The ability to use halberds: a heavy weapon\nwith long range. Unlocks Halberdier.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              14 * (this.width / 300) + "px Georgia"
+            );
+            renderText("Click here to unlock Polearms." + "add xp later", this.x + 5, this.y + 120, 0, 15 * (this.width / 300) + "px Georgia");
             break;
           case "Axes":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Axemen are fearless and will charge ", this.x + 5, this.y + 70);
-            context.fillText("at the enemy! Unlocks Axeman.", this.x + 5, this.y + 90);
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Click here to unlock Axes." + "add xp later", this.x + 5, this.y + 120);
+            renderText(
+              "Axemen are fearless and will charge\nat the enemy! Unlocks Axeman.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
+            renderText("Click here to unlock Axes." + "add xp later", this.x + 5, this.y + 120, 0, 16 * (this.width / 300) + "px Georgia");
             break;
           case "Crossbows":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Hits heavier than a bow at the cost", this.x + 5, this.y + 70);
-            context.fillText("of its accuracy! Unlocks Crossbowman.", this.x + 5, this.y + 90);
-            context.font = 14.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Click here to unlock Crossbows." + "add xp later", this.x + 5, this.y + 120);
+            renderText(
+              "Hits heavier than a bow at the cost\nof its accuracy! Unlocks Crossbowman.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
+            renderText(
+              "Click here to unlock Crossbows." + "add xp later",
+              this.x + 5,
+              this.y + 120,
+              0,
+              14.5 * (this.width / 300) + "px Georgia"
+            );
             break;
           case "Longbows":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Shoots farther than a bow, with more ", this.x + 5, this.y + 70);
-            context.fillText("accuracy! Unlocks Longbowman.", this.x + 5, this.y + 90);
-            context.font = 15 * (this.width / 300) + "px Georgia";
-            context.fillText("Click here to unlock Longbows." + "add xp later", this.x + 5, this.y + 120);
+            renderText(
+              "Shoots farther than a bow, with more\naccuracy! Unlocks Longbowman.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
+            renderText("Click here to unlock Longbows." + "add xp later", this.x + 5, this.y + 120, 0, 15 * (this.width / 300) + "px Georgia");
             break;
           case "Horsemanship":
-            context.font = 16 * (this.width / 300) + "px Georgia";
-            context.fillText("Basic cavalry, fast unit, strong attack,", this.x + 5, this.y + 70);
-            context.fillText("but less hitpoints. Unlocks Horseman.", this.x + 5, this.y + 90);
-            context.font = 13.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Click here to unlock Horsemanship." + "add xp later", this.x + 5, this.y + 120);
+            renderText(
+              "Basic cavalry. Fast unit, strong attack,\ndecent armor. Unlocks Horseman.",
+              this.x + 5,
+              this.y + 70,
+              20,
+              16 * (this.width / 300) + "px Georgia"
+            );
+            renderText(
+              "Click here to unlock Horsemanship." + "add xp later",
+              this.x + 5,
+              this.y + 120,
+              0,
+              13.5 * (this.width / 300) + "px Georgia"
+            );
             break;
         }
       }
@@ -597,4 +648,10 @@ function detectUpgrade(upgrade) {
   }
   return false;
 }
-function renderText(text: string, startingY: number, distance: number) {}
+function renderText(text: string, x: number, y: number, spacing: number, font: string) {
+  let lines = text.split("\n");
+  context.font = font;
+  for (let i = 0; i < lines.length; i++) {
+    context.fillText(lines[i], x, y + i * spacing);
+  }
+}
