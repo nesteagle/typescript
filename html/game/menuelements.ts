@@ -71,7 +71,7 @@ export class Text {
     this.textColor == undefined ? (context.fillStyle = "black") : (context.fillStyle = this.textColor);
     context.fillText(this.text, this.x, this.y);
   }
-  detectClick(mousePos): boolean {
+  detectClick(mousePos: any): boolean {
     if (this.clickable == true) {
       context.font = this.font;
       let measurements = context.measureText(this.text);
@@ -91,7 +91,7 @@ export class Text {
       }
     } else return;
   }
-  hoveredOver(mousePos) {
+  hoveredOver(mousePos: any) {
     if (this.clickable == true) {
       context.font = this.font;
       let measurements = context.measureText(this.text);
@@ -195,7 +195,7 @@ export class InteractiveBox {
       }
     }
   }
-  hoveredOver(mousePos) {
+  hoveredOver(mousePos: any) {
     this.mouseX = mousePos.x;
     this.mouseY = mousePos.y;
     if (
@@ -416,7 +416,7 @@ export class UpgradeBox {
     } else {
     }
   }
-  hoveredOver(mousePos) {
+  hoveredOver(mousePos: any) {
     if (
       mousePos.x > this.x - 5 + scrollOffset[0] &&
       mousePos.y > this.y - 5 + scrollOffset[1] &&
@@ -442,7 +442,7 @@ export class UpgradeBox {
   }
 }
 export class Background {
-  constructor(public x, public y, public rendering?) {
+  constructor(public x: number, public y: number, public rendering?: boolean) {
     this.x = x;
     this.y = y;
     this.rendering = rendering;
@@ -501,7 +501,7 @@ export class Box {
       context.fillText(this.originalText, this.x, this.y + this.originHeight / 3);
     }
   }
-  hoveredOver(mousePos) {
+  hoveredOver(mousePos: any) {
     if (this.selectable == true) {
       if (
         mousePos.x > this.x - 5 + scrollOffset[0] &&
@@ -558,7 +558,7 @@ export class DraggableBox {
       context.strokeRect(this.x, this.y, this.width, this.height);
     }
   }
-  mouseOver(mousePos) {
+  mouseOver(mousePos: any) {
     if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + this.width + 10 && mousePos.y < this.y + this.height + 10) {
       return true;
     }
@@ -637,7 +637,7 @@ export class Minimap {
     }
   }
 }
-function detectUpgrade(upgrade) {
+function detectUpgrade(upgrade: any) {
   for (let k = 0; k < upgrades.length; k++) {
     if (upgrades[k][0] == upgrade) {
       return upgrades[k];
