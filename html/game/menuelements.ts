@@ -597,3 +597,4 @@ function detectUpgrade(upgrade) {
   }
   return false;
 }
+function renderText(text: string, startingY: number, distance: number) {}
