@@ -300,13 +300,11 @@ export class UpgradeBox {
               20,
               16 * (this.width / 300) + "px Georgia"
             );
-            context.font = 12 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
+            renderText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120, 0, 12 * (this.width / 300) + "px Georgia");
             break;
           case "Longbows":
             renderText("Shoots farther than a bow, with more\naccuracy!", this.x + 5, this.y + 70, 20, 16 * (this.width / 300) + "px Georgia");
-            context.font = 12 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120);
+            renderText("Upgrade to improve projectile accuracy.", this.x + 5, this.y + 120, 0, 12 * (this.width / 300) + "px Georgia");
             break;
           case "Horsemanship":
             renderText(
@@ -316,8 +314,7 @@ export class UpgradeBox {
               20,
               16 * (this.width / 300) + "px Georgia"
             );
-            context.font = 13.5 * (this.width / 300) + "px Georgia";
-            context.fillText("Upgrade to increase damage done by Horseman.", this.x + 5, this.y + 120);
+            renderText("Upgrade to improve damage done by Horseman.", this.x + 5, this.y + 120, 0, 13.5 * (this.width / 300) + "px Georgia");
             break;
         }
         renderText(
