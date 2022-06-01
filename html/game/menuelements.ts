@@ -4,6 +4,7 @@ let menu = document.getElementById("canvasmenu") as HTMLCanvasElement;
 let context = menu.getContext("2d") as CanvasRenderingContext2D;
 let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
+let backgroundEquip = document.getElementById("source4") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
 let mousePos: any, originalmousePos: any, finalmousePos: any, dragging: boolean, currentlyDragged: any;
 let drag = false;
@@ -442,16 +443,22 @@ export class UpgradeBox {
   }
 }
 export class Background {
-  constructor(public x: number, public y: number, public rendering?: boolean) {
+  constructor(public x: number, public y: number, public rendering?: string) {
     this.x = x;
     this.y = y;
     this.rendering = rendering;
   }
   draw() {
-    if (this.rendering == true) {
-      context.drawImage(backgroundSource, 0, 0);
-    } else {
-      context.drawImage(backgroundMain, 0, 0);
+    switch (this.rendering) {
+      case "menu":
+        context.drawImage(backgroundSource, 0, 0);
+        break;
+      case "main":
+        context.drawImage(backgroundMain, 0, 0);
+        break;
+      case "equip":
+        context.drawImage(backgroundEquip, 0, 0);
+        break;
     }
   }
 }
@@ -565,7 +572,7 @@ export class DraggableBox {
   }
 }
 export class DropZone {
-  constructor(public x: number, public y: number, public width: number, public height: number, private dragging?: boolean) {
+  constructor(public x: number, public y: number, public width: number, public height: number, public id: number, private dragging?: boolean) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -585,8 +592,14 @@ export class DropZone {
       finalmousePos.y < this.y + this.height + 10 &&
       this.dragging == true
     ) {
-      currentlyDragged.x = mousePos.x - currentlyDragged.width / 2;
-      currentlyDragged.y = mousePos.y - currentlyDragged.height / 2;
+      if (currentlyDragged.x !== this.x) {
+        currentlyDragged.x += this.x - currentlyDragged.x;
+      }
+      if (currentlyDragged.y !== this.y) {
+        currentlyDragged.y += this.y - currentlyDragged.y;
+      }
+      // currentlyDragged.x = mousePos.x - currentlyDragged.width / 2;
+      // currentlyDragged.y = mousePos.y - currentlyDragged.height / 2;
       this.dragging = false;
     }
   }

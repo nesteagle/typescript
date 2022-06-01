@@ -21,7 +21,7 @@ export let upgrades: Array<any> = [
   ["Swords", 0],
   ["Spears", 0],
 ];
-let background = new Background(0, 0, false);
+let background = new Background(0, 0, "main");
 export let elements: Array<any> = [
   new Text(100, 200, "Game Title", "600 90px Georgia", false, true),
   new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, null, "campaign1"),
@@ -158,7 +158,7 @@ menu.addEventListener(
           if (elements[i].detectClick(mousePos) == true) {
             switch (elements[i].path) {
               case "menu":
-                background.rendering = false;
+                background.rendering = "main";
                 elements = [
                   new Text(100, 200, "Game Title", "600 90px Georgia", false, true),
                   new Text(100, 450, "Play Campaign", "200 45px Georgia", true, true, null, "campaign1"),
@@ -168,14 +168,14 @@ menu.addEventListener(
                 minimap = undefined;
                 break;
               case "campaign1":
-                background.rendering = true;
+                background.rendering = "menu";
                 elements = [
                   new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu"),
                   new Text(150, 400, "Start Campaign", "200 40px Georgia", true, true, null, "play"),
                 ];
                 break;
               case "upgrade1":
-                background.rendering = true;
+                background.rendering = "menu";
                 elements = [
                   new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu"),
                   new Text(150, 400, "Tech Tree", "200 40px Georgia", true, true, null, "upgrade2"),
@@ -219,7 +219,7 @@ menu.addEventListener(
                 minimap.Scrolling = true;
                 break;
               case "equip":
-                background.rendering = true;
+                background.rendering = "equip";
                 elements = [new Text(50, 850, "Back", "200 25px Georgia", true, true, null, "menu")];
                 elements.push(
                   new Box(500, 500, 100, 100, true, "Hello", "Hello world!\nThis is a test to see\nif multiple lines\nwork!", "40px Georgia"),
@@ -233,9 +233,14 @@ menu.addEventListener(
                     "30px Georgia",
                     "rgb(100,100,100)"
                   ),
-                  new DraggableBox(100, 100, 100, 100),
-                  new DropZone(500, 100, 300, 300)
+                  new DraggableBox(100, 100, 100, 100)
                 );
+                for (let i = 0; i < 4; i++) {
+                  elements.push(new DropZone(i * 150 + 100, 60, 90, 90, i));
+                }
+                for (let j = 0; j < 4; j++) {
+                  elements.push(new DropZone(j * 150 + 100, 220, 90, 90, j));
+                }
                 break;
             }
           }
