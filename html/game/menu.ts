@@ -233,7 +233,10 @@ menu.addEventListener(
                     "30px Georgia",
                     "rgb(100,100,100)"
                   ),
-                  new DraggableBox(100, 100, 100, 100)
+                  new DraggableBox(150, 700, 100, 100),
+                  new DraggableBox(300, 700, 100, 100),
+                  new DraggableBox(450, 700, 100, 100),
+                  new DraggableBox(600, 700, 100, 100)
                 );
                 for (let i = 0; i < 4; i++) {
                   elements.push(new DropZone(i * 150 + 100, 60, 90, 90, i));

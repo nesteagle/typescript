@@ -6,7 +6,7 @@ let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundEquip = document.getElementById("source4") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
-let mousePos: any, originalmousePos: any, finalmousePos: any, dragging: boolean, currentlyDragged: any;
+let mousePos: any, originalmousePos: any, finalmousePos: any, currentlyDragged: any;
 let drag = false;
 let mouseisDown = false;
 document.addEventListener("mousedown", (event) => {
@@ -21,6 +21,7 @@ document.addEventListener("mousemove", (event) => {
 });
 document.addEventListener("mouseup", (event) => {
   mousePos = getMousePos(event);
+  console.log(drag ? "drag" : "click");
   finalmousePos = mousePos;
   drag = false;
   mouseisDown = false;
@@ -541,17 +542,18 @@ export class Box {
 }
 
 export class DraggableBox {
-  constructor(public x: number, public y: number, public width: number, public height: number) {
+  constructor(public x: number, public y: number, public width: number, public height: number, private dragging?: boolean) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.dragging = false;
   }
   draw() {
-    dragging = this.mouseOver(originalmousePos);
-    if (mouseisDown == true && dragging == true) {
+    if (mouseisDown == true && this.mouseOver(originalmousePos)) {
       if (drag == true) {
         currentlyDragged = this;
+        this.dragging = true;
         context.fillStyle = "rgb(32,32,32)";
         context.fillRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
         context.strokeRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
@@ -560,7 +562,6 @@ export class DraggableBox {
         context.strokeRect(this.x, this.y, this.width, this.height);
       }
     } else {
-      dragging = false;
       context.fillRect(this.x, this.y, this.width, this.height);
       context.strokeRect(this.x, this.y, this.width, this.height);
     }
@@ -569,6 +570,7 @@ export class DraggableBox {
     if (mousePos.x > this.x - 5 && mousePos.y > this.y - 5 && mousePos.x < this.x + this.width + 10 && mousePos.y < this.y + this.height + 10) {
       return true;
     }
+    return false;
   }
 }
 export class DropZone {
@@ -579,26 +581,31 @@ export class DropZone {
     this.height = height;
   }
   draw() {
-    if (dragging == true) {
-      this.dragging = true;
+    if (mouseisDown == true) {
       context.strokeStyle = "rgba(120,100,0 ,0.8)";
       context.lineWidth = 10;
       context.strokeRect(this.x, this.y, this.width, this.height);
       context.strokeStyle = "black";
-    } else if (
+    }
+    if (
       finalmousePos.x > this.x - 5 &&
       finalmousePos.y > this.y - 5 &&
       finalmousePos.x < this.x + this.width + 10 &&
-      finalmousePos.y < this.y + this.height + 10 &&
-      this.dragging == true
+      finalmousePos.y < this.y + this.height + 10
     ) {
-      let vx: number = (this.x - 5 - currentlyDragged.x) / 8;
-      let vy: number = (this.y - 5 - currentlyDragged.y) / 8;
-      if (Math.abs(currentlyDragged.x - 5 - this.x) < 2 && Math.abs(currentlyDragged.y - 5 - this.y) < 2) this.dragging = false;
-      currentlyDragged.x += vx;
-      currentlyDragged.y += vy;
-      // currentlyDragged.x = mousePos.x - currentlyDragged.width / 2;
-      // currentlyDragged.y = mousePos.y - currentlyDragged.height / 2;
+      if (currentlyDragged !== undefined) {
+        if (currentlyDragged.dragging == true) {
+          let vx: number = (this.x - 5 - currentlyDragged.x) / 8;
+          let vy: number = (this.y - 5 - currentlyDragged.y) / 8;
+          if (Math.abs(currentlyDragged.x - 5 - this.x) < 2 && Math.abs(currentlyDragged.y - 5 - this.y) < 2) {
+            currentlyDragged.dragging = false;
+            currentlyDragged.x = this.x - 5;
+            currentlyDragged.y = this.y - 5;
+          }
+          currentlyDragged.x += vx;
+          currentlyDragged.y += vy;
+        }
+      }
     }
   }
 }
