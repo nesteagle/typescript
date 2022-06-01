@@ -592,15 +592,13 @@ export class DropZone {
       finalmousePos.y < this.y + this.height + 10 &&
       this.dragging == true
     ) {
-      if (currentlyDragged.x !== this.x) {
-        currentlyDragged.x += this.x - currentlyDragged.x;
-      }
-      if (currentlyDragged.y !== this.y) {
-        currentlyDragged.y += this.y - currentlyDragged.y;
-      }
+      let vx: number = (this.x - 5 - currentlyDragged.x) / 8;
+      let vy: number = (this.y - 5 - currentlyDragged.y) / 8;
+      if (Math.abs(currentlyDragged.x - 5 - this.x) < 2 && Math.abs(currentlyDragged.y - 5 - this.y) < 2) this.dragging = false;
+      currentlyDragged.x += vx;
+      currentlyDragged.y += vy;
       // currentlyDragged.x = mousePos.x - currentlyDragged.width / 2;
       // currentlyDragged.y = mousePos.y - currentlyDragged.height / 2;
-      this.dragging = false;
     }
   }
 }
