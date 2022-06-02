@@ -2,7 +2,7 @@
 
 # ^ BUG FIXES and refactors --Important, important, IMPORTANT!
 
-# Add equip menu and drag+drop feature --features, albeit buggy are functional. implement later
+# Add equip menu and drag+drop feature --work on drag and drop
 
 # click compatibility with drag and drop- dragging and dropping works fully.
 
