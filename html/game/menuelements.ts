@@ -607,15 +607,14 @@ export class DropZone {
           this.dragging == true
         ) {
           this.dragging = true;
-          let vx: number = (this.x - currentlyDragged.x - 5) / 6;
-          let vy: number = (this.y - currentlyDragged.y - 5) / 6;
-          if (Math.abs(currentlyDragged.x - this.x - 5) < 10 && Math.abs(currentlyDragged.y - this.y) < 10) {
-            currentlyDragged.x = this.x - 5;
-            currentlyDragged.y = this.y;
+          let vx: number = (this.x - currentlyDragged.x - 2.5) / 6;
+          let vy: number = (this.y - currentlyDragged.y - 2.5) / 6;
+          if (Math.abs(currentlyDragged.x - this.x) - 2.5 < 0.1 && Math.abs(currentlyDragged.y - this.y) - 2.5 < 0.1) {
+            currentlyDragged.x = this.x - 2.5;
+            currentlyDragged.y = this.y - 2.5;
             currentlyDragged.dragged = false;
-            console.log("FALse");
             this.dragging = false;
-          }
+          } else console.log(Math.abs(currentlyDragged.x - this.x - 5), Math.abs(currentlyDragged.y - this.y));
           currentlyDragged.x += vx;
           currentlyDragged.y += vy;
         }
