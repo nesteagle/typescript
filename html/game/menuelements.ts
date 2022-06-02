@@ -6,24 +6,18 @@ let game = document.getElementById("canvas") as HTMLCanvasElement;
 let backgroundSource = document.getElementById("source3") as CanvasImageSource;
 let backgroundEquip = document.getElementById("source4") as CanvasImageSource;
 let backgroundMain = document.getElementById("source") as CanvasImageSource; //  temporary
-let mousePos: any, originalmousePos: any, finalmousePos: any, currentlyDragged: any;
-let drag = false;
+let mousePos: any, finalmousePos: any, currentlyDragged: any;
 let mouseisDown = false;
 document.addEventListener("mousedown", (event) => {
-  drag = false;
   mouseisDown = true;
   mousePos = getMousePos(event);
-  originalmousePos = mousePos;
 });
 document.addEventListener("mousemove", (event) => {
   mousePos = getMousePos(event);
-  if (mouseisDown == true) drag = true;
 });
 document.addEventListener("mouseup", (event) => {
   mousePos = getMousePos(event);
-  console.log(drag ? "drag" : "click");
   finalmousePos = mousePos;
-  drag = false;
   mouseisDown = false;
 });
 function getMousePos(event) {
@@ -542,17 +536,25 @@ export class Box {
 }
 
 export class DraggableBox {
-  constructor(public x: number, public y: number, public width: number, public height: number, private hoveredOver?: boolean) {
+  constructor(
+    public x: number,
+    public y: number,
+    public width: number,
+    public height: number,
+    private dragged?: boolean,
+    private hoveredOver?: boolean
+  ) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.dragged = false;
   }
   draw() {
     if (this.mouseOver(mousePos) == true || this.hoveredOver == true) {
       if (mouseisDown == true) {
         this.hoveredOver = true;
-        console.log(originalmousePos, this);
+        this.dragged = true;
         currentlyDragged = this;
         context.fillStyle = "rgb(32,32,32)";
         context.fillRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
@@ -593,24 +595,26 @@ export class DropZone {
       context.strokeRect(this.x, this.y, this.width, this.height);
       context.strokeStyle = "black";
     }
-    if (
-      finalmousePos.x > this.x - 5 &&
-      finalmousePos.y > this.y - 5 &&
-      finalmousePos.x < this.x + this.width + 10 &&
-      finalmousePos.y < this.y + this.height + 10
-    ) {
-      if (mouseisDown == false) {
-        if (currentlyDragged !== undefined) {
+    if (mouseisDown == false) {
+      if (currentlyDragged !== undefined) {
+        if (
+          finalmousePos.x > this.x - 5 &&
+          finalmousePos.y > this.y - 5 &&
+          finalmousePos.x < this.x + this.width + 10 &&
+          finalmousePos.y < this.y + this.height + 10 &&
+          currentlyDragged.dragged == true
+        ) {
           let vx: number = (this.x - 5 - currentlyDragged.x) / 8;
           let vy: number = (this.y - 5 - currentlyDragged.y) / 8;
-          if (Math.abs(currentlyDragged.x - 5 - this.x) < 2 && Math.abs(currentlyDragged.y - 5 - this.y) < 2) {
+          if (Math.abs(currentlyDragged.x - 5 - this.x) < 1 && Math.abs(currentlyDragged.y - 5 - this.y) < 1) {
             currentlyDragged.x = this.x - 5;
             currentlyDragged.y = this.y - 5;
+            currentlyDragged.dragged = false;
           }
           currentlyDragged.x += vx;
           currentlyDragged.y += vy;
-        }
-      }
+        } else console.log(currentlyDragged.dragged);
+      } else console.log(undefined);
     }
   }
 }
