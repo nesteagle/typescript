@@ -542,26 +542,32 @@ export class Box {
 }
 
 export class DraggableBox {
-  constructor(public x: number, public y: number, public width: number, public height: number, private dragging?: boolean) {
+  constructor(public x: number, public y: number, public width: number, public height: number, private hoveredOver?: boolean) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.dragging = false;
   }
   draw() {
-    if (mouseisDown == true && this.mouseOver(originalmousePos)) {
-      if (drag == true) {
+    if (this.mouseOver(mousePos) == true || this.hoveredOver == true) {
+      if (mouseisDown == true) {
+        this.hoveredOver = true;
+        console.log(originalmousePos, this);
         currentlyDragged = this;
-        this.dragging = true;
         context.fillStyle = "rgb(32,32,32)";
         context.fillRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
         context.strokeRect(mousePos.x - this.width / 2, mousePos.y - this.height / 2, this.width, this.height);
         context.fillStyle = "rgba(32,32,32,0.8)";
         context.fillRect(this.x, this.y, this.width, this.height);
         context.strokeRect(this.x, this.y, this.width, this.height);
+      } else {
+        this.hoveredOver = false;
+        context.fillStyle = "rgba(32,32,32,1)";
+        context.fillRect(this.x, this.y, this.width, this.height);
+        context.strokeRect(this.x, this.y, this.width, this.height);
       }
     } else {
+      context.fillStyle = "rgba(32,32,32,1)";
       context.fillRect(this.x, this.y, this.width, this.height);
       context.strokeRect(this.x, this.y, this.width, this.height);
     }
@@ -593,12 +599,11 @@ export class DropZone {
       finalmousePos.x < this.x + this.width + 10 &&
       finalmousePos.y < this.y + this.height + 10
     ) {
-      if (currentlyDragged !== undefined) {
-        if (currentlyDragged.dragging == true) {
+      if (mouseisDown == false) {
+        if (currentlyDragged !== undefined) {
           let vx: number = (this.x - 5 - currentlyDragged.x) / 8;
           let vy: number = (this.y - 5 - currentlyDragged.y) / 8;
           if (Math.abs(currentlyDragged.x - 5 - this.x) < 2 && Math.abs(currentlyDragged.y - 5 - this.y) < 2) {
-            currentlyDragged.dragging = false;
             currentlyDragged.x = this.x - 5;
             currentlyDragged.y = this.y - 5;
           }
