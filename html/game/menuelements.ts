@@ -587,6 +587,7 @@ export class DropZone {
     this.y = y;
     this.width = width;
     this.height = height;
+    this.id = id;
   }
   draw() {
     if (mouseisDown == true) {
@@ -598,23 +599,27 @@ export class DropZone {
     if (mouseisDown == false) {
       if (currentlyDragged !== undefined) {
         if (
-          finalmousePos.x > this.x - 5 &&
-          finalmousePos.y > this.y - 5 &&
-          finalmousePos.x < this.x + this.width + 10 &&
-          finalmousePos.y < this.y + this.height + 10 &&
-          currentlyDragged.dragged == true
+          (finalmousePos.x > this.x - 5 &&
+            finalmousePos.y > this.y - 5 &&
+            finalmousePos.x < this.x + this.width + 10 &&
+            finalmousePos.y < this.y + this.height + 10 &&
+            currentlyDragged.dragged == true) ||
+          this.dragging == true
         ) {
-          let vx: number = (this.x - 5 - currentlyDragged.x) / 8;
-          let vy: number = (this.y - 5 - currentlyDragged.y) / 8;
-          if (Math.abs(currentlyDragged.x - 5 - this.x) < 1 && Math.abs(currentlyDragged.y - 5 - this.y) < 1) {
+          this.dragging = true;
+          let vx: number = (this.x - currentlyDragged.x - 5) / 6;
+          let vy: number = (this.y - currentlyDragged.y - 5) / 6;
+          if (Math.abs(currentlyDragged.x - this.x - 5) < 10 && Math.abs(currentlyDragged.y - this.y) < 10) {
             currentlyDragged.x = this.x - 5;
-            currentlyDragged.y = this.y - 5;
+            currentlyDragged.y = this.y;
             currentlyDragged.dragged = false;
+            console.log("FALse");
+            this.dragging = false;
           }
           currentlyDragged.x += vx;
           currentlyDragged.y += vy;
-        } else console.log(currentlyDragged.dragged);
-      } else console.log(undefined);
+        }
+      }
     }
   }
 }
