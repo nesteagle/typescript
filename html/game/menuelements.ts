@@ -534,7 +534,6 @@ export class Box {
     }
   }
 }
-
 export class DraggableBox {
   constructor(
     public x: number,
