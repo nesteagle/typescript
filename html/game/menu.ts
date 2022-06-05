@@ -308,7 +308,6 @@ function renderLines() {
 interface interactive {
   selectable: boolean;
 }
-
 function isInteractive(object: any): object is interactive {
   return "selectable" in object;
 }
